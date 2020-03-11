@@ -17,3 +17,4 @@ six==1.9.0
 Werkzeug==0.12.2
 bcrypt==3.1.7
 pymongo
+pyads==3.1.2

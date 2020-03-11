@@ -13,6 +13,7 @@ from flask_socketio import SocketIO, emit, join_room, leave_room, \
 from bson.json_util import dumps
 
 from epics import PV
+import pyads
 import logging
 import os
 import sys
@@ -42,8 +43,27 @@ print('REACT_APP_PyEpicsServerPORT: '+ str(os.environ['REACT_APP_PyEpicsServerPO
 print('REACT_APP_PyEpicsServerNamespace: '+ str(os.environ['REACT_APP_PyEpicsServerNamespace']))
 print('REACT_APP_EnableLogin: '+ str(os.environ['REACT_APP_EnableLogin']))
 
-
-print("")
+#pyads.open_port()
+#remote_ip = str(os.environ['ADS_SERVER'])
+#print("ads_remote_ip",remote_ip)
+#ads_adr = pyads.AmsAddr('127.0.0.1.1.1', pyads.PORT_SPS1)
+#pyads.add_route(ads_adr, remote_ip)
+print("ADS port",pyads.PORT_SPS1)
+SENDER_AMS = '127.0.0.1.1.1'
+PLC_IP = '172.16.5.140'
+print("PLC_IP",PLC_IP)
+USERNAME = 'Administrator'
+PASSWORD = '1'
+ROUTE_NAME = 'RouteToPLC'
+HOSTNAME = 'CP-4C3A9E'
+PLC_AMS_ID = '5.76.58.158.1.1'
+#ads_adr = pyads.AmsAddr(PLC_AMS_ID, pyads.PORT_SPS1)
+#pyads.add_route(ads_adr, remote_ip)
+pyads.add_route_to_plc(SENDER_AMS, HOSTNAME, PLC_IP, USERNAME, PASSWORD, route_name=ROUTE_NAME)
+plc = pyads.Connection(PLC_AMS_ID, pyads.PORT_SPS1)
+plc.open()
+plc.read_by_name('GVL001.bSweeperEn0', pyads.PLCTYPE_BOOL)
+plc.close()
 #app = Flask(__name__, static_folder="../build/static", template_folder="../build")
 app = Flask(__name__)
 #@app.route('/', defaults={'path': ''})
