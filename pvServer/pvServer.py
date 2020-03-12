@@ -48,22 +48,7 @@ print('REACT_APP_EnableLogin: '+ str(os.environ['REACT_APP_EnableLogin']))
 #print("ads_remote_ip",remote_ip)
 #ads_adr = pyads.AmsAddr('127.0.0.1.1.1', pyads.PORT_SPS1)
 #pyads.add_route(ads_adr, remote_ip)
-print("ADS port",pyads.PORT_SPS1)
-SENDER_AMS = '127.0.0.1.1.1'
-PLC_IP = '172.16.5.140'
-print("PLC_IP",PLC_IP)
-USERNAME = 'Administrator'
-PASSWORD = '1'
-ROUTE_NAME = 'RouteToPLC'
-HOSTNAME = 'CP-4C3A9E'
-PLC_AMS_ID = '5.76.58.158.1.1'
-#ads_adr = pyads.AmsAddr(PLC_AMS_ID, pyads.PORT_SPS1)
-#pyads.add_route(ads_adr, remote_ip)
-pyads.add_route_to_plc(SENDER_AMS, HOSTNAME, PLC_IP, USERNAME, PASSWORD, route_name=ROUTE_NAME)
-plc = pyads.Connection(PLC_AMS_ID, pyads.PORT_SPS1)
-plc.open()
-plc.read_by_name('GVL001.bSweeperEn0', pyads.PLCTYPE_BOOL)
-plc.close()
+
 #app = Flask(__name__, static_folder="../build/static", template_folder="../build")
 app = Flask(__name__)
 #@app.route('/', defaults={'path': ''})
@@ -93,6 +78,7 @@ log.setLevel(logging.ERROR)
 
 clientPVlist={};
 clientDbWatchList={};
+clientAdsPlcList={};
 
 def check_pv_initialized_after_disconnect():
 
@@ -248,7 +234,7 @@ def test_write(message):
 
 @socketio.on('request_pv_info', namespace='/pvServer')
 def test_message(message):
-    global clientPVlist,REACT_APP_DisableLogin
+    global clientPVlist,REACT_APP_DisableLogin,clientAdsPlcList
     pvname1= str(message['data'])
     authenticated=False
     if REACT_APP_DisableLogin:
@@ -281,6 +267,101 @@ def test_message(message):
                     pvlist['initialized']=False
                     clientPVlist[pvname1]=pvlist
                     clientPVlist[pvname1]['pv'].add_callback(onValueChanges,index=0)
+            elif "ads://" in pvname1:
+
+                print("ads request 0")
+                print("ads pvname1",pvname1)
+                if(accessControl['permissions']['read']):
+                    if(accessControl['permissions']['write']):
+                        join_room(str(pvname1)+'rw')
+                        join_room(str(pvname1))
+                    else:
+                        join_room(str(pvname1)+'ro')
+                        join_room(str(pvname1))
+                    str1=pvname1.replace("ads://","")
+                    strings=  str1.split(':')
+                    print(strings)
+                    try:
+                        if(len(strings)>=4):
+                            plcName= strings[0];
+                            plcPort=   strings[1];
+                            plcVariable=  strings[2];
+                            plcVariableType= strings[3];
+                            if not (plcName in	clientAdsPlcList):
+                                try:
+                                    plcConfigUsername=str(os.environ['ADS_PLC_USERNAME_'+plcName]);
+                                    plcConfigPassword=str(os.environ['ADS_PLC_PASSWORD_'+plcName]);
+                                    plcConfigPlcAmsID=str(os.environ['ADS_PLC_AMS_ID_'  +plcName]);
+                                    plcConfigPlcIP=str(os.environ['ADS_PLC_IP_'         +plcName]);
+                                    plcConfigHostIP=str(os.environ['ADS_HOST_IP']);
+                                    clientAdsPlcList[plcName]={};
+                                    clientAdsPlcList[plcName]['username']=plcConfigUsername;
+                                    clientAdsPlcList[plcName]['password']=plcConfigPassword;
+                                    clientAdsPlcList[plcName]['PlcAmsID']=plcConfigPlcAmsID;
+                                    clientAdsPlcList[plcName]['PlcIP']=plcConfigPlcIP;
+                                    clientAdsPlcList[plcName]['hostIp']=plcConfigHostIP;
+                                    clientAdsPlcList[plcName]['hostAmsID']=plcConfigHostIP+'.1.1';
+                                    #pyads.add_route_to_plc('172.16.5.52.1.1', '172.16.5.52', clientAdsPlcList[plcName]['PlcIP'], clientAdsPlcList[plcName]['username'], clientAdsPlcList[plcName]['password'], route_name='172.16.5.52',added_net_id='172.16.5.52.1.1')
+                                    #pyads.add_route_to_plc('172.16.5.52.1.1', '172.16.5.52', '172.16.5.140', 'Administrator', '1', route_name='172.16.5.52',added_net_id='172.16.5.52.1.1')
+                                    #clientAdsPlcList[plcName]['plc']=pyads.Connection('172.15.5.140.1.1', 851,'172.16.5.140')
+
+                                    pyads.add_route_to_plc(clientAdsPlcList[plcName]['hostAmsID'], clientAdsPlcList[plcName]['hostIp'], clientAdsPlcList[plcName]['PlcIP'], clientAdsPlcList[plcName]['username'], clientAdsPlcList[plcName]['password'], route_name=clientAdsPlcList[plcName]['hostIp'],added_net_id=clientAdsPlcList[plcName]['hostAmsID'])
+                                    plc = pyads.Connection(clientAdsPlcList[plcName]['PlcAmsID'], int(plcPort), clientAdsPlcList[plcName]['PlcIP'])
+                                    plc.open()
+                                    clientAdsPlcList[plcName]['plc']=plc;
+                                    print("opened")
+                                except Exception as e: # work on python 3.x
+                                    print('could not load plc info ' + str(plcName)+' '+ str(e))
+                            else:
+                                print("route to plc "+plcName+' already exists')
+                                print(clientAdsPlcList[plcName])
+                            try:
+
+                                if plcVariableType=='BOOL' :
+                                    plcVariablePyAdsType=pyads.PLCTYPE_BOOL;
+
+
+
+                                else:
+                                    Exception("unknown plc variable type");
+
+                                #plc=clientAdsPlcList[plcName]['plc'];
+                                #print(plcVariable)
+                                #print(plcVariablePyAdsType)
+
+                                #plc = pyads.Connection('172.16.5.140.1.1', 851, '172.16.5.140')
+
+                                #plc.open()
+                                #enable=plc.read_by_name('GVL001.bSweeperEn0', pyads.PLCTYPE_BOOL)
+                                plc=clientAdsPlcList[plcName]['plc'];
+                                print(plc.read_by_name(plcVariable,plcVariablePyAdsType))
+                                #pvlist={}
+                                #pvlist['isConnected']=False
+                                #pvlist['initialized']=False
+                                #pvlist['plcName']=
+                                #clientPVlist[pvname1]=pvlist
+
+                            except Exception as e: # work on python 3.x
+                                print('could not load plc variable type ' + str(plcName)+' '+ str(e))
+
+
+                    except:
+                         raise Exception("Malformed ads URL, must be in format: ads://plcName:plcPort:plcVariable:plcVariableType")
+
+                    #     Parametersstr=str1.split("Parameters:")[1]
+                    #     parameters=json.loads(Parametersstr)
+                    # except:
+                    #     raise Exception("Parameters are not defined")
+                    #
+                    # #print("Parameters:",str(parameters))
+
+
+                    #pvlist={}
+                    #pvlist['msg']=None
+                    #pvlist['topic']=pvname2
+                    #pvlist['isConnected']=False
+                    #pvlist['initialized']=False
+                    #clientPVlist[pvname1]=pvlist
 
 
 
@@ -728,8 +809,8 @@ if __name__ == '__main__':
     print("")
     if not (REACT_APP_PyEpicsServerURL is None):
         if 'https' in REACT_APP_PyEpicsServerURL:
-            socketio.run(app, host='0.0.0.0', debug=True, port=int(REACT_APP_PyEpicsServerPORT,10), keyfile='../certificates/server.key', certfile='../certificates/server.cer')
+            socketio.run(app, host='0.0.0.0', debug=True, port=int(REACT_APP_PyEpicsServerPORT,10), keyfile='../certificates/server.key', certfile='../certificates/server.cer',use_reloader=False)
         else:
-            socketio.run(app,host='0.0.0.0',port=int(REACT_APP_PyEpicsServerPORT,10),  debug=True)
+            socketio.run(app,host='0.0.0.0',port=int(REACT_APP_PyEpicsServerPORT,10),  debug=True,use_reloader=False)
     else:
-        socketio.run(app,host='127.0.0.1',  debug=True)
+        socketio.run(app,host='127.0.0.1',  debug=True,use_reloader=False)

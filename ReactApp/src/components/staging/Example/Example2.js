@@ -58,12 +58,17 @@ class Example2 extends React.Component {
         >
           <Grid item xs={6}  >
             <TextInput
-                pv='pva://$(device):amplitude'
-                macros={{'$(device)':'testIOC'}}
-                usePvLabel={true}
-                usePrecision={true}
-                prec={3}
-                alarmSensitive={true}
+                pv='ads://$(PLC_ID):$(PLC_PORT):$(PLC_PV):$(PLC_TYPE)'
+                macros={{
+                  '$(PLC_ID)':'ipcsweeperdev1',
+                  '$(PLC_PORT)':'851',
+                  '$(PLC_PV)':'GVL001.bSweeperEn0',
+                  '$(PLC_TYPE)':"BOOL"
+
+                }}
+                label='GVL001.bSweeperEn0'
+                //useStringValue={true}
+                debug={true}
             />
           </Grid>
           <Grid item  xs={6}>

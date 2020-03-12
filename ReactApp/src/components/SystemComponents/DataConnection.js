@@ -2,6 +2,7 @@ import React from 'react'
 import AutomationStudioContext from './AutomationStudioContext';
 import LocalPV from '../SystemComponents/LocalPV';
 import EpicsPV from '../SystemComponents/EpicsPV';
+import AdsPV from '../SystemComponents/AdsPV';
 import { withStyles } from '@material-ui/core/styles';
 import uuid from 'uuid';
 const styles = theme => ({
@@ -95,6 +96,19 @@ class DataConnection extends React.Component {
   handleInputValue={this.props.handleInputValueLabel}
 
   />    }
+  {pv.includes('ads://')&&
+  <AdsPV
+  pv={pv}
+  macros={this.props.macros}
+  usePrecision={this.props.usePrecision}
+  handleInputValue={this.props.handleInputValue}
+  handleMetadata={this.props.handleMetadata}
+  outputValue=  {this.props.outputValue}
+  useStringValue={this.props.useStringValue}
+  debug={this.props.debug}
+  newValueTrigger={this.props.newValueTrigger}
+  />
+}
 
   </React.Fragment>
 )
