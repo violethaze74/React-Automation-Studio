@@ -24,6 +24,7 @@ sys.path.insert(0, 'userAuthentication/')
 
 from authenticate import  AuthoriseUser,AutheriseUserAndPermissions, AuthenticateUser
 from dotenv import load_dotenv
+from ctypes import sizeof
 load_dotenv()
 # Set this variable to "threading", "eventlet" or "gevent" to test the
 # different async modes, or leave it set to None for the application to choose
@@ -228,9 +229,20 @@ def test_write(message):
         socketio.emit('redirectToLogIn',room=request.sid,namespace='/pvServer')
 
 
+##########
+#@plc.notification(pyads.PLCTYPE_INT)
+#def AdsBoolCallback(handle, name, timestamp, value):
+#    print('{1}: received new notitifiction for variable "{0}", value: {2}'.format(name, timestamp, value))
 
+def AdsBoolCallback(adr, notification):
+        contents = notification.contents
+        print("callback")
+        print(notification)
+        print(contents)
+        #var = map(bool, bytearray(contents.data)[0:contents.cbSampleSize])[0]
+        #print("callback",var)
 
-
+###########
 
 @socketio.on('request_pv_info', namespace='/pvServer')
 def test_message(message):
@@ -333,8 +345,11 @@ def test_message(message):
 
                                 #plc.open()
                                 #enable=plc.read_by_name('GVL001.bSweeperEn0', pyads.PLCTYPE_BOOL)
-                                plc=clientAdsPlcList[plcName]['plc'];
-                                print(plc.read_by_name(plcVariable,plcVariablePyAdsType))
+                                #plc=clientAdsPlcList[plcName]['plc'];
+                                print(clientAdsPlcList[plcName]['plc'].read_by_name(plcVariable,plcVariablePyAdsType))
+                                attr = pyads.NotificationAttrib(sizeof(plcVariablePyAdsType))
+                                clientAdsPlcList[plcName]['plc'].add_device_notification(plcVariable, attr, AdsBoolCallback)
+
                                 #pvlist={}
                                 #pvlist['isConnected']=False
                                 #pvlist['initialized']=False
