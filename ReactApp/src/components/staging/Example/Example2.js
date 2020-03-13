@@ -71,6 +71,189 @@ class Example2 extends React.Component {
                 debug={true}
             />
           </Grid>
+          <Grid item xs={6}  >
+            <TextInput
+                pv='ads://$(PLC_ID):$(PLC_PORT):$(PLC_PV):$(PLC_TYPE)'
+                macros={{
+                  '$(PLC_ID)':'ipcsweeperdev1',
+                  '$(PLC_PORT)':'851',
+                  '$(PLC_PV)':'GVL001.bTestBool1',
+                  '$(PLC_TYPE)':"BOOL"
+
+                }}
+                label='GVL001.bTestBool1'
+                //useStringValue={true}
+                debug={true}
+            />
+          </Grid>
+          <Grid item xs={6}  >
+            <StyledIconIndicator
+                pv='ads://$(PLC_ID):$(PLC_PORT):$(PLC_PV):$(PLC_TYPE)'
+                macros={{
+                  '$(PLC_ID)':'ipcsweeperdev1',
+                  '$(PLC_PORT)':'851',
+                  '$(PLC_PV)':'GVL001.bTestBool1',
+                  '$(PLC_TYPE)':"BOOL"
+
+                }}
+                label='GVL001.bTestBool1'
+                onColor='primary'
+                offColor='default'
+                labelPlacement={'end'}
+                //useStringValue={true}
+
+            />
+          </Grid>
+          <Grid item xs={6}  >
+            <StyledIconIndicator
+                pv='ads://$(PLC_ID):$(PLC_PORT):$(PLC_PV):$(PLC_TYPE)'
+                macros={{
+                  '$(PLC_ID)':'ipcsweeperdev1',
+                  '$(PLC_PORT)':'851',
+                  '$(PLC_PV)':'GVL001.bTestBool1',
+                  '$(PLC_TYPE)':"BOOL"
+
+                }}
+                label='GVL001.bTestBool1'
+                onColor='primary'
+                offColor='default'
+                labelPlacement={'end'}
+                //useStringValue={true}
+
+            />
+          </Grid>
+
+          <Grid item xs={6}  >
+            <StyledIconIndicator
+                pv='ads://$(PLC_ID):$(PLC_PORT):$(PLC_PV):$(PLC_TYPE)'
+                macros={{
+                  '$(PLC_ID)':'ipcsweeperdev1',
+                  '$(PLC_PORT)':'851',
+                  '$(PLC_PV)':'GVL001.bTest1',
+                  '$(PLC_TYPE)':"BOOL"
+
+                }}
+                label='GVL001.bTest1'
+                onColor='primary'
+                offColor='default'
+                labelPlacement={'end'}
+                //useStringValue={true}
+
+            />
+          </Grid>
+          <Grid item xs={6}  >
+            <StyledIconIndicator
+                pv='ads://$(PLC_ID):$(PLC_PORT):$(PLC_PV):$(PLC_TYPE)'
+                macros={{
+                  '$(PLC_ID)':'ipcsweeperdev1',
+                  '$(PLC_PORT)':'851',
+                  '$(PLC_PV)':'GVL001.bTest1',
+                  '$(PLC_TYPE)':"BOOL"
+
+                }}
+                label='GVL001.bTest1'
+                onColor='primary'
+                offColor='default'
+                labelPlacement={'end'}
+                //useStringValue={true}
+
+            />
+          </Grid>
+          <Grid item xs={6}  >
+            <StyledIconIndicator
+                pv='ads://$(PLC_ID):$(PLC_PORT):$(PLC_PV):$(PLC_TYPE)'
+                macros={{
+                  '$(PLC_ID)':'ipcsweeperdev1',
+                  '$(PLC_PORT)':'851',
+                  '$(PLC_PV)':'GVL001.bTest1',
+                  '$(PLC_TYPE)':"BOOL"
+
+                }}
+                label='GVL001.bTest1'
+                onColor='primary'
+                offColor='default'
+                labelPlacement={'end'}
+                //useStringValue={true}
+
+            />
+          </Grid>
+
+          <Grid item xs={6}  >
+            <TextInput
+                pv='ads://$(PLC_ID):$(PLC_PORT):$(PLC_PV):$(PLC_TYPE)'
+                macros={{
+                  '$(PLC_ID)':'ipcsweeperdev1',
+                  '$(PLC_PORT)':'851',
+                  '$(PLC_PV)':'GVL001.iTestInt1',
+                  '$(PLC_TYPE)':"INT"
+
+                }}
+                label='GVL001.iTestInt1'
+                //useStringValue={true}
+                debug={true}
+            />
+          </Grid>
+          <Grid item xs={6}  >
+            <TextInput
+                pv='ads://$(PLC_ID):$(PLC_PORT):$(PLC_PV):$(PLC_TYPE)'
+                macros={{
+                  '$(PLC_ID)':'ipcsweeperdev1',
+                  '$(PLC_PORT)':'851',
+                  '$(PLC_PV)':'GVL001.iTestLint1',
+                  '$(PLC_TYPE)':"LINT"
+
+                }}
+                label='GVL001.iTestLint1'
+                //useStringValue={true}
+                debug={true}
+            />
+            </Grid>
+            <Grid item xs={6}  >
+              <TextInput
+                  pv='ads://$(PLC_ID):$(PLC_PORT):$(PLC_PV):$(PLC_TYPE)'
+                  macros={{
+                    '$(PLC_ID)':'ipcsweeperdev1',
+                    '$(PLC_PORT)':'851',
+                    '$(PLC_PV)':'GVL001.amplitude',
+                    '$(PLC_TYPE)':"INT"
+
+                  }}
+                  label='GVL001.amplitude'
+                  //useStringValue={true}
+                  debug={true}
+              />
+              </Grid>
+
+            <Grid item xs={6}  >
+            <TextInput
+                pv='ads://$(PLC_ID):$(PLC_PORT):$(PLC_PV):$(PLC_TYPE)'
+                macros={{
+                  '$(PLC_ID)':'ipcsweeperdev1',
+                  '$(PLC_PORT)':'851',
+                  '$(PLC_PV)':'GVL001.iTestReal1',
+                  '$(PLC_TYPE)':"REAL"
+
+                }}
+                label='GVL001.iTestReal1'
+                //useStringValue={true}
+                debug={true}
+            />
+            </Grid>
+            <Grid item xs={6}  >
+            <TextInput
+                pv='ads://$(PLC_ID):$(PLC_PORT):$(PLC_PV):$(PLC_TYPE)'
+                macros={{
+                  '$(PLC_ID)':'ipcsweeperdev1',
+                  '$(PLC_PORT)':'851',
+                  '$(PLC_PV)':'GVL001.iTestLreal1',
+                  '$(PLC_TYPE)':"LREAL"
+
+                }}
+                label='GVL001.iTestLreal1'
+                //useStringValue={true}
+                debug={true}
+            />
+          </Grid>
           <Grid item  xs={6}>
             <TextOutput
               pv='pva://$(device):test3'

@@ -18,13 +18,16 @@ import logging
 import os
 import sys
 import json
+from functools import partial
 from bson.objectid import ObjectId
 sys.path.insert(0, '../')
 sys.path.insert(0, 'userAuthentication/')
 
 from authenticate import  AuthoriseUser,AutheriseUserAndPermissions, AuthenticateUser
 from dotenv import load_dotenv
-from ctypes import sizeof
+from ctypes import memmove, addressof, c_ubyte,c_int, Structure, sizeof
+from pyads.structs import SAdsNotificationHeader
+import ctypes
 load_dotenv()
 # Set this variable to "threading", "eventlet" or "gevent" to test the
 # different async modes, or leave it set to None for the application to choose
@@ -229,18 +232,56 @@ def test_write(message):
         socketio.emit('redirectToLogIn',room=request.sid,namespace='/pvServer')
 
 
-##########
-#@plc.notification(pyads.PLCTYPE_INT)
-#def AdsBoolCallback(handle, name, timestamp, value):
-#    print('{1}: received new notitifiction for variable "{0}", value: {2}'.format(name, timestamp, value))
 
-def AdsBoolCallback(adr, notification):
+
+
+
+def AdsCallback(notification,name,pvname,datatype):
+        #print("AdsCallback")
+        #print("################callback")
+        #print("pvname",pvname)
+        #print("notification",notification)
+        #print("name",name)
+
         contents = notification.contents
-        print("callback")
-        print(notification)
-        print(contents)
-        #var = map(bool, bytearray(contents.data)[0:contents.cbSampleSize])[0]
-        #print("callback",var)
+        #print("contents",contents)
+        #print("contents.data",contents.data)
+        #print("contents.cbSampleSize",contents.cbSampleSize)
+        #print("contents.nTimestamp",contents.nTimeStamp)
+        epoch_diff = 116444736000000000;
+        rate_diff = 10000000;
+        timestamp=(contents.nTimeStamp-epoch_diff)/rate_diff
+        #print(timestamp)
+
+        data_size = contents.cbSampleSize
+        data = (c_ubyte * data_size).from_address(addressof(contents) + SAdsNotificationHeader.data.offset)
+        #print("data",data)
+        value = bytearray(data)
+        #print("value",value[0],value[1] )
+        if datatype in ["BOOL","INT"]:
+            x=int.from_bytes(value, byteorder='little', signed=True)
+            socketio.emit(pvname,
+               {'pvname': pvname,'newmetadata': 'True','value': x,'char_value': str(x),'count':1, 'connected':'1', 'severity': 0,'timestamp':timestamp
+               },room=pvname,namespace='/pvServer')
+        elif datatype in ["LINT"]:
+            print("data_size",data_size)
+            x=int.from_bytes(value, byteorder='little', signed=True)
+            socketio.emit(pvname,
+               {'pvname': pvname,'newmetadata': 'True','value': x,'char_value': str(x),'count':1, 'connected':'1', 'severity': 0,'timestamp':timestamp
+               },room=pvname,namespace='/pvServer')
+
+        else:
+            print("undeifned callback datatype:",datatype)
+        #print('x',x)
+        #var = list(map(int, bytearray(contents.data)[0:contents.cbSampleSize]))
+        #print("var",var)
+        #ba=bytearray(contents.data)[0:contents.cbSampleSize]
+        #print("ba",ba)
+        #print("str(ba[0],str(ba[1]))",str(ba[0]),str(ba[1]))
+
+
+    #    var = map(bool, bytearray(contents.data)[0:contents.cbSampleSize])[0]
+    #    print("var",var)
 
 ###########
 
@@ -292,7 +333,7 @@ def test_message(message):
                         join_room(str(pvname1))
                     str1=pvname1.replace("ads://","")
                     strings=  str1.split(':')
-                    print(strings)
+                    #print(strings)
                     try:
                         if(len(strings)>=4):
                             plcName= strings[0];
@@ -319,20 +360,41 @@ def test_message(message):
 
                                     pyads.add_route_to_plc(clientAdsPlcList[plcName]['hostAmsID'], clientAdsPlcList[plcName]['hostIp'], clientAdsPlcList[plcName]['PlcIP'], clientAdsPlcList[plcName]['username'], clientAdsPlcList[plcName]['password'], route_name=clientAdsPlcList[plcName]['hostIp'],added_net_id=clientAdsPlcList[plcName]['hostAmsID'])
                                     plc = pyads.Connection(clientAdsPlcList[plcName]['PlcAmsID'], int(plcPort), clientAdsPlcList[plcName]['PlcIP'])
-                                    plc.open()
+
+
                                     clientAdsPlcList[plcName]['plc']=plc;
-                                    print("opened")
+                                    clientAdsPlcList[plcName]['plc'].open()
+                                    print("opened",plc.is_open)
                                 except Exception as e: # work on python 3.x
-                                    print('could not load plc info ' + str(plcName)+' '+ str(e))
+                                    print(' could not add route and load plc info ' + str(plcName)+' '+ str(e))
                             else:
                                 print("route to plc "+plcName+' already exists')
-                                print(clientAdsPlcList[plcName])
+                                #print(clientAdsPlcList[plcName])
+                            
                             try:
 
+                                while not 'plc' in clientAdsPlcList[plcName]:
+                                    print("conecting to PLC:", plcName)
+                                    time.sleep(0.1)
+                                while clientAdsPlcList[plcName]['plc'].is_open==False:
+                                    print("conecting to PLC:", plcName)
+                                    time.sleep(0.1)
                                 if plcVariableType=='BOOL' :
                                     plcVariablePyAdsType=pyads.PLCTYPE_BOOL;
+                                    attr = pyads.NotificationAttrib(sizeof(plcVariablePyAdsType))
+                                    clientAdsPlcList[plcName]['plc'].add_device_notification(plcVariable, attr, partial(AdsCallback, pvname=pvname1,datatype=plcVariableType))
+                                elif plcVariableType=='INT' :
+                                    plcVariablePyAdsType=pyads.PLCTYPE_INT;
+                                    attr = pyads.NotificationAttrib(sizeof(plcVariablePyAdsType))
+                                    clientAdsPlcList[plcName]['plc'].add_device_notification(plcVariable, attr, partial(AdsCallback, pvname=pvname1,datatype=plcVariableType))
+                                elif plcVariableType=='LINT' :
 
-
+                                    attr = pyads.NotificationAttrib(4)
+                                    clientAdsPlcList[plcName]['plc'].add_device_notification(plcVariable, attr, partial(AdsCallback, pvname=pvname1,datatype=plcVariableType))
+                                elif plcVariableType=='REAL' :
+                                    plcVariablePyAdsType=pyads.PLCTYPE_REAL;
+                                elif plcVariableType=='LREAL' :
+                                    plcVariablePyAdsType=pyads.PLCTYPE_LREAL;
 
                                 else:
                                     Exception("unknown plc variable type");
@@ -346,9 +408,8 @@ def test_message(message):
                                 #plc.open()
                                 #enable=plc.read_by_name('GVL001.bSweeperEn0', pyads.PLCTYPE_BOOL)
                                 #plc=clientAdsPlcList[plcName]['plc'];
-                                print(clientAdsPlcList[plcName]['plc'].read_by_name(plcVariable,plcVariablePyAdsType))
-                                attr = pyads.NotificationAttrib(sizeof(plcVariablePyAdsType))
-                                clientAdsPlcList[plcName]['plc'].add_device_notification(plcVariable, attr, AdsBoolCallback)
+                                #print(clientAdsPlcList[plcName]['plc'].read_by_name(plcVariable,plcVariablePyAdsType))
+
 
                                 #pvlist={}
                                 #pvlist['isConnected']=False
@@ -357,7 +418,7 @@ def test_message(message):
                                 #clientPVlist[pvname1]=pvlist
 
                             except Exception as e: # work on python 3.x
-                                print('could not load plc variable type ' + str(plcName)+' '+ str(e))
+                                print(' 2 could not load plc variable type ' + str(plcName)+' '+ str(e))
 
 
                     except:
