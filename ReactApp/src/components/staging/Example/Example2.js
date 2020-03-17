@@ -71,6 +71,7 @@ class Example2 extends React.Component {
                 debug={true}
             />
           </Grid>
+
           <Grid item xs={6}  >
             <TextInput
                 pv='ads://$(PLC_ID):$(PLC_PORT):$(PLC_PV):$(PLC_TYPE)'
@@ -82,6 +83,22 @@ class Example2 extends React.Component {
 
                 }}
                 label='GVL001.bTestBool1'
+                //useStringValue={true}
+                debug={true}
+            />
+          </Grid>
+          <Grid item xs={6}  >
+            <ToggleButton
+                pv='ads://$(PLC_ID):$(PLC_PORT):$(PLC_PV):$(PLC_TYPE)'
+                macros={{
+                  '$(PLC_ID)':'ipcsweeperdev1',
+                  '$(PLC_PORT)':'851',
+                  '$(PLC_PV)':'GVL001.bSweeperEn0',
+                  '$(PLC_TYPE)':"BOOL"
+
+                }}
+                label='GVL001.bSweeperEn0'
+                custom_selection_strings={["OFF","ON"]}
                 //useStringValue={true}
                 debug={true}
             />
@@ -100,6 +117,25 @@ class Example2 extends React.Component {
                 onColor='primary'
                 offColor='default'
                 labelPlacement={'end'}
+                //useStringValue={true}
+
+            />
+          </Grid>
+          <Grid item xs={6}  >
+            <ToggleButton
+                pv='ads://$(PLC_ID):$(PLC_PORT):$(PLC_PV):$(PLC_TYPE)'
+                macros={{
+                  '$(PLC_ID)':'ipcsweeperdev1',
+                  '$(PLC_PORT)':'851',
+                  '$(PLC_PV)':'GVL001.bTestBool1',
+                  '$(PLC_TYPE)':"BOOL"
+
+                }}
+                label='GVL001.bTestBool1'
+                onColor='primary'
+                offColor='default'
+
+                custom_selection_strings={["OFF","ON"]}
                 //useStringValue={true}
 
             />
@@ -223,7 +259,23 @@ class Example2 extends React.Component {
                   debug={true}
               />
               </Grid>
+              <Grid item xs={6}  >
+                <SimpleSlider
+                    pv='ads://$(PLC_ID):$(PLC_PORT):$(PLC_PV):$(PLC_TYPE)'
+                    macros={{
+                      '$(PLC_ID)':'ipcsweeperdev1',
+                      '$(PLC_PORT)':'851',
+                      '$(PLC_PV)':'GVL001.amplitude',
+                      '$(PLC_TYPE)':"INT"
 
+                    }}
+                    label='GVL001.amplitude'
+                    min={0}
+                    max={32767}
+                    //useStringValue={true}
+                    debug={true}
+                />
+                </Grid>
             <Grid item xs={6}  >
             <TextInput
                 pv='ads://$(PLC_ID):$(PLC_PORT):$(PLC_PV):$(PLC_TYPE)'
