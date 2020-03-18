@@ -68,7 +68,7 @@ class Example2 extends React.Component {
                 }}
                 label='GVL001.bSweeperEn0'
                 //useStringValue={true}
-                debug={true}
+                debug={false}
             />
           </Grid>
 
@@ -84,7 +84,7 @@ class Example2 extends React.Component {
                 }}
                 label='GVL001.bTestBool1'
                 //useStringValue={true}
-                debug={true}
+                debug={false}
             />
           </Grid>
           <Grid item xs={6}  >
@@ -100,7 +100,7 @@ class Example2 extends React.Component {
                 label='GVL001.bSweeperEn0'
                 custom_selection_strings={["OFF","ON"]}
                 //useStringValue={true}
-                debug={true}
+                debug={false}
             />
           </Grid>
           <Grid item xs={6}  >
@@ -226,7 +226,7 @@ class Example2 extends React.Component {
                 }}
                 label='GVL001.iTestInt1'
                 //useStringValue={true}
-                debug={true}
+                debug={false}
             />
           </Grid>
           <Grid item xs={6}  >
@@ -241,7 +241,7 @@ class Example2 extends React.Component {
                 }}
                 label='GVL001.iTestLint1'
                 //useStringValue={true}
-                debug={true}
+                debug={false}
             />
             </Grid>
             <Grid item xs={6}  >
@@ -256,9 +256,25 @@ class Example2 extends React.Component {
                   }}
                   label='GVL001.amplitude'
                   //useStringValue={true}
-                  debug={true}
+                  debug={false}
               />
               </Grid>
+              <Grid item xs={6}  >
+                <TextOutput
+                    pv='ads://$(PLC_ID):$(PLC_PORT):$(PLC_PV):$(PLC_TYPE):[$(ARRAY_SIZE)]'
+                    macros={{
+                      '$(PLC_ID)':'ipcsweeperdev1',
+                      '$(PLC_PORT)':'851',
+                      '$(PLC_PV)':'GVL001.sin0',
+                      '$(PLC_TYPE)':"INT",
+                      '$(ARRAY_SIZE)':"100"
+
+                    }}
+                    label='GVL001.sin0'
+                    //useStringValue={true}
+                    debug={false}
+                />
+                </Grid>
               <Grid item xs={6}  >
                 <SimpleSlider
                     pv='ads://$(PLC_ID):$(PLC_PORT):$(PLC_PV):$(PLC_TYPE)'
@@ -273,7 +289,7 @@ class Example2 extends React.Component {
                     min={0}
                     max={32767}
                     //useStringValue={true}
-                    debug={true}
+                    debug={false}
                 />
                 </Grid>
             <Grid item xs={6}  >
@@ -288,7 +304,7 @@ class Example2 extends React.Component {
                 }}
                 label='GVL001.iTestReal1'
                 //useStringValue={true}
-                debug={true}
+                debug={false}
             />
             </Grid>
             <Grid item xs={6}  >
@@ -303,7 +319,7 @@ class Example2 extends React.Component {
                 }}
                 label='GVL001.iTestLreal1'
                 //useStringValue={true}
-                debug={true}
+                debug={false}
             />
           </Grid>
           <Grid item  xs={6}>

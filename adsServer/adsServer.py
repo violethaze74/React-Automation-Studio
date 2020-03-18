@@ -5,7 +5,7 @@ import time
 import pymongo
 
 import threading
-
+import numpy as np
 from flask import Flask, render_template, session, request, jsonify
 from flask_socketio import SocketIO, emit, join_room, leave_room, \
     close_room, rooms, disconnect
@@ -29,6 +29,7 @@ from dotenv import load_dotenv
 from ctypes import memmove, addressof, c_ubyte,c_int, Structure, sizeof
 from pyads.structs import SAdsNotificationHeader
 import ctypes
+import struct
 load_dotenv()
 # Set this variable to "threading", "eventlet" or "gevent" to test the
 # different async modes, or leave it set to None for the application to choose
@@ -354,7 +355,7 @@ def test_write(message):
 
 
 
-def AdsCallback(notification,name,pvname,datatype):
+def AdsCallback(notification,name,pvname,datatype,isArray,arraySize):
         #print("AdsCallback")
         #print("################callback")
         #print("pvname",pvname)
@@ -376,19 +377,49 @@ def AdsCallback(notification,name,pvname,datatype):
         #print("data",data)
         value = bytearray(data)
         #print("value",value[0],value[1] )
-        if datatype in ["BOOL","INT"]:
+        if datatype in ["BOOL"]:
             #print("AdsCallback emitting",pvname)
             x=int.from_bytes(value, byteorder='little', signed=True)
             socketio.emit('adsData',
                {'pvname': pvname,'newmetadata': 'True','value': x,'char_value': str(x),'count':1, 'connected':'1', 'severity': 0,'timestamp':timestamp
                },namespace='/adsServer')
+        elif datatype in ["INT"]:
+            #print("AdsCallback emitting",pvname)
+            if not isArray:
+                x=int.from_bytes(value, byteorder='little', signed=True)
+                socketio.emit('adsData',
+                   {'pvname': pvname,'newmetadata': 'True','value': x,'char_value': str(x),'count':1, 'connected':'1', 'severity': 0,'timestamp':timestamp
+                   },namespace='/adsServer')
+            else:
+                length=contents.cbSampleSize/2;
+                #print("isArray",pvname,"cbsize",contents.cbSampleSize,struct.unpack('hh', value[0:3]))
+                print("isArray all data",str(value))
+                print(len(value))
+                print(len(value[0:16]));
+                length=str(int((len(value)/2)))
+                print("4 bytes", struct.unpack("<"+length+"h",value))
+                #print("isArray value",struct.unpack('hh', value[0:7]))
+
         elif datatype in ["LINT"]:
             #print("data_size",data_size)
             x=int.from_bytes(value, byteorder='little', signed=True)
             socketio.emit('adsData',
                {'pvname': pvname,'newmetadata': 'True','value': x,'char_value': str(x),'count':1, 'connected':'1', 'severity': 0,'timestamp':timestamp
                },namespace='/adsServer')
-
+        elif datatype in ["REAL"]:
+            #print("data_size",data_size)
+            #x=float.from_bytes(value, byteorder='little', signed=True)
+            x=struct.unpack('<f', value)
+            socketio.emit('adsData',
+               {'pvname': pvname,'newmetadata': 'True','value': x,'char_value': str(x),'count':1, 'connected':'1', 'severity': 0,'timestamp':timestamp
+               },namespace='/adsServer')
+        elif datatype in ["LREAL"]:
+            #print("data_size",data_size)
+            #x=float.from_bytes(value, byteorder='little', signed=True)
+            x=struct.unpack('<d', value)
+            socketio.emit('adsData',
+               {'pvname': pvname,'newmetadata': 'True','value': x,'char_value': str(x),'count':1, 'connected':'1', 'severity': 0,'timestamp':timestamp
+               },namespace='/adsServer')
         else:
             print("undeifned callback datatype:",datatype)
         #print('x',x)
@@ -429,6 +460,19 @@ def test_message(message):
                         plcPort=   strings[1];
                         plcVariable=  strings[2];
                         plcVariableType= strings[3];
+                        try:
+
+                            plcVariableTypeArraySize=strings[4];
+                            plcVariableTypeArraySize=plcVariableTypeArraySize.replace('[','');
+                            plcVariableTypeArraySize=plcVariableTypeArraySize.replace(']','');
+                            plcVariableTypeArraySize=int(plcVariableTypeArraySize,10)
+                            plcVariableTypeIsArray=True
+
+
+
+                        except:
+                            plcVariableTypeIsArray=False
+                            plcVariableTypeArraySize=1;
                         if not (plcName in	clientAdsPlcList):
                             try:
                                 clientAdsPlcList[plcName]={};
@@ -486,23 +530,28 @@ def test_message(message):
                             if plcVariableType=='BOOL' :
                                 plcVariablePyAdsType=pyads.PLCTYPE_BOOL;
                                 attr = pyads.NotificationAttrib(sizeof(plcVariablePyAdsType))
-                                handle=clientAdsPlcList[plcName]['plc'].add_device_notification(plcVariable, attr, partial(AdsCallback, pvname=pvname1,datatype=plcVariableType))
+                                handle=clientAdsPlcList[plcName]['plc'].add_device_notification(plcVariable, attr, partial(AdsCallback, pvname=pvname1,datatype=plcVariableType,isArray=plcVariableTypeIsArray,arraySize=plcVariableTypeArraySize))
                                 clientAdsPlcList[plcName]['notificationHandles'].append(handle)
                             elif plcVariableType=='INT' :
                                 plcVariablePyAdsType=pyads.PLCTYPE_INT;
-                                attr = pyads.NotificationAttrib(sizeof(plcVariablePyAdsType))
-                                handle=clientAdsPlcList[plcName]['plc'].add_device_notification(plcVariable, attr, partial(AdsCallback, pvname=pvname1,datatype=plcVariableType))
+                                attr = pyads.NotificationAttrib(sizeof(plcVariablePyAdsType*plcVariableTypeArraySize))
+                                handle=clientAdsPlcList[plcName]['plc'].add_device_notification(plcVariable, attr, partial(AdsCallback, pvname=pvname1,datatype=plcVariableType,isArray=plcVariableTypeIsArray,arraySize=plcVariableTypeArraySize))
                                 clientAdsPlcList[plcName]['notificationHandles'].append(handle)
                             elif plcVariableType=='LINT' :
 
                                 attr = pyads.NotificationAttrib(4)
-                                handle=clientAdsPlcList[plcName]['plc'].add_device_notification(plcVariable, attr, partial(AdsCallback, pvname=pvname1,datatype=plcVariableType))
+                                handle=clientAdsPlcList[plcName]['plc'].add_device_notification(plcVariable, attr, partial(AdsCallback, pvname=pvname1,datatype=plcVariableType,isArray=plcVariableTypeIsArray,arraySize=plcVariableTypeArraySize))
                                 clientAdsPlcList[plcName]['notificationHandles'].append(handle)
                             elif plcVariableType=='REAL' :
                                 plcVariablePyAdsType=pyads.PLCTYPE_REAL;
+                                attr = pyads.NotificationAttrib(sizeof(plcVariablePyAdsType))
+                                handle=clientAdsPlcList[plcName]['plc'].add_device_notification(plcVariable, attr, partial(AdsCallback, pvname=pvname1,datatype=plcVariableType,isArray=plcVariableTypeIsArray,arraySize=plcVariableTypeArraySize))
+                                clientAdsPlcList[plcName]['notificationHandles'].append(handle)
                             elif plcVariableType=='LREAL' :
                                 plcVariablePyAdsType=pyads.PLCTYPE_LREAL;
-
+                                attr = pyads.NotificationAttrib(sizeof(plcVariablePyAdsType))
+                                handle=clientAdsPlcList[plcName]['plc'].add_device_notification(plcVariable, attr, partial(AdsCallback, pvname=pvname1,datatype=plcVariableType,isArray=plcVariableTypeIsArray,arraySize=plcVariableTypeArraySize))
+                                clientAdsPlcList[plcName]['notificationHandles'].append(handle)
                             else:
                                 Exception("unknown plc variable type");
 
@@ -618,20 +667,40 @@ def test_message(message):
                             elif plcVariableType=='INT' :
                                 plcVariablePyAdsType=pyads.PLCTYPE_INT;
                                 if isinstance(message['data'],int):
-                                    clientAdsPlcList[plcName]['plc'].write_by_name(plcVariable,message['data'],plcVariablePyAdsType)
+                                    data=np.int32(message['data']);
+                                    clientAdsPlcList[plcName]['plc'].write_by_name(plcVariable,data,plcVariablePyAdsType)
                                 else:
-                                    clientAdsPlcList[plcName]['plc'].write_by_name(plcVariable,int(message['data'],10),plcVariablePyAdsType)
+                                    data=np.int32(int(message['data'],10))
+
+                                    clientAdsPlcList[plcName]['plc'].write_by_name(plcVariable,data,plcVariablePyAdsType)
                             elif plcVariableType=='LINT' :
 
                                 attr = pyads.NotificationAttrib(4)
                                 if isinstance(message['data'],int):
-                                    clientAdsPlcList[plcName]['plc'].write_by_name(plcVariable,message['data'],plcVariablePyAdsType)
+                                    data=np.int64(message['data']);
+                                    clientAdsPlcList[plcName]['plc'].write_by_name(plcVariable,data,ctypes.c_int64)
                                 else:
-                                    clientAdsPlcList[plcName]['plc'].write_by_name(plcVariable,int(message['data'],10),plcVariablePyAdsType)
+                                    data=np.int64(int(message['data'],10))
+                                    clientAdsPlcList[plcName]['plc'].write_by_name(plcVariable,data,ctypes.c_int64)
                             elif plcVariableType=='REAL' :
                                 plcVariablePyAdsType=pyads.PLCTYPE_REAL;
+
+                                if isinstance(message['data'],float):
+                                    data=np.float32(message['data']);
+                                    clientAdsPlcList[plcName]['plc'].write_by_name(plcVariable,data,plcVariablePyAdsType)
+                                else:
+                                    data=np.float32(float(message['data']))
+
+                                    clientAdsPlcList[plcName]['plc'].write_by_name(plcVariable,data,plcVariablePyAdsType)
                             elif plcVariableType=='LREAL' :
                                 plcVariablePyAdsType=pyads.PLCTYPE_LREAL;
+                                if isinstance(message['data'],float):
+                                    data=np.float64(message['data']);
+                                    clientAdsPlcList[plcName]['plc'].write_by_name(plcVariable,data,plcVariablePyAdsType)
+                                else:
+                                    data=np.float64(float(message['data']))
+
+                                    clientAdsPlcList[plcName]['plc'].write_by_name(plcVariable,data,plcVariablePyAdsType)
 
                             else:
                                 Exception("unknown plc variable type");

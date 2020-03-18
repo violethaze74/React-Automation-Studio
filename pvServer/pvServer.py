@@ -400,7 +400,13 @@ def AdsCallback(notification,name,pvname,datatype):
             socketio.emit(pvname,
                {'pvname': pvname,'newmetadata': 'True','value': x,'char_value': str(x),'count':1, 'connected':'1', 'severity': 0,'timestamp':timestamp
                },room=pvname,namespace='/pvServer')
-
+        elif datatype in ["REAL"]:
+            print("data_size",data_size)
+            x=float.from_bytes(value, byteorder='little', signed=True)
+            socketio.emit(pvname,
+               {'pvname': pvname,'newmetadata': 'True','value': x,'char_value': str(x),'count':1, 'connected':'1', 'severity': 0,'timestamp':timestamp
+               },room=pvname,namespace='/pvServer')
+       
         else:
             print("undeifned callback datatype:",datatype)
         #print('x',x)

@@ -19,3 +19,4 @@ bcrypt==3.1.7
 pymongo
 pyads==3.1.2
 requests
+numpy
