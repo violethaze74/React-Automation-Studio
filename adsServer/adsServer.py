@@ -30,6 +30,7 @@ from ctypes import memmove, addressof, c_ubyte,c_int, Structure, sizeof
 from pyads.structs import SAdsNotificationHeader
 import ctypes
 import struct
+#from ratelimiter import RateLimiter
 load_dotenv()
 # Set this variable to "threading", "eventlet" or "gevent" to test the
 # different async modes, or leave it set to None for the application to choose
@@ -68,6 +69,7 @@ app = Flask(__name__)
 
 socketio = SocketIO(app, async_mode=async_mode)
 thread = None
+thread2 = None
 thread_lock = threading.Lock()
 
 log = logging.getLogger('werkzeug')
@@ -78,7 +80,7 @@ log.setLevel(logging.ERROR)
 clientPVlist={};
 clientDbWatchList={};
 clientAdsPlcList={};
-
+plcPVlist={};
 def ping(host):
     """
     Returns True if host (str) responds to a ping request.
@@ -92,6 +94,83 @@ def ping(host):
     command = ['ping', param, '1', host]
 
     return subprocess.call(command) == 0
+def sync_update():
+    global plcPVlist
+    while True:
+        #print("sync_update")
+        for pv in plcPVlist:
+            #print("pv",pv)
+            #print("pv newData",plcPVlist[pv]['newData'])
+            if plcPVlist[pv]['newData']==True:
+                notification=plcPVlist[pv]['notification']
+                name=plcPVlist[pv]['name']
+                pvname=plcPVlist[pv]['pvname']
+                datatype=plcPVlist[pv]['datatype']
+                isArray=plcPVlist[pv]['isArray']
+                arraySize=plcPVlist[pv]['arraySize']
+                contents = notification.contents
+                epoch_diff = 116444736000000000;
+                rate_diff = 10000000;
+                timestamp=(contents.nTimeStamp-epoch_diff)/rate_diff
+                #print(timestamp)
+
+                data_size = contents.cbSampleSize
+                data = (c_ubyte * data_size).from_address(addressof(contents) + SAdsNotificationHeader.data.offset)
+                #print("data",data)
+                value = bytearray(data)
+                #print("value",value[0],value[1] )
+                if datatype in ["BOOL"]:
+                    #print("AdsCallback emitting",pvname)
+                    x=int.from_bytes(value, byteorder='little', signed=True)
+                    socketio.emit('adsData',
+                       {'pvname': pvname,'newmetadata': 'True','value': x,'char_value': str(x),'count':1, 'connected':'1', 'severity': 0,'timestamp':timestamp
+                       },namespace='/adsServer')
+                elif datatype in ["INT"]:
+                    #print("AdsCallback emitting",pvname)
+                    if not isArray:
+                        x=int.from_bytes(value, byteorder='little', signed=True)
+                        socketio.emit('adsData',
+                           {'pvname': pvname,'newmetadata': 'True','value': x,'char_value': str(x),'count':1, 'connected':'1', 'severity': 0,'timestamp':timestamp
+                           },namespace='/adsServer')
+                    else:
+                        length=contents.cbSampleSize/2;
+                        #print("isArray",pvname,"cbsize",contents.cbSampleSize,struct.unpack('hh', value[0:3]))
+                        #print("isArray all data",str(value))
+                        #print(len(value))
+                        #print(len(value[0:16]));
+                        length=str(int((len(value)/2)))
+                        data=struct.unpack("<"+length+"h",value)
+                        socketio.emit('adsData',
+                           {'pvname': pvname,'newmetadata': 'True','value': data,'char_value': str(data),'count':int(length), 'connected':'1', 'severity': 0,'timestamp':timestamp
+                           },namespace='/adsServer')
+                        #print("isArray value",struct.unpack('hh', value[0:7]))
+
+                elif datatype in ["LINT"]:
+                    #print("data_size",data_size)
+                    x=int.from_bytes(value, byteorder='little', signed=True)
+                    socketio.emit('adsData',
+                       {'pvname': pvname,'newmetadata': 'True','value': x,'char_value': str(x),'count':1, 'connected':'1', 'severity': 0,'timestamp':timestamp
+                       },namespace='/adsServer')
+                elif datatype in ["REAL"]:
+                    #print("data_size",data_size)
+                    #x=float.from_bytes(value, byteorder='little', signed=True)
+                    x=struct.unpack('<f', value)
+                    socketio.emit('adsData',
+                       {'pvname': pvname,'newmetadata': 'True','value': x,'char_value': str(x),'count':1, 'connected':'1', 'severity': 0,'timestamp':timestamp
+                       },namespace='/adsServer')
+                elif datatype in ["LREAL"]:
+                    #print("data_size",data_size)
+                    #x=float.from_bytes(value, byteorder='little', signed=True)
+                    x=struct.unpack('<d', value)
+                    socketio.emit('adsData',
+                       {'pvname': pvname,'newmetadata': 'True','value': x,'char_value': str(x),'count':1, 'connected':'1', 'severity': 0,'timestamp':timestamp
+                       },namespace='/adsServer')
+                else:
+                    print("undeifned callback datatype:",datatype)
+
+
+                plcPVlist[pv]['newData']=False;
+        time.sleep(0.1)
 
 def check_pv_initialized_after_disconnect():
 
@@ -353,9 +432,21 @@ def test_write(message):
 
 
 
-
-
 def AdsCallback(notification,name,pvname,datatype,isArray,arraySize):
+        global plcPVlist
+
+
+        pv={}
+        pv['notification']=notification
+        pv['name']=name
+        pv['pvname']=pvname
+        pv['datatype']=datatype
+        pv['isArray']=isArray
+        pv['arraySize']=arraySize
+        pv['newData']=True
+        plcPVlist[pvname]=pv;
+
+def AdsCallbackOld(notification,name,pvname,datatype,isArray,arraySize):
         #print("AdsCallback")
         #print("################callback")
         #print("pvname",pvname)
@@ -393,11 +484,14 @@ def AdsCallback(notification,name,pvname,datatype,isArray,arraySize):
             else:
                 length=contents.cbSampleSize/2;
                 #print("isArray",pvname,"cbsize",contents.cbSampleSize,struct.unpack('hh', value[0:3]))
-                print("isArray all data",str(value))
-                print(len(value))
-                print(len(value[0:16]));
+                #print("isArray all data",str(value))
+                #print(len(value))
+                #print(len(value[0:16]));
                 length=str(int((len(value)/2)))
-                print("4 bytes", struct.unpack("<"+length+"h",value))
+                data=struct.unpack("<"+length+"h",value)
+                socketio.emit('adsData',
+                   {'pvname': pvname,'newmetadata': 'True','value': data,'char_value': str(data),'count':int(length), 'connected':'1', 'severity': 0,'timestamp':timestamp
+                   },namespace='/adsServer')
                 #print("isArray value",struct.unpack('hh', value[0:7]))
 
         elif datatype in ["LINT"]:
@@ -732,11 +826,14 @@ def test_message(message):
 
 @socketio.on('connect', namespace='/adsServer')
 def test_connect():
-    global thread
+    global thread, thread2
     print("Client Connected: " +request.sid)
     with thread_lock:
         if thread is None:
             thread = socketio.start_background_task(background_thread)
+        if thread2 is None:
+            thread = socketio.start_background_task(sync_update)
+
     emit('my_response', {'data': 'Connected', 'count': 0})
 
 

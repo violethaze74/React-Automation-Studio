@@ -30,6 +30,21 @@ services:
     volumes:
       - ./certificates:/certificates/
       - ./users:/pvServer/userAuthentication/users
+  adsserver:
+    env_file: .env
+    build:
+      context: ./
+      args: # Environment variables available at build-time
+                - http_proxy
+                - https_proxy
+                - no_proxy
+      dockerfile: docker/adsserver/Dockerfile
+    restart: always
+    network_mode: host
+    tty: true
+    stdin_open: true
+    volumes:
+      - ./certificates:/certificates/
 
   unsecurestylguidepvserver:
     build:

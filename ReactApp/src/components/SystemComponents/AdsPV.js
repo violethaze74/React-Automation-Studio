@@ -5,6 +5,7 @@ import { Redirect } from 'react-router-dom'
 import uuid from 'uuid';
 import RedirectToLogIn from './RedirectToLogin.js';
 import Typography from '@material-ui/core/Typography';
+import throttle from 'lodash.throttle';
 const styles = theme => ({
   body1: theme.typography.body1,
 
@@ -46,7 +47,7 @@ class AdsPV extends React.Component {
       redirectToLogInPage:false,};
     }
     this.handleRedirectToLogIn = this.handleRedirectToLogIn.bind(this);
-    this.updatePVData= this.updatePVData.bind(this);
+    this.updatePVData= throttle(this.updatePVData,100);
     this.connectError=this.connectError.bind(this);
     this.disconnect=this.disconnect.bind(this);
     this.reconnect=this.reconnect.bind(this);
@@ -67,7 +68,7 @@ class AdsPV extends React.Component {
     this.props.handleInputValue(this.state.internalValue,this.state.pvname,this.state.initialized,this.state.severity,this.state.timestamp);
   }
 
-  updatePVData(msg){
+  updatePVData=(msg)=>{
     //  console.log("state: ",this.state);
     //  console.log("msg: ", msg)
     if (this.props.debug===true){
