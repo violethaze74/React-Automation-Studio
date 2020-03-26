@@ -261,7 +261,7 @@ class Example2 extends React.Component {
               </Grid>
               <Grid item xs={6}  >
                 <TextOutput
-                    pv='ads://$(PLC_ID):$(PLC_PORT):$(PLC_PV):$(PLC_TYPE):[$(ARRAY_SIZE)]'
+                    pv='ads://$(PLC_ID):$(PLC_PORT):$(PLC_PV):$(PLC_TYPE)[$(ARRAY_SIZE)]'
                     macros={{
                       '$(PLC_ID)':'ipcsweeperdev1',
                       '$(PLC_PORT)':'851',
@@ -296,7 +296,7 @@ class Example2 extends React.Component {
                   <div style={{ height: '25vh', width:'100%',}}>
                     <
                     GraphY
-                    pvs={['ads://$(PLC_ID):$(PLC_PORT):$(PLC_PV):$(PLC_TYPE):[$(ARRAY_SIZE)]','ads://$(PLC_ID):$(PLC_PORT):$(PLC_PV2):$(PLC_TYPE):[$(ARRAY_SIZE)]'] }
+                    pvs={['ads://$(PLC_ID):$(PLC_PORT):$(PLC_PV):$(PLC_TYPE)[$(ARRAY_SIZE)]','ads://$(PLC_ID):$(PLC_PORT):$(PLC_PV2):$(PLC_TYPE)[$(ARRAY_SIZE)]'] }
                     macros={{
                       '$(PLC_ID)':'ipcsweeperdev1',
                       '$(PLC_PORT)':'851',
@@ -307,6 +307,8 @@ class Example2 extends React.Component {
 
                     }}
                     legend={['GVL001.sin0']}
+                    ymin={-32767}
+                    ymax={32767}
                     lineColor={[this.props.theme.palette.secondary.main,lime['400']]}
                     />
                   </div>
@@ -315,7 +317,7 @@ class Example2 extends React.Component {
                   <div style={{ height: '25vh', width:'100%',}}>
                     <
                     GraphY
-                    pvs={['ads://$(PLC_ID):$(PLC_PORT):$(PLC_PV):$(PLC_TYPE):[$(ARRAY_SIZE)]','ads://$(PLC_ID):$(PLC_PORT):$(PLC_PV2):$(PLC_TYPE):[$(ARRAY_SIZE)]'] }
+                    pvs={['ads://$(PLC_ID):$(PLC_PORT):$(PLC_PV):$(PLC_TYPE)[$(ARRAY_SIZE)]','ads://$(PLC_ID):$(PLC_PORT):$(PLC_PV2):$(PLC_TYPE)[$(ARRAY_SIZE)]'] }
                     macros={{
                       '$(PLC_ID)':'ipcsweeperdev1',
                       '$(PLC_PORT)':'851',
@@ -326,8 +328,28 @@ class Example2 extends React.Component {
 
                     }}
                     legend={['GVL001.adc0','GVL001.adc1']}
-                    min={-32767}
-                    max={32767}
+                    ymin={-32767}
+                    ymax={32767}
+                    lineColor={[this.props.theme.palette.secondary.main,lime['400']]}
+                    />
+                  </div>
+                </Grid>
+                <Grid item xs={6} >
+                  <div style={{ height: '25vh', width:'100%',}}>
+                    <
+                    GraphY
+                    pvs={['ads://$(PLC_ID):$(PLC_PORT):$(PLC_PV):$(PLC_TYPE)[$(ARRAY_SIZE)]','ads://$(PLC_ID):$(PLC_PORT):$(PLC_PV2):$(PLC_TYPE)[$(ARRAY_SIZE)]'] }
+                    macros={{
+                      '$(PLC_ID)':'ipcsweeperdev1',
+                      '$(PLC_PORT)':'851',
+                      '$(PLC_PV)':'GVL001.adc0',
+                      '$(PLC_PV2)':'GVL001.adc1',
+                      '$(PLC_TYPE)':"INT",
+                      '$(ARRAY_SIZE)':"100"
+
+                    }}
+                    legend={['GVL001.adc0','GVL001.adc1']}
+
                     lineColor={[this.props.theme.palette.secondary.main,lime['400']]}
                     />
                   </div>
