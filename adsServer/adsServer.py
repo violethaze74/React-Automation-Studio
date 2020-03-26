@@ -555,13 +555,16 @@ def test_message(message):
                         plcVariable=  strings[2];
                         plcVariableType= strings[3];
                         try:
-
-                            plcVariableTypeArraySize=strings[4];
-                            plcVariableTypeArraySize=plcVariableTypeArraySize.replace('[','');
-                            plcVariableTypeArraySize=plcVariableTypeArraySize.replace(']','');
-                            plcVariableTypeArraySize=int(plcVariableTypeArraySize,10)
-                            plcVariableTypeIsArray=True
-
+                            if '[' in plcVariableType:
+                                plcVariableType=plcVariableType.replace('[',':');
+                                plcVariableType=plcVariableType.replace(']','');
+                                plcVariableTypeString=plcVariableType.split(':');
+                                plcVariableType=plcVariableTypeString[0];
+                                plcVariableTypeArraySize=int(plcVariableTypeString[1],10)
+                                plcVariableTypeIsArray=True
+                            else:
+                                plcVariableTypeIsArray=False
+                                plcVariableTypeArraySize=1;
 
 
                         except:
