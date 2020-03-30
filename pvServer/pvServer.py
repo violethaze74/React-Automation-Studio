@@ -33,7 +33,7 @@ from pyads.structs import SAdsNotificationHeader
 import ctypes
 load_dotenv()
 
-adsSocketIO = socketio.Client();
+adsSocketIO = socketio.Client()
 adsSocketIO.connect('http://0.0.0.0:'+ str(os.environ['adsServerPORT']),namespaces=['/adsServer'])
 # Set this variable to "threading", "eventlet" or "gevent" to test the
 # different async modes, or leave it set to None for the application to choose
@@ -160,105 +160,16 @@ def check_pv_initialized_after_disconnect():
                               print("Unexpected error:", sys.exc_info()[0])
                               raise
                   elif ('ads://' in pvname):
+
                       print("check_pv_initialized_after_disconnect:",pvname)
-       # for plcName in clientAdsPlcList :
-       #     if not 'plc' in clientAdsPlcList[plcName]:
-       #         print("check_pv_initialized_after_disconnect: No PLC object:",plcName)
-       #
-       #     else:
-       #         if clientAdsPlcList[plcName]['state']=='opened':
-       #             #isOpen=clientAdsPlcList[plcName]['plc'].is_open;
-       #             #print(plcName," is open: ",isOpen)
-       #             try:
-       #                 state=clientAdsPlcList[plcName]['plc'].read_state();
-       #                 print("plc state",state)
-       #                 clientAdsPlcList[plcName]['state']='running'
-       #
-       #
-       #
-       #             except:
-       #                 clientAdsPlcList[plcName]['state']=='readStateError'
-       #         elif clientAdsPlcList[plcName]['state']=='running':
-       #              #isOpen=clientAdsPlcList[plcName]['plc'].is_open;
-       #              #print(plcName," is open: ",isOpen)
-       #             try:
-       #                 state=clientAdsPlcList[plcName]['plc'].read_state();
-       #                 print(plcName,clientAdsPlcList[plcName]['state'],"plc state",state)
-       #                 clientAdsPlcList[plcName]['state']='running'
-       #
-       #
-       #
-       #             except:
-       #                 clientAdsPlcList[plcName]['state']='readStateError'
-       #                 print(plcName,clientAdsPlcList[plcName]['state'],"plc next state",'readStateError')
-       #                 try:
-       #                      print("delete_route: ",clientAdsPlcList[plcName]['PlcAmsID'] )
-       #                      clientAdsPlcList[plcName]['plc'].delete_route(clientAdsPlcList[plcName]['PlcAmsID']);
-       #                      for handles in clientAdsPlcList[plcName]['plc']['notificationHandles']:
-       #                          clientAdsPlcList[plcName]['plc'].del_device_notification(*handle)
-       #                      clientAdsPlcList[plcName]['plc'].close_port();
-       #                      clientAdsPlcList[plcName]['plc'].close();
-       #
-       #                 except:
-       #                      print("123123closing previous connection failed:",plcName)
-       #
-       #
-       #
-       #
-       #
-       #         elif clientAdsPlcList[plcName]['state']=='readStateError':
-       #             print(plcName,clientAdsPlcList[plcName]['state'])
-       #             plcPinAlive=ping(clientAdsPlcList[plcName]['PlcIP'])
-       #             if plcPinAlive:
-       #                 print("ping: ",plcName," is alive")
-       #                 clientAdsPlcList[plcName]['state']='pingedAlive'
-       #
-       #         elif clientAdsPlcList[plcName]['state']=='pingedAlive':
-       #             print("closing previous connection to:",plcName)
-       #             try:
-       #                 #clientAdsPlcList[plcName]['plc'].close();
-       #                 clientAdsPlcList[plcName]['state']='closed'
-       #             except:
-       #                 print("closing previous connection failed:",plcName)
-       #                 clientAdsPlcList[plcName]['state']='reconnect'
-       #
-       #         elif clientAdsPlcList[plcName]['state']=='closed':
-       #             #print("closed, but checking is_open:",plcName,clientAdsPlcList[plcName]['plc'].is_open)
-       #             clientAdsPlcList[plcName]['state']='reconnect'
-       #             clientAdsPlcList[plcName]['plc']=None;
-       #         elif clientAdsPlcList[plcName]['state']=='reconnect':
-       #             #importlib.reload(pyads)
-       #             print("PCL pinged alive attempting to establish an ads connection:",plcName)
-       #             pyads.open_port();
-       #             pyads.add_route_to_plc(clientAdsPlcList[plcName]['hostAmsID'], clientAdsPlcList[plcName]['hostIp'], clientAdsPlcList[plcName]['PlcIP'], clientAdsPlcList[plcName]['username'], clientAdsPlcList[plcName]['password'], route_name=clientAdsPlcList[plcName]['hostIp'],added_net_id=clientAdsPlcList[plcName]['hostAmsID'])
-       #             clientAdsPlcList[plcName]['routeAdded']=True;
-       #             clientAdsPlcList[plcName]['connectionAdded']=True;
-       #             plc = pyads.Connection(clientAdsPlcList[plcName]['PlcAmsID'], 851, clientAdsPlcList[plcName]['PlcIP'])
-       #             plc.set_timeout(5000)
-       #
-       #             clientAdsPlcList[plcName]['plc']=plc;
-       #             clientAdsPlcList[plcName]['connectionAdded']=True;
-       #
-       #             clientAdsPlcList[plcName]['plc'].open()
-       #             clientAdsPlcList[plcName]['state']='opened';
-       #             clientAdsPlcList[plcName]['plcOpened']=True;
-
-
-                   #
-                   # print('########## \n\r',plcName,)
-                   # print('readStateError',clientAdsPlcList[plcName]['readStateError'])
-                   # print('isDisconnected',clientAdsPlcList[plcName]['isDisconnected'])
-                   # print('isOpen',clientAdsPlcList[plcName]['plc'].is_open)
-                   # print('isConnected',clientAdsPlcList[plcName]['isConnected'])
-                   # print('isDisconnected',clientAdsPlcList[plcName]['isDisconnected'])
-                   # print('routeAdded',clientAdsPlcList[plcName]['routeAdded'])
-                   # print('connectionAdded',clientAdsPlcList[plcName]['connectionAdded'])
-                   # print('plcOpened',clientAdsPlcList[plcName]['plcOpened'])
-
-
-               #if not isOpen:
-                #   print("check_pv_initialized_after_disconnect: plc not open")
-
+                      message= clientPVlist[pvname]['message']
+                      message['write_access']=True
+                      socketio.emit(message['pvname'],message,room=message['pvname']+'rw',namespace='/pvServer')
+                      message['write_access']=False
+                      socketio.emit(message['pvname'],message,room=message['pvname']+'ro',namespace='/pvServer')
+                      clientPVlist[message['pvname']]['initialized']=True
+                      
+ 
        time.sleep(0.1)
 
 
@@ -335,14 +246,14 @@ def test_write(message):
             if "pva://" in pvname1:
                 pvname2=pvname1.replace("pva://","")
                 try:
-                    clientPVlist[pvname1]['pv'].put(message['data']);
+                    clientPVlist[pvname1]['pv'].put(message['data'])
                 except:
                     print("***EPICS PV put error: ")
                     print("PV name: "+ str(pvname2))
                     print("Value to put : "+str(message['data']))
             elif "ads://" in pvname1:
                 try:
-                    print("writing to ads",message)
+                    #print("writing to ads",message)
                     adsSocketIO.emit('write_by_name',message,namespace='/adsServer')
 
                 except:
@@ -367,68 +278,51 @@ def test_write(message):
 
 
 
-def AdsCallback(notification,name,pvname,datatype):
-        #print("AdsCallback")
-        #print("################callback")
-        #print("pvname",pvname)
-        #print("notification",notification)
-        #print("name",name)
-
-        contents = notification.contents
-        #print("contents",contents)
-        #print("contents.data",contents.data)
-        #print("contents.cbSampleSize",contents.cbSampleSize)
-        #print("contents.nTimestamp",contents.nTimeStamp)
-        epoch_diff = 116444736000000000;
-        rate_diff = 10000000;
-        timestamp=(contents.nTimeStamp-epoch_diff)/rate_diff
-        #print(timestamp)
-
-        data_size = contents.cbSampleSize
-        data = (c_ubyte * data_size).from_address(addressof(contents) + SAdsNotificationHeader.data.offset)
-        #print("data",data)
-        value = bytearray(data)
-        #print("value",value[0],value[1] )
-        if datatype in ["BOOL","INT"]:
-            x=int.from_bytes(value, byteorder='little', signed=True)
-            socketio.emit(pvname,
-               {'pvname': pvname,'newmetadata': 'True','value': x,'char_value': str(x),'count':1, 'connected':'1', 'severity': 0,'timestamp':timestamp
-               },room=pvname,namespace='/pvServer')
-        elif datatype in ["LINT"]:
-            print("data_size",data_size)
-            x=int.from_bytes(value, byteorder='little', signed=True)
-            socketio.emit(pvname,
-               {'pvname': pvname,'newmetadata': 'True','value': x,'char_value': str(x),'count':1, 'connected':'1', 'severity': 0,'timestamp':timestamp
-               },room=pvname,namespace='/pvServer')
-        elif datatype in ["REAL"]:
-            print("data_size",data_size)
-            x=float.from_bytes(value, byteorder='little', signed=True)
-            socketio.emit(pvname,
-               {'pvname': pvname,'newmetadata': 'True','value': x,'char_value': str(x),'count':1, 'connected':'1', 'severity': 0,'timestamp':timestamp
-               },room=pvname,namespace='/pvServer')
-       
-        else:
-            print("undeifned callback datatype:",datatype)
-        #print('x',x)
-        #var = list(map(int, bytearray(contents.data)[0:contents.cbSampleSize]))
-        #print("var",var)
-        #ba=bytearray(contents.data)[0:contents.cbSampleSize]
-        #print("ba",ba)
-        #print("str(ba[0],str(ba[1]))",str(ba[0]),str(ba[1]))
-
-
-    #    var = map(bool, bytearray(contents.data)[0:contents.cbSampleSize])[0]
-    #    print("var",var)
-
-###########
 
 
 @adsSocketIO.on('adsData', namespace='/adsServer')
 def adsData(message):
-    #print("adsData",str(message))
+    global clientPVlist
+   
     message['write_access']=True
-    socketio.emit(message['pvname'],
-      message,room=message['pvname'],namespace='/pvServer')
+    socketio.emit(message['pvname'],message,room=message['pvname']+'rw',namespace='/pvServer')
+    message['write_access']=False
+    socketio.emit(message['pvname'],message,room=message['pvname']+'ro',namespace='/pvServer')
+    clientPVlist[message['pvname']]['message']=message
+    clientPVlist[message['pvname']]['isConnected']=True
+    clientPVlist[message['pvname']]['initialized']=True
+
+@adsSocketIO.on('disconnect', namespace='/adsServer')
+def adsDisconnect():
+    global clientPVlist
+    for pvname in clientPVlist :
+        if ('ads://' in pvname):
+            print("adsServer disconnected:",pvname)
+            d={}
+            d['pvname']= pvname
+            d['connected']= '0'
+            d['emitter']="onConnectionChange: disconnected"
+            try:
+                clientPVlist[pvname]['isConnected']=False
+                clientPVlist[pvname]['initialized']=False
+                socketio.emit(pvname,d,room=str(pvname)+'rw',namespace='/pvServer')
+                socketio.emit(pvname,d,room=str(pvname)+'ro',namespace='/pvServer')
+            except:
+                error=2
+@adsSocketIO.on('connect', namespace='/adsServer')
+def connect():
+    global clientPVlist
+    for pvname in clientPVlist :
+        if ('ads://' in pvname):
+            print("adsServer disconnected:",pvname)
+            message={'data':pvname}
+           
+            try:
+                adsSocketIO.emit('request_pv_info',message,namespace='/adsServer')
+            except:
+                print("can't emit to adserver after reconnecting")
+
+
 
 
 @socketio.on('request_pv_info', namespace='/pvServer')
@@ -481,7 +375,13 @@ def test_message(message):
                     strings=  str1.split(':')
                     #print(strings)
                     try:
+                        pv={}
+                        pv['pvname']=pvname1
+                        pv['isConnected']=False
+                        pv['initialized']=False
+                        clientPVlist[pvname1]=pv;
                         adsSocketIO.emit('request_pv_info',message,namespace='/adsServer')
+                        
                     except:
                         print("cant emit to adsServer",message)
 
@@ -502,6 +402,16 @@ def test_message(message):
                         join_room(str(pvname1))
                     pvname2=pvname1.replace("pva://","")
                     clientPVlist[pvname1]['initialized']=False
+            elif "ads://" in pvname1:
+                if(accessControl['permissions']['read']):
+                    if(accessControl['permissions']['write']):
+                        join_room(str(pvname1)+'rw')
+                        join_room(str(pvname1))
+                    else:
+                        join_room(str(pvname1)+'ro')
+                        join_room(str(pvname1))
+                    clientPVlist[pvname1]['initialized']=False
+            
 
 
             else: print("Unknown PV type")
