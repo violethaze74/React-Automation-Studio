@@ -30,6 +30,8 @@ services:
     volumes:
       - ./certificates:/certificates/
       - ./users:/pvServer/userAuthentication/users
+    depends_on:
+      - adsserver
   adsserver:
     env_file: .env
     build:
