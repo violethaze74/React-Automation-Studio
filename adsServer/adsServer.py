@@ -252,7 +252,7 @@ def check_pv_initialized_after_disconnect():
                     #print(plcName," is open: ",isOpen)
                    try:
                        state=clientAdsPlcList[plcName]['plc'].read_state();
-                       print(plcName,clientAdsPlcList[plcName]['state'],"plc state",state)
+                       #print(plcName,clientAdsPlcList[plcName]['state'],"plc state",state)
                        clientAdsPlcList[plcName]['state']='running'
 
 
@@ -282,61 +282,7 @@ def check_pv_initialized_after_disconnect():
                    socketio.stop()
                    os._exit(0)
 
-                   #plcPinAlive=ping(clientAdsPlcList[plcName]['PlcIP'])
-                   #if plcPinAlive:
-                #       print("can't read state from: ",plcName," restarting")
-                    #   clientAdsPlcList[plcName]['state']='pingedAlive'
-                #       print("exiting")
-                #       socketio.stop()
-                       #sys.exit()
-                #       os._exit(0)
-
-               #
-               # elif clientAdsPlcList[plcName]['state']=='pingedAlive':
-               #     print("closing previous connection to:",plcName)
-               #     try:
-               #         #clientAdsPlcList[plcName]['plc'].close();
-               #         clientAdsPlcList[plcName]['state']='closed'
-               #     except:
-               #         print("closing previous connection failed:",plcName)
-               #         clientAdsPlcList[plcName]['state']='reconnect'
-               #
-               # elif clientAdsPlcList[plcName]['state']=='closed':
-               #     #print("closed, but checking is_open:",plcName,clientAdsPlcList[plcName]['plc'].is_open)
-               #     clientAdsPlcList[plcName]['state']='reconnect'
-               #     clientAdsPlcList[plcName]['plc']=None;
-               # elif clientAdsPlcList[plcName]['state']=='reconnect':
-               #     #importlib.reload(pyads)
-               #     print("PCL pinged alive attempting to establish an ads connection:",plcName)
-               #     pyads.open_port();
-               #     pyads.add_route_to_plc(clientAdsPlcList[plcName]['hostAmsID'], clientAdsPlcList[plcName]['hostIp'], clientAdsPlcList[plcName]['PlcIP'], clientAdsPlcList[plcName]['username'], clientAdsPlcList[plcName]['password'], route_name=clientAdsPlcList[plcName]['hostIp'],added_net_id=clientAdsPlcList[plcName]['hostAmsID'])
-               #     clientAdsPlcList[plcName]['routeAdded']=True;
-               #     clientAdsPlcList[plcName]['connectionAdded']=True;
-               #     plc = pyads.Connection(clientAdsPlcList[plcName]['PlcAmsID'], 851, clientAdsPlcList[plcName]['PlcIP'])
-               #     plc.set_timeout(5000)
-               #
-               #     clientAdsPlcList[plcName]['plc']=plc;
-               #     clientAdsPlcList[plcName]['connectionAdded']=True;
-               #
-               #     clientAdsPlcList[plcName]['plc'].open()
-               #     clientAdsPlcList[plcName]['state']='opened';
-               #     clientAdsPlcList[plcName]['plcOpened']=True;
-
-
-                   #
-                   # print('########## \n\r',plcName,)
-                   # print('readStateError',clientAdsPlcList[plcName]['readStateError'])
-                   # print('isDisconnected',clientAdsPlcList[plcName]['isDisconnected'])
-                   # print('isOpen',clientAdsPlcList[plcName]['plc'].is_open)
-                   # print('isConnected',clientAdsPlcList[plcName]['isConnected'])
-                   # print('isDisconnected',clientAdsPlcList[plcName]['isDisconnected'])
-                   # print('routeAdded',clientAdsPlcList[plcName]['routeAdded'])
-                   # print('connectionAdded',clientAdsPlcList[plcName]['connectionAdded'])
-                   # print('plcOpened',clientAdsPlcList[plcName]['plcOpened'])
-
-
-               #if not isOpen:
-                #   print("check_pv_initialized_after_disconnect: plc not open")
+                 
 
        time.sleep(0.1)
 
@@ -546,6 +492,11 @@ def test_message(message):
                             while clientAdsPlcList[plcName]['plc'].is_open==False:
                                 print("conecting to PLC:", plcName)
                                 time.sleep(0.1)
+                            pv={}
+                            pv['pvname']=pvname1
+                            pv['connected']='0'
+                            pv['newData']=False
+                            plcPVlist[pvname1]=pv;
                             if plcVariableType=='BOOL' :
                                 plcVariablePyAdsType=pyads.PLCTYPE_BOOL;
                                 attr = pyads.NotificationAttrib(sizeof(plcVariablePyAdsType))
@@ -604,152 +555,74 @@ def test_message(message):
 
 @socketio.on('write_by_name', namespace='/adsServer')
 def test_message(message):
-    global clientPVlist,REACT_APP_DisableLogin,clientAdsPlcList
+    global plcPVlist,REACT_APP_DisableLogin,clientAdsPlcList
     pvname1= str(message['pvname'])
 
 
     if True :
 
 
-        if not (pvname1 in	clientPVlist):
+        if (pvname1 in	plcPVlist):
 
             if "ads://" in pvname1:
-
-                print("ads request 0")
-                print("ads pvname1",pvname1)
-
+                print("ADS write_by_name: ",message['data']," to:",pvname1)
                 str1=pvname1.replace("ads://","")
                 strings=  str1.split(':')
-                #print(strings)
-                try:
-                    if(len(strings)>=4):
-                        plcName= strings[0];
-                        plcPort=   strings[1];
-                        plcVariable=  strings[2];
-                        plcVariableType= strings[3];
-                        if not (plcName in	clientAdsPlcList):
-                            try:
-                                clientAdsPlcList[plcName]={};
-                                clientAdsPlcList[plcName]['state']='POR';
-                                clientAdsPlcList[plcName]['isConnected']=False;
-                                clientAdsPlcList[plcName]['isDisconnected']=True;
-                                clientAdsPlcList[plcName]['routeAdded']=False;
-                                clientAdsPlcList[plcName]['connectionAdded']=False;
-                                clientAdsPlcList[plcName]['plcOpened']=False;
-                                clientAdsPlcList[plcName]['readStateError']=False;
-                                plcConfigUsername=str(os.environ['ADS_PLC_USERNAME_'+plcName]);
-                                plcConfigPassword=str(os.environ['ADS_PLC_PASSWORD_'+plcName]);
-                                plcConfigPlcAmsID=str(os.environ['ADS_PLC_AMS_ID_'  +plcName]);
-                                plcConfigPlcIP=str(os.environ['ADS_PLC_IP_'         +plcName]);
-                                plcConfigHostIP=str(os.environ['ADS_HOST_IP']);
-                                clientAdsPlcList[plcName]['notificationHandles']=[];
-                                clientAdsPlcList[plcName]['username']=plcConfigUsername;
-                                clientAdsPlcList[plcName]['password']=plcConfigPassword;
-                                clientAdsPlcList[plcName]['PlcAmsID']=plcConfigPlcAmsID;
-                                clientAdsPlcList[plcName]['PlcIP']=plcConfigPlcIP;
-                                clientAdsPlcList[plcName]['hostIp']=plcConfigHostIP;
-                                clientAdsPlcList[plcName]['hostAmsID']=plcConfigHostIP+'.1.1';
+                plcName= strings[0];
+                plcPort=   strings[1];
+                plcVariable=  strings[2];
+                plcVariableType= strings[3];
 
-                                #pyads.add_route_to_plc('172.16.5.52.1.1', '172.16.5.52', clientAdsPlcList[plcName]['PlcIP'], clientAdsPlcList[plcName]['username'], clientAdsPlcList[plcName]['password'], route_name='172.16.5.52',added_net_id='172.16.5.52.1.1')
-                                #pyads.add_route_to_plc('172.16.5.52.1.1', '172.16.5.52', '172.16.5.140', 'Administrator', '1', route_name='172.16.5.52',added_net_id='172.16.5.52.1.1')
-                                #clientAdsPlcList[plcName]['plc']=pyads.Connection('172.15.5.140.1.1', 851,'172.16.5.140')
+                if plcVariableType=='BOOL' :
+                    plcVariablePyAdsType=pyads.PLCTYPE_BOOL;
+                    if isinstance(message['data'],int):
+                        clientAdsPlcList[plcName]['plc'].write_by_name(plcVariable,message['data'],plcVariablePyAdsType)
+                    else:
+                        clientAdsPlcList[plcName]['plc'].write_by_name(plcVariable,int(message['data'],10),plcVariablePyAdsType)
+                elif plcVariableType=='INT' :
+                    plcVariablePyAdsType=pyads.PLCTYPE_INT;
+                    if isinstance(message['data'],int):
+                        data=np.int32(message['data']);
+                        clientAdsPlcList[plcName]['plc'].write_by_name(plcVariable,data,plcVariablePyAdsType)
+                    else:
+                        data=np.int32(int(message['data'],10))
 
-                                pyads.add_route_to_plc(clientAdsPlcList[plcName]['hostAmsID'], clientAdsPlcList[plcName]['hostIp'], clientAdsPlcList[plcName]['PlcIP'], clientAdsPlcList[plcName]['username'], clientAdsPlcList[plcName]['password'], route_name=clientAdsPlcList[plcName]['hostIp'],added_net_id=clientAdsPlcList[plcName]['hostAmsID'])
-                                clientAdsPlcList[plcName]['routeAdded']=True;
-                                clientAdsPlcList[plcName]['connectionAdded']=True;
-                                plc = pyads.Connection(clientAdsPlcList[plcName]['PlcAmsID'], 851, clientAdsPlcList[plcName]['PlcIP'])
-                                plc.set_timeout(5000)
+                        clientAdsPlcList[plcName]['plc'].write_by_name(plcVariable,data,plcVariablePyAdsType)
+                elif plcVariableType=='LINT' :
 
-                                clientAdsPlcList[plcName]['plc']=plc;
-                                clientAdsPlcList[plcName]['connectionAdded']=True;
+                    attr = pyads.NotificationAttrib(4)
+                    if isinstance(message['data'],int):
+                        data=np.int64(message['data']);
+                        clientAdsPlcList[plcName]['plc'].write_by_name(plcVariable,data,ctypes.c_int64)
+                    else:
+                        data=np.int64(int(message['data'],10))
+                        clientAdsPlcList[plcName]['plc'].write_by_name(plcVariable,data,ctypes.c_int64)
+                elif plcVariableType=='REAL' :
+                    plcVariablePyAdsType=pyads.PLCTYPE_REAL;
 
-                                clientAdsPlcList[plcName]['plc'].open()
-                                clientAdsPlcList[plcName]['state']='opened';
-                                clientAdsPlcList[plcName]['plcOpened']=True;
-                                print("opened",plc.is_open)
-                            except Exception as e: # work on python 3.x
-                                print(' could not add route and load plc info ' + str(plcName)+' '+ str(e))
-                        else:
-                            print("route to plc "+plcName+' already exists')
-                            #print(clientAdsPlcList[plcName])
+                    if isinstance(message['data'],float):
+                        data=np.float32(message['data']);
+                        clientAdsPlcList[plcName]['plc'].write_by_name(plcVariable,data,plcVariablePyAdsType)
+                    else:
+                        data=np.float32(float(message['data']))
 
-                        try:
+                        clientAdsPlcList[plcName]['plc'].write_by_name(plcVariable,data,plcVariablePyAdsType)
+                elif plcVariableType=='LREAL' :
+                    plcVariablePyAdsType=pyads.PLCTYPE_LREAL;
+                    if isinstance(message['data'],float):
+                        data=np.float64(message['data']);
+                        clientAdsPlcList[plcName]['plc'].write_by_name(plcVariable,data,plcVariablePyAdsType)
+                    else:
+                        data=np.float64(float(message['data']))
 
-                            while not 'plc' in clientAdsPlcList[plcName]:
-                                print("conecting to PLC:", plcName)
-                                time.sleep(0.1)
-                            while clientAdsPlcList[plcName]['plc'].is_open==False:
-                                print("conecting to PLC:", plcName)
-                                time.sleep(0.1)
-                            if plcVariableType=='BOOL' :
-                                plcVariablePyAdsType=pyads.PLCTYPE_BOOL;
-                                if isinstance(message['data'],int):
-                                    clientAdsPlcList[plcName]['plc'].write_by_name(plcVariable,message['data'],plcVariablePyAdsType)
-                                else:
-                                    clientAdsPlcList[plcName]['plc'].write_by_name(plcVariable,int(message['data'],10),plcVariablePyAdsType)
-                            elif plcVariableType=='INT' :
-                                plcVariablePyAdsType=pyads.PLCTYPE_INT;
-                                if isinstance(message['data'],int):
-                                    data=np.int32(message['data']);
-                                    clientAdsPlcList[plcName]['plc'].write_by_name(plcVariable,data,plcVariablePyAdsType)
-                                else:
-                                    data=np.int32(int(message['data'],10))
+                        clientAdsPlcList[plcName]['plc'].write_by_name(plcVariable,data,plcVariablePyAdsType)
 
-                                    clientAdsPlcList[plcName]['plc'].write_by_name(plcVariable,data,plcVariablePyAdsType)
-                            elif plcVariableType=='LINT' :
-
-                                attr = pyads.NotificationAttrib(4)
-                                if isinstance(message['data'],int):
-                                    data=np.int64(message['data']);
-                                    clientAdsPlcList[plcName]['plc'].write_by_name(plcVariable,data,ctypes.c_int64)
-                                else:
-                                    data=np.int64(int(message['data'],10))
-                                    clientAdsPlcList[plcName]['plc'].write_by_name(plcVariable,data,ctypes.c_int64)
-                            elif plcVariableType=='REAL' :
-                                plcVariablePyAdsType=pyads.PLCTYPE_REAL;
-
-                                if isinstance(message['data'],float):
-                                    data=np.float32(message['data']);
-                                    clientAdsPlcList[plcName]['plc'].write_by_name(plcVariable,data,plcVariablePyAdsType)
-                                else:
-                                    data=np.float32(float(message['data']))
-
-                                    clientAdsPlcList[plcName]['plc'].write_by_name(plcVariable,data,plcVariablePyAdsType)
-                            elif plcVariableType=='LREAL' :
-                                plcVariablePyAdsType=pyads.PLCTYPE_LREAL;
-                                if isinstance(message['data'],float):
-                                    data=np.float64(message['data']);
-                                    clientAdsPlcList[plcName]['plc'].write_by_name(plcVariable,data,plcVariablePyAdsType)
-                                else:
-                                    data=np.float64(float(message['data']))
-
-                                    clientAdsPlcList[plcName]['plc'].write_by_name(plcVariable,data,plcVariablePyAdsType)
-
-                            else:
-                                Exception("unknown plc variable type");
-
-
-                        except Exception as e: # work on python 3.x
-                            print(' 2 could not load plc variable type ' + str(plcName)+' '+ str(e))
-
-
-                except:
-                     raise Exception("Malformed ads URL, must be in format: ads://plcName:plcPort:plcVariable:plcVariableType")
-
-
-
-
-
-            else:
-                print("Unknown PV type")
-
-
-        else:
-
-            if "ads://" in pvname1:
-                print("pv exista alread",pvname1)
+                else:
+                    Exception("unknown plc variable type");
 
             else: print("Unknown PV type")
+        else:
+            print("Error pv request info must have failed, cant write to: ",pvname1)
 
 
 

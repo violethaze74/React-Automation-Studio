@@ -33,8 +33,22 @@ from pyads.structs import SAdsNotificationHeader
 import ctypes
 load_dotenv()
 
+adsServerEnable=os.getenv('adsServerEnable')
+
+if (adsServerEnable is None):
+    adsServerEnable=False
+else:
+    if ((adsServerEnable=='true') or (adsServerEnable=='True') ):
+        adsServerEnable=True
+    else:
+        adsServerEnable=False
 adsSocketIO = socketio.Client()
-adsSocketIO.connect('http://0.0.0.0:'+ str(os.environ['adsServerPORT']),namespaces=['/adsServer'])
+if (adsServerEnable==True):
+    adsServerPORT=os.getenv('adsServerPORT')
+    if (adsServerPORT is None):       
+        adsServerPORT=5002
+    adsSocketIO.connect('http://0.0.0.0:'+ str(adsServerPORT),namespaces=['/adsServer'])
+
 # Set this variable to "threading", "eventlet" or "gevent" to test the
 # different async modes, or leave it set to None for the application to choose
 # the best option based on installed packages.
@@ -52,7 +66,7 @@ print('REACT_APP_PyEpicsServerBASEURL: '+ str(os.environ['REACT_APP_PyEpicsServe
 print('REACT_APP_PyEpicsServerPORT: '+ str(os.environ['REACT_APP_PyEpicsServerPORT']))
 print('REACT_APP_PyEpicsServerNamespace: '+ str(os.environ['REACT_APP_PyEpicsServerNamespace']))
 print('REACT_APP_EnableLogin: '+ str(os.environ['REACT_APP_EnableLogin']))
-
+print('Enable ADS server: '+ str(adsServerEnable))
 #pyads.open_port()
 #remote_ip = str(os.environ['ADS_SERVER'])
 #print("ads_remote_ip",remote_ip)
@@ -76,6 +90,7 @@ if (REACT_APP_DisableLogin) :
 else:
     print("Authenitcation and Authorisation is ENABLED")
 print("")
+
 
 socketio = SocketIO(app, async_mode=async_mode)
 thread = None
