@@ -448,11 +448,18 @@ def test_message(message):
                                 clientAdsPlcList[plcName]['connectionAdded']=False;
                                 clientAdsPlcList[plcName]['plcOpened']=False;
                                 clientAdsPlcList[plcName]['readStateError']=False;
-                                plcConfigUsername=str(os.environ['ADS_PLC_USERNAME_'+plcName]);
-                                plcConfigPassword=str(os.environ['ADS_PLC_PASSWORD_'+plcName]);
-                                plcConfigPlcAmsID=str(os.environ['ADS_PLC_AMS_ID_'  +plcName]);
-                                plcConfigPlcIP=str(os.environ['ADS_PLC_IP_'         +plcName]);
-                                plcConfigHostIP=str(os.environ['ADS_HOST_IP']);
+                                plcConfigUsername=str(os.getenv('ADS_PLC_USERNAME_'+plcName));
+                                plcConfigPassword=str(os.getenv('ADS_PLC_PASSWORD_'+plcName));
+                                plcConfigPlcAmsID=str(os.getenv('ADS_PLC_AMS_ID_'  +plcName));
+                                plcConfigPlcIP=str(os.getenv('ADS_PLC_IP_'         +plcName));
+                                plcConfigHostIP=str(os.getenv('ADS_HOST_IP'));
+                                AddRouteRemotely=os.getenv('ADS_PLC_AddRouteRemotely_'+plcName)
+                                #print("debug AddRouteRemotely: ",AddRouteRemotely)
+                                if (AddRouteRemotely is None):
+                                    AddRouteRemotely=False
+                                else:
+                                    if (AddRouteRemotely != True): 
+                                        AddRouteRemotely=False
                                 clientAdsPlcList[plcName]['notificationHandles']=[];
                                 clientAdsPlcList[plcName]['username']=plcConfigUsername;
                                 clientAdsPlcList[plcName]['password']=plcConfigPassword;
@@ -460,12 +467,14 @@ def test_message(message):
                                 clientAdsPlcList[plcName]['PlcIP']=plcConfigPlcIP;
                                 clientAdsPlcList[plcName]['hostIp']=plcConfigHostIP;
                                 clientAdsPlcList[plcName]['hostAmsID']=plcConfigHostIP+'.1.1';
-
+                                #print("william",str(clientAdsPlcList[plcName]))
                                 #pyads.add_route_to_plc('172.16.5.52.1.1', '172.16.5.52', clientAdsPlcList[plcName]['PlcIP'], clientAdsPlcList[plcName]['username'], clientAdsPlcList[plcName]['password'], route_name='172.16.5.52',added_net_id='172.16.5.52.1.1')
                                 #pyads.add_route_to_plc('172.16.5.52.1.1', '172.16.5.52', '172.16.5.140', 'Administrator', '1', route_name='172.16.5.52',added_net_id='172.16.5.52.1.1')
                                 #clientAdsPlcList[plcName]['plc']=pyads.Connection('172.15.5.140.1.1', 851,'172.16.5.140')
-
-                                pyads.add_route_to_plc(clientAdsPlcList[plcName]['hostAmsID'], clientAdsPlcList[plcName]['hostIp'], clientAdsPlcList[plcName]['PlcIP'], clientAdsPlcList[plcName]['username'], clientAdsPlcList[plcName]['password'], route_name=clientAdsPlcList[plcName]['hostIp'],added_net_id=clientAdsPlcList[plcName]['hostAmsID'])
+                                if (AddRouteRemotely):
+                                    #print("ads plc route will be configured")
+                                    pyads.add_route_to_plc(clientAdsPlcList[plcName]['hostAmsID'], clientAdsPlcList[plcName]['hostIp'], clientAdsPlcList[plcName]['PlcIP'], clientAdsPlcList[plcName]['username'], clientAdsPlcList[plcName]['password'], route_name=clientAdsPlcList[plcName]['hostIp'],added_net_id=clientAdsPlcList[plcName]['hostAmsID'])
+                                    
                                 clientAdsPlcList[plcName]['routeAdded']=True;
                                 clientAdsPlcList[plcName]['connectionAdded']=True;
                                 plc = pyads.Connection(clientAdsPlcList[plcName]['PlcAmsID'], 851, clientAdsPlcList[plcName]['PlcIP'])
