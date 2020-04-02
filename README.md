@@ -450,6 +450,8 @@ Contact us at rasadmin@tlabs.ac.za
 
 # Changelog
 
+Adding alarm handler
+
 **V1.2.4 Thursday 2 April 2020**
 
 Minor bug fixed in the styleguide for GraphY and GraphXY
