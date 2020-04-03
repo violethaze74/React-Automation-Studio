@@ -20,4 +20,3 @@ testIOC:SLITXY3:X:Gap:Setpoint
 testIOC:SLITXY3:X:Offset:Setpoint
 testIOC:SLITXY3:Y:Gap:Setpoint
 testIOC:SLITXY3:Y:Offset:Setpoint
-
