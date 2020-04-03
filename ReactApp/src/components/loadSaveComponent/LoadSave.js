@@ -152,18 +152,21 @@ function TabPanel(props) {
       let DataConnections=[];
       let sys;
       let id=0;
-      let device=this.props.macros['$(device)'];
+      let systemName=this.props.macros['$(systemName)'];
       let dbListQueryParameters={'query':{"beam_setup.Status":{"$ne":"Delete"}}};
       let Parameters=JSON.stringify(dbListQueryParameters);
-      let dbListBroadcastReadDataURL='mongodb://DATABASE1:testIOCSystems:'+device+'_DATA:Parameters:'+Parameters;
-      let dbListBroadcastReadPvsURL='mongodb://DATABASE1:testIOCSystems:'+device+'_PVs:Parameters:'+Parameters;
-      let dbListUpdateOneURL='mongodb://DATABASE1:testIOCSystems:'+device+'_DATA';
-      let dbListInsertOneURL='mongodb://DATABASE1:testIOCSystems:'+device+'_DATA';
+      let database=this.props.database;
+      let collection=this.props.collection;
+      let dbListBroadcastReadDataURL='mongodb://'+database+':'+collection+':'+systemName+'_DATA:Parameters:'+Parameters;
+      let dbListBroadcastReadPvsURL='mongodb://'+database+':'+collection+':'+systemName+'_PVs:Parameters:'+Parameters;
+      let dbListUpdateOneURL='mongodb://'+database+':'+collection+':'+systemName+'_DATA';
+      let dbListInsertOneURL='mongodb://'+database+':'+collection+':'+systemName+'_DATA';
       const systems=props.systems;
-      let Frequency='pva://$(device):frequency_rf';
-      let Energy='pva://$(device):energy';
-      let Description='pva://$(device):description';
-      let RFOnOFF='pva://$(device):RF_enable_disable';
+      let metadataPVs=this.props.metadataPVs;
+      let Frequency='pva://$(systemName):frequency_rf';
+      let Energy='pva://$(systemName):energy';
+      let Description='pva://$(systemName):description';
+      let RFOnOFF='pva://$(systemName):RF_enable_disable';
       let pvname;
       let pvs={}
 
@@ -607,7 +610,7 @@ function TabPanel(props) {
         // let month = months[mydate.getMonth()];
         //let date = mydate.getDate();
         let day =mydate.getDate();
-        let month =mydate.getMonth();
+        let month =mydate.getMonth()+1;
         let year =mydate.getFullYear();
         let hour = mydate.getHours();
         let min = mydate.getMinutes();
@@ -1024,20 +1027,45 @@ function TabPanel(props) {
                     alignItems="flex-start"
                     spacing={2}
 
-                  >
+                  > {this.props.metadataPVs.map((item,index) => (
                     <Grid item xs={12} sm={12} md={3} lg={2} >
+                    {item.inputEnable===true?
+                       <TextInput
+                       pv={item.pv}
+                       macros={this.props.macros}
+                       label={item.label}
+                       units={item.units}
+                       usePvUnits={item.usePvUnits}
+                     />
+                    :
+                    
+                    
+                    <TextOutput
+                      pv={item.pv}
+                      macros={this.props.macros}
+                      label={item.label}
+                      units={item.units}
+                      usePvUnits={item.usePvUnits}
+                     
+                    />}
+                  </Grid>
+                    )
+
+                  )
+                  }
+                    {/* <Grid item xs={12} sm={12} md={3} lg={2} >
                       <TextOutput
-                        pv='pva://$(device):frequency_rf'
+                        pv='pva://$(systemName):frequency_rf'
                         macros={this.props.macros}
                         label={"Frequency"}
                         usePrecision={true}
                         prec={12}
                         usePvUnits={true}
-                      />
-                    </Grid>
-                    <Grid item xs={12} sm={12} md={3} lg={2} >
+                      /> 
+                    </Grid>*/}
+                    {/* <Grid item xs={12} sm={12} md={3} lg={2} >
                       <TextInput
-                        pv='pva://$(device):energy'
+                        pv='pva://$(systemName):energy'
                         macros={this.props.macros}
                         label={"Energy"}
 
@@ -1047,7 +1075,7 @@ function TabPanel(props) {
                     </Grid>
                     <Grid item xs={12} sm={12} md={3} lg={2} >
                       <TextInput
-                        pv='pva://$(device):description'
+                        pv='pva://$(systemName):description'
                         macros={this.props.macros}
                         label={"Beam Description"}
 
@@ -1059,7 +1087,7 @@ function TabPanel(props) {
                     </Grid>
                     <Grid item xs={12} sm={12} md={3} lg={2} >
                       <TextOutput
-                        pv='pva://$(device):initialized_frequency'
+                        pv='pva://$(systemName):initialized_frequency'
                         macros={this.props.macros}
                         label={"Initialized Frequency"}
                         usePrecision={true}
@@ -1078,7 +1106,7 @@ function TabPanel(props) {
                         prec={12}
                         usePvUnits={true}
                       />
-                    </Grid>
+                    </Grid> */}
 
                   </Grid>
                 </Card>
@@ -1307,12 +1335,12 @@ function TabPanel(props) {
 
                 </Card>
               </Grid>
-              <Grid item xs={12} sm={12} md={12} lg={1} >
-                <h4 style={{margin:0}}>RF On/Off</h4>
+              {typeof this.props.loadEnablePV!=='undefined'&&<Grid item xs={12} sm={12} md={12} lg={1} >
+              {typeof this.props.loadEnablePV.label!=='undefined'&& <h4 style={{margin:0}}>{this.props.loadEnablePV.label}</h4>}
                 <Card style={{padding:8}}>
-                  <ToggleButton  pv='pva://$(device):RF_enable_disable' macros={this.props.macros}  custom_selection_strings={["OFF","ON"]}  />
+                  <ToggleButton  pv={this.props.loadEnablePV.pv} macros={this.props.macros}  custom_selection_strings={["OFF","ON"]}  />
                 </Card>
-              </Grid>
+              </Grid>}
             </Grid>
 
           </React.Fragment>
