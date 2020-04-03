@@ -68,6 +68,15 @@ class App extends Component {
   constructor(props) {
     super(props);
 
+    let themeStyle= JSON.parse(localStorage.getItem('themeStyle'));
+
+    //console.log('jwt',jwt);
+    if(!themeStyle){
+      themeStyle='dark'
+      localStorage.setItem('themeStyle', JSON.stringify(themeStyle));
+    }
+
+    console.log(themeStyle)
     let theme = createMuiTheme({
       palette: {
         type:themeStyle,
@@ -99,6 +108,49 @@ class App extends Component {
       },
     });
 
+    this.toggleTheme=()=>{
+      //console.log(this.state.themeStyle)
+      let themeStyle=this.state.themeStyle;
+      if (themeStyle=='dark'){
+        themeStyle='light';
+      }
+      else {
+        themeStyle='dark';
+      }
+
+      let theme = createMuiTheme({
+        palette: {
+          type:themeStyle,
+          primary: themeStyle=='dark'?cyan:indigo,
+          secondary:pink,
+          error: pink,
+          action:green,
+          // Used by `getContrastText()` to maximize the contrast between the background and
+          // the text.
+          contrastThreshold: 3,
+          // Used to shift a color's luminance by approximately
+          // two indexes within its tonal palette.
+          // E.g., shift from Red 500 to Red 300 or Red 700.
+          tonalOffset: 0.2,
+
+
+
+        },
+        lightLineColors:['#12939A', '#79C7E3', '#1A3177', '#FF9833', '#EF5D28'],
+        darkLineColors:['#ff9800', '#f44336', '#9c27b0', '#3f51b5', '#e91e63'],
+        typography: {
+          useNextVariants: true,
+          fontFamily: [
+
+            'Roboto',
+
+
+          ].join(','),
+        },
+      });
+      this.setState({themeStyle:themeStyle,theme:theme} )
+      localStorage.setItem('themeStyle', JSON.stringify(themeStyle));
+    }
 
     this.updateLocalVariable = (name,data) => {
       let system=this.state.system;
@@ -115,8 +167,9 @@ class App extends Component {
     };
 
     let localVariables={};
-    let system={socket:socket,localVariables:localVariables,updateLocalVariable:this.updateLocalVariable,enableProbe:true,styleGuideRedirect:true}
+    let system={socket:socket,toggleTheme:this.toggleTheme,localVariables:localVariables,updateLocalVariable:this.updateLocalVariable,enableProbe:true,styleGuideRedirect:true}
     this.state={
+      themeStyle:themeStyle,
       theme :theme,
       system:system,
       redirectToLoginPage:false,
