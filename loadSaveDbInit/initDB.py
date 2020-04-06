@@ -2,38 +2,36 @@ import pymongo
 import sys
 import os
 import configparser
+import json
 path='savedConfig/'
 sys.path.insert(0,path )
-# print("hello")
-#
-# myclient = pymongo.MongoClient("mongodb://database:27017/")
-# dblist = myclient.list_database_names()
-# if "mydatabase" in dblist:
-#     print("The database exists.")
-# else:
-#     mydb = myclient["mydatabase"]
-#     mycol = mydb["customers"]
-#     mydict = { "name": "John", "address": "Highway 37" }
-#     x = mycol.insert_one(mydict)
-#
-# print(myclient.list_database_names())
+#######
+##configs
+usePvLabelsAsDescription=False
+usePvUnits=True
+##########
 databaseName='testIOCSystems'
 myclient = pymongo.MongoClient("mongodb://loadsavedb:27017/")
 mydb = myclient[databaseName]
-filenames= os.listdir('listOfSavePVs/')
 
-print("filename entries: ",filenames)
-for filename in filenames:
+
+
+folders = os.listdir('systems/')
+for folder in folders:
     print("###########")
-    print("filename :",filename)
-    systemName=filename.replace("_Save_PVs.txt","")
-    print("systemname: ",systemName)
+    systemName=folder
     system={}
     system['name']=systemName
     system['keys']={}
     system['PVs']={}
-
-    with open('listOfSavePVs/'+filename) as f:
+    print("systemname: ",systemName)
+    with open('systems/'+systemName+'/metadataConfig.json') as f:
+        metadata = json.load(f)
+        print("metadata",metadata)
+    dict={}
+    dict['metadata']=metadata
+ 
+    with open('systems/'+systemName+'/process_variables.txt') as f:
         content = f.readlines()
         keys=[]
 
@@ -44,7 +42,7 @@ for filename in filenames:
             newKey=line.replace(systemName+":","")
             newKey=newKey.replace(systemName+"_RFM_","")
             newKey=newKey.replace("_"," ")
-        #    print(newKey)
+
             newKey=newKey.replace(":"," ")
             newKey=newKey.replace("."," ")
             newKey=newKey.capitalize()
@@ -61,64 +59,13 @@ for filename in filenames:
             system['PVs'][newKey]={}
             system['PVs'][newKey]['pvName']="pva://"+line
             system['PVs'][newKey]['description']=newKey
+            system['PVs'][newKey]['usePvLabel']=usePvLabelsAsDescription
+            system['PVs'][newKey]['usePvUnits']=True
+            system['PVs'][newKey]['units']=""
 
-        #    print(key,": ",newKey)
-        #print("system: ",system)
-        dict={}
+
         dict['process_variables']=system['PVs']
-        mycol = mydb[system['name']+'_PVs']
-        x = mycol.insert_one(dict)
-        folder='savedConfig/'+system['name']+'/'
-        entries = os.listdir(folder)
-        #print(entries)
-        for entry in entries:
-            #print("Folder: ", folder, " entry: ", entry )
-            settings = configparser.ConfigParser()
-            settings.optionxform = str
-            settings._interpolation = configparser.ExtendedInterpolation()
-            settings.read(folder+entry)
-            #print(settings.sections())
-            #print(settings.items('beam_setup'))
-            items=settings.items('beam_setup');
-            dict={};
-            dict['beam_setup']={}
-            for item in items:
-                dict['beam_setup'][item[0]]=item[1]
-
-
-            #print(settings.items('process_variables'))
-            items=settings.items('process_variables');
-            dict['process_variables']={};
-            for item in items:
-                newKey=item[0].replace(systemName+"_","")
-                newKey=newKey.replace("RFM_","")
-                newKey=newKey.replace("_"," ")
-            #    print(newKey)
-                newKey=newKey.replace(":"," ")
-                newKey=newKey.replace("."," ")
-                newKey=newKey.capitalize()
-                newKey=newKey.replace("Rf","RF")
-                newKey=newKey.replace("rf","RF")
-                newKey=newKey.replace("pid","PID")
-                newKey=newKey.replace("oroc","OROC")
-                newKey=newKey.replace("pa","PA")
-                newKey=newKey.replace("dbm","dBm")
-                newKey=newKey.replace("kp","Kp")
-                newKey=newKey.replace("ki","Ki")
-                newKey=newKey.replace("kd","Kd")
-                try:
-                    #pvName=item[0].replace(system['name']+'_','pva://'+system['name']+':');
-                    pvName=system['PVs'][newKey]['pvName'];
-                    pvValue=item[1];
-                    dict['process_variables'][system['keys'][newKey]]={'pvName':pvName,'pvValue':pvValue};
-                except:
-                    print(newKey, "  Unknown Key in: ",folder,entry)
-                #key=key.replace("."," ");
-
-                #ict['process_variables'][key]={'pvName':pvName,'pvValue':pvValue};
-            print(dict)
-
-            #myclient = pymongo.MongoClient("mongodb://database:27017/")
-            mydb = myclient[databaseName]
-            mycol = mydb[system['name']+'_DATA']
-            x = mycol.insert_one(dict)
+    mycol = mydb[systemName+'_PVs']
+    x = mycol.insert_one(dict)
+    
+   
