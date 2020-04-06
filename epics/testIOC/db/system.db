@@ -23,7 +23,7 @@ record(ao, "$(device):energy")
 
 }
 
-record(ao, "$(device):rfFrequency")
+record(ao, "$(device):rf_frequency")
 {       field(DTYP,"Soft Channel")
         field(DESC, "RF Frequency")
         field(EGU, "GHz")
