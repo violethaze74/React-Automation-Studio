@@ -158,16 +158,36 @@ function TabPanel(props) {
       let database=this.props.database;
       let collection=this.props.collection;
       let dbListBroadcastReadDataURL='mongodb://'+database+':'+collection+':'+systemName+'_DATA:Parameters:'+Parameters;
-      let dbListBroadcastReadPvsURL='mongodb://'+database+':'+collection+':'+systemName+'_PVs:Parameters:'+Parameters;
+      let dbListBroadcastReadPvsURL='mongodb://'+database+':'+collection+':'+systemName+'_PVs:Parameters:""';
       let dbListUpdateOneURL='mongodb://'+database+':'+collection+':'+systemName+'_DATA';
       let dbListInsertOneURL='mongodb://'+database+':'+collection+':'+systemName+'_DATA';
       const systems=props.systems;
-      let metadataPVs=this.props.metadataPVs;
+    //   let metadataPVs=[];
+      
+    //   console.log(metadataPVs)
+    //   let item;
+       let pvname;
+    //   // let pvKeys=Object.keys(pvs)
+    //   for (item in this.props.metadataPVs){
+      
+        
+    //     pvname= this.props.metadataPVs[item].pv;
+    //   if (typeof this.props.macros !== 'undefined'){
+
+    //     let macro;
+    //     for (macro in this.props.macros){
+    //       pvname=pvname.replace(macro.toString(),this.props.macros[macro].toString());
+    //     }
+    //   }
+    //   metadataPVs[item]={label:typeof this.props.metadataPVs[item].usePvLabel==='undefined'?this.props.metadataPVs[item].label:'', initialized: false,pvname:pvname,value:"",metadata:{}};
+    // }
+    //   // DataConnections.push(
+
       let Frequency='pva://$(systemName):frequency_rf';
       let Energy='pva://$(systemName):energy';
       let Description='pva://$(systemName):description';
       let RFOnOFF='pva://$(systemName):RF_enable_disable';
-      let pvname;
+   
       let pvs={}
 
       pvname= Frequency;
@@ -219,7 +239,8 @@ function TabPanel(props) {
         dbListBroadcastReadDataURL:dbListBroadcastReadDataURL,
         dbListUpdateOneURL:dbListUpdateOneURL,
         dbListInsertOneURL:dbListInsertOneURL,
-        newValuesLoaded:false};
+        newValuesLoaded:false,
+        metadataComponents:[]};
         //    console.log(rowPVs)
 
 
@@ -318,10 +339,12 @@ function TabPanel(props) {
         if (jwt===null){
           jwt='unauthenticated'
         }
-        //console.log(msg.data)
+        console.log(data)
         //console.log(data[0])
         let process_variables=data[0].process_variables;
         let processVariablesSchemaKeys=Object.keys(data[0].process_variables);
+        let metadataComponents=data[0].metadata.components;
+        console.log(metadataComponents)
         let oldDbDataAndLiveData=this.state.dbDataAndLiveData;
         let dbDataAndLiveData={}
 
@@ -346,7 +369,7 @@ function TabPanel(props) {
 
         //console.log(processVariablesSchemaKeys)
         //console.log(dbDataAndLiveData)
-        this.setState({processVariablesSchemaKeys:processVariablesSchemaKeys,dbDataAndLiveData:dbDataAndLiveData,process_variables:process_variables})
+        this.setState({processVariablesSchemaKeys:processVariablesSchemaKeys,dbDataAndLiveData:dbDataAndLiveData,process_variables:process_variables,metadataComponents:metadataComponents})
         socket.emit('databaseBroadcastRead', {dbURL:this.state.dbListBroadcastReadDataURL,'clientAuthorisation':jwt},(data) => {
 
           if(data!=="OK"){
@@ -819,7 +842,32 @@ function TabPanel(props) {
         //  console.log(newValue)
         this.setState({tabValue:newValue});
       };
+     metadataPVsDataConnections = () => {
+        //this.test("test1");
+        //this.handleInputValue();
+        let pv;
+        let DataConnections=[];
+        let id=0;
+        let metadataPVs=this.props.metadataPVs;
+    //    console.log(metadataPVs)
+        let item;
+        // let pvKeys=Object.keys(pvs)
+        for (item in metadataPVs){
+        //   //  console.log(this.state.pvs[pv].pvname);
+      //    console.log(metadataPVs[item])
+        // DataConnections.push(
 
+        //     <DataConnection key={metadataPVs[item].pv}
+        //       pv={metadataPVs[item].pv}
+        //       handleInputValue={this.handleInputValue(pvKeys[key])}
+        //       handleMetadata={this.handleMetadata(pvKeys[key])}
+        //     />
+
+        //   )
+        }
+
+        return DataConnections;
+      }
       multipleDataConnections = () => {
         //this.test("test1");
         //this.handleInputValue();
@@ -1003,9 +1051,10 @@ function TabPanel(props) {
         //  console.log(dbDataAndLiveData)
 
         let dbDataAndLiveDataKeys=Object.keys(dbDataAndLiveData);
-
+       // console.log("this.state.metadataComponents",this.state.metadataComponents)
         return (
           <React.Fragment>
+            {this.metadataPVsDataConnections()}
             {this.multipleDataConnections()}
             {this.SystemsDataConnections(this.state.displayIndex)}
 
@@ -1027,86 +1076,31 @@ function TabPanel(props) {
                     alignItems="flex-start"
                     spacing={2}
 
-                  > {this.props.metadataPVs.map((item,index) => (
-                    <Grid item xs={12} sm={12} md={3} lg={2} >
-                    {item.inputEnable===true?
-                       <TextInput
-                       pv={item.pv}
+                  > {this.state.metadataComponents.map((item,index) => (
+                    <Grid key={index.toString()} item xs={12} sm={12} md={3} lg={2} >
+                    {item.component=="TextInput"&&
+                      <TextInput
+                       
+                       
                        macros={this.props.macros}
-                       label={item.label}
-                       units={item.units}
-                       usePvUnits={item.usePvUnits}
+                       
+                       {...item.props}
                      />
-                    :
-                    
-                    
-                    <TextOutput
-                      pv={item.pv}
-                      macros={this.props.macros}
-                      label={item.label}
-                      units={item.units}
-                      usePvUnits={item.usePvUnits}
-                     
-                    />}
+                    } 
+                    {item.component=="TextOutput"&&
+                       <TextOutput
+                       
+                       
+                       macros={this.props.macros}
+                       
+                       {...item.props}
+                     />}
                   </Grid>
                     )
 
                   )
                   }
-                    {/* <Grid item xs={12} sm={12} md={3} lg={2} >
-                      <TextOutput
-                        pv='pva://$(systemName):frequency_rf'
-                        macros={this.props.macros}
-                        label={"Frequency"}
-                        usePrecision={true}
-                        prec={12}
-                        usePvUnits={true}
-                      /> 
-                    </Grid>*/}
-                    {/* <Grid item xs={12} sm={12} md={3} lg={2} >
-                      <TextInput
-                        pv='pva://$(systemName):energy'
-                        macros={this.props.macros}
-                        label={"Energy"}
-
-
-                        units={"MeV"}
-                      />
-                    </Grid>
-                    <Grid item xs={12} sm={12} md={3} lg={2} >
-                      <TextInput
-                        pv='pva://$(systemName):description'
-                        macros={this.props.macros}
-                        label={"Beam Description"}
-
-
-
-                      />
-                    </Grid>
-                    <Grid item xs={12} sm={12} md={3} lg={2} >
-                    </Grid>
-                    <Grid item xs={12} sm={12} md={3} lg={2} >
-                      <TextOutput
-                        pv='pva://$(systemName):initialized_frequency'
-                        macros={this.props.macros}
-                        label={"Initialized Frequency"}
-                        usePrecision={true}
-                        prec={12}
-                        usePvUnits={true}
-                      />
-                    </Grid>
-
-                    <Grid item xs={12} sm={12} md={3} lg={2} >
-
-                      <TextOutput
-                        pv='pva://Synthesizer:frequency_rf'
-                        macros={this.props.macros}
-                        label={"Synthesizer Frequency"}
-                        usePrecision={true}
-                        prec={12}
-                        usePvUnits={true}
-                      />
-                    </Grid> */}
+                   
 
                   </Grid>
                 </Card>

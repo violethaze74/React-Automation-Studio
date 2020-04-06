@@ -198,7 +198,7 @@ class LoadSaveExample extends React.Component {
                   [
                     {
                       label: 'Frequency',
-                      pv: 'pva://$(systemName):rfFrequency',
+                      pv: 'pva://$(systemName):rf_frequency',
                       //units: 'GHz'
                       usePvUnits:true
                     },
