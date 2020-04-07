@@ -25,7 +25,7 @@ import Tab from '@material-ui/core/Tab';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 import Card from '@material-ui/core/Card';
-import {LanDisconnect} from 'mdi-material-ui/'
+import { LanDisconnect } from 'mdi-material-ui/'
 const styles = theme => ({
   root: {
     width: '100%',
@@ -38,45 +38,45 @@ const styles = theme => ({
   table: {
     minWidth: 500,
   },
-  tableCell:{
-    width:"20%"
+  tableCell: {
+    width: "20%"
   },
   tableWrapper: {
     maxHeight: 440,
     overflow: 'auto',
   },
-  workingButton:{
-    color: theme.palette.type==='dark'?'white':'black',
+  workingButton: {
+    color: theme.palette.type === 'dark' ? 'white' : 'black',
     backgroundColor: green[500],
     '&:hover': {
       backgroundColor: green[700],
     },
   },
-  pendingButton:{
-    color: theme.palette.type==='dark'?'white':'black',
+  pendingButton: {
+    color: theme.palette.type === 'dark' ? 'white' : 'black',
     backgroundColor: orange[500],
     '&:hover': {
       backgroundColor: orange[700],
     },
   },
-  obseleteButton:{
-    color: theme.palette.type==='dark'?'white':'black',
+  obseleteButton: {
+    color: theme.palette.type === 'dark' ? 'white' : 'black',
     backgroundColor: red[500],
     '&:hover': {
       backgroundColor: red[700],
     },
   },
-  tableCellWorking:{
-    width:"20%",
-    backgroundColor:green[500],
+  tableCellWorking: {
+    width: "20%",
+    backgroundColor: green[500],
   },
-  tableCellPending:{
-    width:"20%",
-    backgroundColor:orange[500],
+  tableCellPending: {
+    width: "20%",
+    backgroundColor: orange[500],
   },
-  tableCellObselete:{
-    width:"20%",
-    backgroundColor:red[500],
+  tableCellObselete: {
+    width: "20%",
+    backgroundColor: red[500],
   },
 
 
@@ -96,81 +96,81 @@ function TabPanel(props) {
     >
       <Box p={3}>{children}</Box>
     </Typography>
-    );
-  }
+  );
+}
 
-  function a11yProps(index) {
-    return {
-      id: `full-width-tab-${index}`,
-      'aria-controls': `full-width-tabpanel-${index}`,
-    };
-  }
+function a11yProps(index) {
+  return {
+    id: `full-width-tab-${index}`,
+    'aria-controls': `full-width-tabpanel-${index}`,
+  };
+}
 
-  function compare(a, b){
+function compare(a, b) {
 
-    if (a.beam_setup.Frequency > b.beam_setup.Frequency) return 1;
-    if (b.beam_setup.Frequency > a.beam_setup.Frequency) return -1;
+  if (a.beam_setup.Frequency > b.beam_setup.Frequency) return 1;
+  if (b.beam_setup.Frequency > a.beam_setup.Frequency) return -1;
 
-    return 0;
-  }
+  return 0;
+}
 
-  function compareValues(a,b,initialized){
-    //console.log(initialized)
-    if(initialized==true){
-      if(a==b){
-        return true
-      }
-      else{
-        if (!(isNaN(a)||isNaN(b))) {
+function compareValues(a, b, initialized) {
+  //console.log(initialized)
+  if (initialized == true) {
+    if (a == b) {
+      return true
+    }
+    else {
+      if (!(isNaN(a) || isNaN(b))) {
 
-          let afloat=parseFloat(a);
-          let bfloat=parseFloat(b);
-          if ((afloat==NaN)||(bfloat==NaN)){
-            return false
-
-          }
-          else{
-            return(afloat==bfloat)
-          }
-        }
-
-        else{
+        let afloat = parseFloat(a);
+        let bfloat = parseFloat(b);
+        if ((afloat == NaN) || (bfloat == NaN)) {
           return false
+
+        }
+        else {
+          return (afloat == bfloat)
         }
       }
-    }
-    else{
-      return false
+
+      else {
+        return false
+      }
     }
   }
-  class LoadSave extends React.Component {
+  else {
+    return false
+  }
+}
+class LoadSave extends React.Component {
 
-    constructor(props) {
-      super(props);
+  constructor(props) {
+    super(props);
 
-      let pv;
-      let DataConnections=[];
-      let sys;
-      let id=0;
-      let systemName=this.props.macros['$(systemName)'];
-      let dbListQueryParameters={'query':{"beam_setup.Status":{"$ne":"Delete"}}};
-      let Parameters=JSON.stringify(dbListQueryParameters);
-      let database=this.props.database;
-      let collection=this.props.collection;
-      let dbListBroadcastReadDataURL='mongodb://'+database+':'+collection+':'+systemName+'_DATA:Parameters:'+Parameters;
-      let dbListBroadcastReadPvsURL='mongodb://'+database+':'+collection+':'+systemName+'_PVs:Parameters:""';
-      let dbListUpdateOneURL='mongodb://'+database+':'+collection+':'+systemName+'_DATA';
-      let dbListInsertOneURL='mongodb://'+database+':'+collection+':'+systemName+'_DATA';
-      const systems=props.systems;
+    let pv;
+    let DataConnections = [];
+    let sys;
+    let id = 0;
+    let systemName = this.props.macros['$(systemName)'];
+    let dbListQueryParameters = { 'query': { "beam_setup.Status": { "$ne": "Delete" } } };
+    let Parameters = JSON.stringify(dbListQueryParameters);
+    let database = this.props.database;
+    let collection = this.props.collection;
+    let dbListBroadcastReadDataURL = 'mongodb://' + database + ':' + collection + ':' + systemName + '_DATA:Parameters:' + Parameters;
+    let dbListBroadcastReadPvsURL = 'mongodb://' + database + ':' + collection + ':' + systemName + '_PVs:Parameters:""';
+    let dbListUpdateOneURL = 'mongodb://' + database + ':' + collection + ':' + systemName + '_DATA';
+    let dbListInsertOneURL = 'mongodb://' + database + ':' + collection + ':' + systemName + '_DATA';
+    const systems = props.systems;
     //   let metadataPVs=[];
-      
+
     //   console.log(metadataPVs)
     //   let item;
-       let pvname;
+    let pvname;
     //   // let pvKeys=Object.keys(pvs)
     //   for (item in this.props.metadataPVs){
-      
-        
+
+
     //     pvname= this.props.metadataPVs[item].pv;
     //   if (typeof this.props.macros !== 'undefined'){
 
@@ -183,1015 +183,1047 @@ function TabPanel(props) {
     // }
     //   // DataConnections.push(
 
-      let Frequency='pva://$(systemName):frequency_rf';
-      let Energy='pva://$(systemName):energy';
-      let Description='pva://$(systemName):description';
-      let RFOnOFF='pva://$(systemName):RF_enable_disable';
-   
-      let pvs={}
+    let Frequency = 'pva://$(systemName):frequency_rf';
+    let Energy = 'pva://$(systemName):energy';
+    let Description = 'pva://$(systemName):description';
+    let RFOnOFF = 'pva://$(systemName):RF_enable_disable';
 
-      pvname= Frequency;
-      if (typeof this.props.macros !== 'undefined'){
+    let pvs = {}
 
-        let macro;
-        for (macro in this.props.macros){
-          pvname=pvname.replace(macro.toString(),this.props.macros[macro].toString());
+    pvname = Frequency;
+    if (typeof this.props.macros !== 'undefined') {
+
+      let macro;
+      for (macro in this.props.macros) {
+        pvname = pvname.replace(macro.toString(), this.props.macros[macro].toString());
+      }
+    }
+    pvs['Frequency'] = { label: "", initialized: false, pvname: pvname, value: "", metadata: {} };
+    pvname = Energy;
+    if (typeof this.props.macros !== 'undefined') {
+
+      let macro;
+      for (macro in this.props.macros) {
+        pvname = pvname.replace(macro.toString(), this.props.macros[macro].toString());
+      }
+    }
+    pvs['Energy'] = { label: "", initialized: false, pvname: pvname, value: "", metadata: {} };
+    pvname = Description;
+    if (typeof this.props.macros !== 'undefined') {
+
+      let macro;
+      for (macro in this.props.macros) {
+        pvname = pvname.replace(macro.toString(), this.props.macros[macro].toString());
+      }
+    }
+    pvs['Description'] = { label: "", initialized: false, pvname: pvname, value: "", metadata: {} };
+    pvname = RFOnOFF;
+    if (typeof this.props.macros !== 'undefined') {
+
+      let macro;
+      for (macro in this.props.macros) {
+        pvname = pvname.replace(macro.toString(), this.props.macros[macro].toString());
+      }
+    }
+    pvs['RFOnOFF'] = { label: "", initialized: false, pvname: pvname, value: "", metadata: {} };
+
+
+    this.state = {
+      pvs: pvs,
+      dbList: [],
+      dbDataAndLiveData: [],
+      processVariablesSchemaKeys: [],
+      displayIndex: 0,
+      tabValue: 0,
+      dbListWriteAccess: false,
+      dbListBroadcastReadPvsURL: dbListBroadcastReadPvsURL,
+      dbListBroadcastReadDataURL: dbListBroadcastReadDataURL,
+      dbListUpdateOneURL: dbListUpdateOneURL,
+      dbListInsertOneURL: dbListInsertOneURL,
+      newValuesLoaded: false,
+      metadataComponents: []
+    };
+    //    console.log(rowPVs)
+
+
+
+
+
+    this.SystemsDataConnections = this.SystemsDataConnections.bind(this);
+    this.handleInputValue = this.handleInputValue.bind(this);
+    this.handleMetadata = this.handleMetadata.bind(this);
+    this.handleOnClick = this.handleOnClick.bind(this);
+    this.handleNewDbDataList = this.handleNewDbDataList.bind(this);
+    this.handleTabChange = this.handleTabChange.bind(this);
+    this.handleDbListMetadata = this.handleDbListMetadata.bind(this);
+    this.handleDbListInputValue = this.handleDbListInputValue.bind(this);
+    this.handleNewDbPVsList = this.handleNewDbPVsList.bind(this);
+    this.pvValueTextUpdate = this.pvValueTextUpdate.bind(this);
+    this.pvValueTextUpdate = this.pvValueTextUpdate.bind(this);
+  }
+
+  handleInputValue = name => (inputValue, pvname, initialized, severity) => {
+    //  console.log("test");
+    //  console.log("value: ",inputValue);
+    //  console.log("pvname:", pvname);
+    let pvs = this.state.pvs;
+
+    pvs[name].value = inputValue;
+    pvs[name].initialized = initialized;
+    pvs[name].severity = severity;
+
+    this.setState({ pvs: pvs });
+
+
+    //state.pvs[pvname].inputValue=inputValue;
+    //pvData.pvs[pvname].initialized=initialized;
+    //pvData.pvs[pvname].severity=severity;
+
+    //console.log("pvData:",pvData)
+
+    //this.setState(pvData);
+
+  }
+
+
+  handleMetadata = name => (metadata) => {
+
+    let pvs = this.state.pvs;
+    pvs[name].metadata = metadata;
+    this.setState({ pvs: pvs });
+    //  console.log("metadata",metadata)
+
+  }
+
+
+
+  handleInputValueLabel = pvname => (inputValue) => {
+
+    let pvs = this.state.pvs;
+    pvs[pvname].label = inputValue;
+    this.setState({ pvs: pvs });
+
+  }
+
+
+  handleDbListInputValue = (key) => (inputValue, pvname, initialized, severity) => {
+    let dbDataAndLiveData = this.state.dbDataAndLiveData;
+    if (initialized) {
+      dbDataAndLiveData[key].pvValue = inputValue;
+
+    }
+    dbDataAndLiveData[key].initialized = initialized;
+    dbDataAndLiveData[key].severity = severity;
+    this.setState({ dbDataAndLiveData: dbDataAndLiveData });
+    //  console.log('handleInputValue',id,name,inputValue,pvname,initialized,severity)
+    //console.log(rowPVs)
+  }
+
+  handleDbListMetadata = (key) => (metadata) => {
+    let dbDataAndLiveData = this.state.dbDataAndLiveData;
+    dbDataAndLiveData[key].metadata = metadata;
+    this.setState({ dbDataAndLiveData: dbDataAndLiveData });
+
+    //console.log('handleMetaData',id,name,metadata)
+
+
+
+  }
+
+  handleNewDbPVsList = (msg) => {
+    let item;
+    let data = JSON.parse(msg.data);
+    let socket = this.context.socket;
+
+
+
+    let jwt = JSON.parse(localStorage.getItem('jwt'));
+    if (jwt === null) {
+      jwt = 'unauthenticated'
+    }
+    console.log(data)
+    //console.log(data[0])
+    let process_variables = data[0].process_variables;
+    let processVariablesSchemaKeys = Object.keys(data[0].process_variables);
+    let metadataComponents = data[0].metadata.components;
+    console.log(metadataComponents)
+    let oldDbDataAndLiveData = this.state.dbDataAndLiveData;
+    let dbDataAndLiveData = {}
+
+    let key;
+
+    for (key in processVariablesSchemaKeys) {
+
+
+      let description = process_variables[processVariablesSchemaKeys[key]].description;
+      let pvName = process_variables[processVariablesSchemaKeys[key]].pvName
+      if (oldDbDataAndLiveData[processVariablesSchemaKeys[key]]) {
+        if (oldDbDataAndLiveData[processVariablesSchemaKeys[key]].pvname == pvName) {
+          dbDataAndLiveData[processVariablesSchemaKeys[key]] = oldDbDataAndLiveData[processVariablesSchemaKeys[key]];
+          dbDataAndLiveData[processVariablesSchemaKeys[key]].description = description;
         }
       }
-      pvs['Frequency']={label:"", initialized: false,pvname:pvname,value:"",metadata:{}};
-      pvname= Energy;
-      if (typeof this.props.macros !== 'undefined'){
-
-        let macro;
-        for (macro in this.props.macros){
-          pvname=pvname.replace(macro.toString(),this.props.macros[macro].toString());
-        }
+      else {
+        dbDataAndLiveData[processVariablesSchemaKeys[key]] = { description: description, pvname: pvName, pvValue: undefined, newValue: undefined, newValueTrigger: 0, dbValue: undefined, metadata: {}, initialized: false, severity: 0 }
       }
-      pvs['Energy']={label:"", initialized: false,pvname:pvname,value:"",metadata:{}};
-      pvname= Description;
-      if (typeof this.props.macros !== 'undefined'){
+    }
 
-        let macro;
-        for (macro in this.props.macros){
-          pvname=pvname.replace(macro.toString(),this.props.macros[macro].toString());
-        }
+
+    //console.log(processVariablesSchemaKeys)
+    //console.log(dbDataAndLiveData)
+    this.setState({ processVariablesSchemaKeys: processVariablesSchemaKeys, dbDataAndLiveData: dbDataAndLiveData, process_variables: process_variables, metadataComponents: metadataComponents })
+    socket.emit('databaseBroadcastRead', { dbURL: this.state.dbListBroadcastReadDataURL, 'clientAuthorisation': jwt }, (data) => {
+
+      if (data !== "OK") {
+        console.log("ackdata", data);
       }
-      pvs['Description']={label:"", initialized: false,pvname:pvname,value:"",metadata:{}};
-      pvname= RFOnOFF;
-      if (typeof this.props.macros !== 'undefined'){
+    });
 
-        let macro;
-        for (macro in this.props.macros){
-          pvname=pvname.replace(macro.toString(),this.props.macros[macro].toString());
-        }
-      }
-      pvs['RFOnOFF']={label:"", initialized: false,pvname:pvname,value:"",metadata:{}};
+    // let sortedData=data.sort(compare)
+    // console.log(sortedData)
+    // let dbDataAndLiveData={}
+    // let dbDataAndLiveDataOld=this.state.dbDataAndLiveData;
+    // if (typeof sortedData[0]!=='undefined'){
+    //   let process_variables=sortedData[this.state.displayIndex].process_variables;
+    //   let processVariablesSchemaKeys=[];
+    //   if(sortedData[0]){
+    //
+    //
+    //     processVariablesSchemaKeys=Object.keys(sortedData[0].process_variables);
+    //     let key;
+    //     let pvValue;
+    //     let newValue;
+    //     let newValueTrigger;
+    //     for (key in processVariablesSchemaKeys){
+    //       if (typeof dbDataAndLiveDataOld[processVariablesSchemaKeys[key]]!=='undefined'){
+    //         if (typeof dbDataAndLiveDataOld[processVariablesSchemaKeys[key]].pvValue!=='undefined'){
+    //           pvValue=dbDataAndLiveDataOld[processVariablesSchemaKeys[key]].pvValue;
+    //         }
+    //         else{
+    //           pvValue=undefined;
+    //         }
+    //         if (typeof dbDataAndLiveDataOld[processVariablesSchemaKeys[key]].newValue!=='undefined'){
+    //           newValue=dbDataAndLiveDataOld[processVariablesSchemaKeys[key]].newValue;
+    //         }
+    //         else{
+    //           newValue=undefined;
+    //         }
+    //         if (typeof dbDataAndLiveDataOld[processVariablesSchemaKeys[key]].newValueTrigger!=='undefined'){
+    //           newValueTrigger=dbDataAndLiveDataOld[processVariablesSchemaKeys[key]].newValueTrigger;
+    //         }
+    //         else{
+    //           newValueTrigger=0;
+    //         }
+    //       }
+    //       else{
+    //         pvValue=undefined;
+    //         newValue=undefined;
+    //         newValueTrigger=0;
+    //       }
+    //
+    //       dbDataAndLiveData[processVariablesSchemaKeys[key]]={description:processVariablesSchemaKeys[key], pvname:process_variables[processVariablesSchemaKeys[key]].pvName ,pvValue:pvValue,newValue:newValue,newValueTrigger:newValueTrigger,dbValue:process_variables[processVariablesSchemaKeys[key]].pvValue  ,metadata:{},initialized:false,severity:0}
+    //     }
+    //   }
+    //   else{
+    //
+    //   }
+    //
+    //
+    //
+    //   this.setState({processVariablesSchemaKeys:processVariablesSchemaKeys})
+    //   //  console.log("dbListWriteAccess",msg.write_access)
+    //
+    //
+    //
+    // }
 
+  }
 
-      this.state={pvs:pvs,
-        dbList:[],
-        dbDataAndLiveData:[],
-        processVariablesSchemaKeys:[],
-        displayIndex:0,
-        tabValue:0,
-        dbListWriteAccess:false,
-        dbListBroadcastReadPvsURL:dbListBroadcastReadPvsURL,
-        dbListBroadcastReadDataURL:dbListBroadcastReadDataURL,
-        dbListUpdateOneURL:dbListUpdateOneURL,
-        dbListInsertOneURL:dbListInsertOneURL,
-        newValuesLoaded:false,
-        metadataComponents:[]};
-        //    console.log(rowPVs)
+  handleNewDbDataList = (msg) => {
+    let item;
+    let data = JSON.parse(msg.data);
+    let sortedData = data.sort(compare)
+    console.log(sortedData)
+    let dbDataAndLiveData = {}
+    let dbDataAndLiveDataOld = this.state.dbDataAndLiveData;
+    let process_variables = this.state.process_variables;
+    if (typeof sortedData[0] !== 'undefined') {
 
-
-
-
-
-        this.SystemsDataConnections= this.SystemsDataConnections.bind(this);
-        this.handleInputValue= this.handleInputValue.bind(this);
-        this.handleMetadata= this.handleMetadata.bind(this);
-        this.handleOnClick= this.handleOnClick.bind(this);
-        this.handleNewDbDataList=this.handleNewDbDataList.bind(this);
-        this.handleTabChange=this.handleTabChange.bind(this);
-        this.handleDbListMetadata=this.handleDbListMetadata.bind(this);
-        this.handleDbListInputValue=this.handleDbListInputValue.bind(this);
-        this.handleNewDbPVsList=this.handleNewDbPVsList.bind(this);
-        this.pvValueTextUpdate=this.pvValueTextUpdate.bind(this);
-        this.pvValueTextUpdate=this.pvValueTextUpdate.bind(this);
-      }
-
-      handleInputValue = name=>(inputValue,pvname,initialized,severity)=>{
-        //  console.log("test");
-        //  console.log("value: ",inputValue);
-        //  console.log("pvname:", pvname);
-        let pvs=this.state.pvs;
-
-        pvs[name].value=inputValue;
-        pvs[name].initialized=initialized;
-        pvs[name].severity=severity;
-
-        this.setState({pvs:pvs});
-
-
-        //state.pvs[pvname].inputValue=inputValue;
-        //pvData.pvs[pvname].initialized=initialized;
-        //pvData.pvs[pvname].severity=severity;
-
-        //console.log("pvData:",pvData)
-
-        //this.setState(pvData);
-
-      }
-
-
-      handleMetadata =  name=>(metadata) =>{
-
-        let pvs=this.state.pvs;
-        pvs[name].metadata=metadata;
-        this.setState({pvs:pvs});
-        //  console.log("metadata",metadata)
-
-      }
+      let processVariablesSchemaKeys = this.state.processVariablesSchemaKeys;
+      if (sortedData[0]) {
 
 
-
-      handleInputValueLabel=pvname=>(inputValue)=>{
-
-        let pvs=this.state.pvs;
-        pvs[pvname].label=inputValue;
-        this.setState({pvs:pvs});
-
-      }
-
-
-      handleDbListInputValue = (key)=>(inputValue,pvname,initialized,severity)=>{
-        let dbDataAndLiveData=this.state.dbDataAndLiveData;
-        if (initialized){
-          dbDataAndLiveData[key].pvValue=inputValue;
-
-        }
-        dbDataAndLiveData[key].initialized=initialized;
-        dbDataAndLiveData[key].severity=severity;
-        this.setState({dbDataAndLiveData:dbDataAndLiveData});
-        //  console.log('handleInputValue',id,name,inputValue,pvname,initialized,severity)
-        //console.log(rowPVs)
-      }
-
-      handleDbListMetadata = (key)=>(metadata) =>{
-        let dbDataAndLiveData=this.state.dbDataAndLiveData;
-        dbDataAndLiveData[key].metadata=metadata;
-        this.setState({dbDataAndLiveData:dbDataAndLiveData});
-
-        //console.log('handleMetaData',id,name,metadata)
-
-
-
-      }
-
-      handleNewDbPVsList = (msg) =>{
-        let item;
-        let data=JSON.parse(msg.data);
-        let socket=this.context.socket;
-
-
-
-        let jwt = JSON.parse(localStorage.getItem('jwt'));
-        if (jwt===null){
-          jwt='unauthenticated'
-        }
-        console.log(data)
-        //console.log(data[0])
-        let process_variables=data[0].process_variables;
-        let processVariablesSchemaKeys=Object.keys(data[0].process_variables);
-        let metadataComponents=data[0].metadata.components;
-        console.log(metadataComponents)
-        let oldDbDataAndLiveData=this.state.dbDataAndLiveData;
-        let dbDataAndLiveData={}
 
         let key;
-
-        for (key in processVariablesSchemaKeys){
-
-
-          let description=process_variables[processVariablesSchemaKeys[key]].description;
-          let pvName=     process_variables[processVariablesSchemaKeys[key]].pvName
-          if (oldDbDataAndLiveData[processVariablesSchemaKeys[key]]){
-            if (oldDbDataAndLiveData[processVariablesSchemaKeys[key]].pvname==pvName){
-              dbDataAndLiveData[processVariablesSchemaKeys[key]]=oldDbDataAndLiveData[processVariablesSchemaKeys[key]];
-              dbDataAndLiveData[processVariablesSchemaKeys[key]].description=description;
+        let pvValue;
+        let newValue;
+        let newValueTrigger;
+        let initialized;
+        let severity;
+        let metadata = {};
+        for (key in processVariablesSchemaKeys) {
+          if (typeof dbDataAndLiveDataOld[processVariablesSchemaKeys[key]] !== 'undefined') {
+            if (typeof dbDataAndLiveDataOld[processVariablesSchemaKeys[key]].pvValue !== 'undefined') {
+              pvValue = dbDataAndLiveDataOld[processVariablesSchemaKeys[key]].pvValue;
+            }
+            else {
+              pvValue = undefined;
+            }
+            if (typeof dbDataAndLiveDataOld[processVariablesSchemaKeys[key]].newValue !== 'undefined') {
+              newValue = dbDataAndLiveDataOld[processVariablesSchemaKeys[key]].newValue;
+            }
+            else {
+              newValue = undefined;
+            }
+            if (typeof dbDataAndLiveDataOld[processVariablesSchemaKeys[key]].newValueTrigger !== 'undefined') {
+              newValueTrigger = dbDataAndLiveDataOld[processVariablesSchemaKeys[key]].newValueTrigger;
+            }
+            else {
+              newValueTrigger = 0;
+            }
+            if (typeof dbDataAndLiveDataOld[processVariablesSchemaKeys[key]].initialized !== 'undefined') {
+              initialized = dbDataAndLiveDataOld[processVariablesSchemaKeys[key]].initialized;
+            }
+            else {
+              initialized = false;
+            }
+            if (typeof dbDataAndLiveDataOld[processVariablesSchemaKeys[key]].severity !== 'undefined') {
+              severity = dbDataAndLiveDataOld[processVariablesSchemaKeys[key]].severity;
+            }
+            else {
+              severity = 0;
+            }
+            if (typeof dbDataAndLiveDataOld[processVariablesSchemaKeys[key]].metadata !== 'undefined') {
+              metadata = dbDataAndLiveDataOld[processVariablesSchemaKeys[key]].metadata;
+            }
+            else {
+              metadata = {};
             }
           }
-          else{
-            dbDataAndLiveData[processVariablesSchemaKeys[key]]={description:description, pvname:pvName ,pvValue:undefined,newValue:undefined,newValueTrigger:0,dbValue:undefined,metadata:{},initialized:false,severity:0}
+          else {
+            pvValue = undefined;
+            newValue = undefined;
+            newValueTrigger = 0;
+            initialized = false;
+            severity = 0;
+            metadata = {};
           }
+          let description = process_variables[processVariablesSchemaKeys[key]].description;
+          let pvName = process_variables[processVariablesSchemaKeys[key]].pvName;
+          let dbValue = sortedData[this.state.displayIndex].process_variables[processVariablesSchemaKeys[key]].pvValue
+          dbDataAndLiveData[processVariablesSchemaKeys[key]] = { description: description, pvname: pvName, pvValue: pvValue, newValue: newValue, newValueTrigger: newValueTrigger, dbValue: dbValue, metadata: metadata, initialized: initialized, severity: severity }
+
+          //dbDataAndLiveData[processVariablesSchemaKeys[key]]={description:processVariablesSchemaKeys[key], pvname:process_variables[processVariablesSchemaKeys[key]].pvName ,pvValue:pvValue,newValue:newValue,newValueTrigger:newValueTrigger,dbValue:process_variables[processVariablesSchemaKeys[key]].pvValue  ,metadata:{},initialized:false,severity:0}
         }
-
-
-        //console.log(processVariablesSchemaKeys)
-        //console.log(dbDataAndLiveData)
-        this.setState({processVariablesSchemaKeys:processVariablesSchemaKeys,dbDataAndLiveData:dbDataAndLiveData,process_variables:process_variables,metadataComponents:metadataComponents})
-        socket.emit('databaseBroadcastRead', {dbURL:this.state.dbListBroadcastReadDataURL,'clientAuthorisation':jwt},(data) => {
-
-          if(data!=="OK"){
-            console.log("ackdata",data);
-          }
-        });
-
-        // let sortedData=data.sort(compare)
-        // console.log(sortedData)
-        // let dbDataAndLiveData={}
-        // let dbDataAndLiveDataOld=this.state.dbDataAndLiveData;
-        // if (typeof sortedData[0]!=='undefined'){
-        //   let process_variables=sortedData[this.state.displayIndex].process_variables;
-        //   let processVariablesSchemaKeys=[];
-        //   if(sortedData[0]){
-        //
-        //
-        //     processVariablesSchemaKeys=Object.keys(sortedData[0].process_variables);
-        //     let key;
-        //     let pvValue;
-        //     let newValue;
-        //     let newValueTrigger;
-        //     for (key in processVariablesSchemaKeys){
-        //       if (typeof dbDataAndLiveDataOld[processVariablesSchemaKeys[key]]!=='undefined'){
-        //         if (typeof dbDataAndLiveDataOld[processVariablesSchemaKeys[key]].pvValue!=='undefined'){
-        //           pvValue=dbDataAndLiveDataOld[processVariablesSchemaKeys[key]].pvValue;
-        //         }
-        //         else{
-        //           pvValue=undefined;
-        //         }
-        //         if (typeof dbDataAndLiveDataOld[processVariablesSchemaKeys[key]].newValue!=='undefined'){
-        //           newValue=dbDataAndLiveDataOld[processVariablesSchemaKeys[key]].newValue;
-        //         }
-        //         else{
-        //           newValue=undefined;
-        //         }
-        //         if (typeof dbDataAndLiveDataOld[processVariablesSchemaKeys[key]].newValueTrigger!=='undefined'){
-        //           newValueTrigger=dbDataAndLiveDataOld[processVariablesSchemaKeys[key]].newValueTrigger;
-        //         }
-        //         else{
-        //           newValueTrigger=0;
-        //         }
-        //       }
-        //       else{
-        //         pvValue=undefined;
-        //         newValue=undefined;
-        //         newValueTrigger=0;
-        //       }
-        //
-        //       dbDataAndLiveData[processVariablesSchemaKeys[key]]={description:processVariablesSchemaKeys[key], pvname:process_variables[processVariablesSchemaKeys[key]].pvName ,pvValue:pvValue,newValue:newValue,newValueTrigger:newValueTrigger,dbValue:process_variables[processVariablesSchemaKeys[key]].pvValue  ,metadata:{},initialized:false,severity:0}
-        //     }
-        //   }
-        //   else{
-        //
-        //   }
-        //
-        //
-        //
-        //   this.setState({processVariablesSchemaKeys:processVariablesSchemaKeys})
-        //   //  console.log("dbListWriteAccess",msg.write_access)
-        //
-        //
-        //
-        // }
-
-      }
-
-      handleNewDbDataList = (msg) =>{
-        let item;
-        let data=JSON.parse(msg.data);
-        let sortedData=data.sort(compare)
-        //  console.log(sortedData)
-        let dbDataAndLiveData={}
-        let dbDataAndLiveDataOld=this.state.dbDataAndLiveData;
-        let process_variables=this.state.process_variables;
-        if (typeof sortedData[0]!=='undefined'){
-
-          let processVariablesSchemaKeys=this.state.processVariablesSchemaKeys;
-          if(sortedData[0]){
-
-
-
-            let key;
-            let pvValue;
-            let newValue;
-            let newValueTrigger;
-            let initialized;
-            let severity;
-            let metadata={};
-            for (key in processVariablesSchemaKeys){
-              if (typeof dbDataAndLiveDataOld[processVariablesSchemaKeys[key]]!=='undefined'){
-                if (typeof dbDataAndLiveDataOld[processVariablesSchemaKeys[key]].pvValue!=='undefined'){
-                  pvValue=dbDataAndLiveDataOld[processVariablesSchemaKeys[key]].pvValue;
-                }
-                else{
-                  pvValue=undefined;
-                }
-                if (typeof dbDataAndLiveDataOld[processVariablesSchemaKeys[key]].newValue!=='undefined'){
-                  newValue=dbDataAndLiveDataOld[processVariablesSchemaKeys[key]].newValue;
-                }
-                else{
-                  newValue=undefined;
-                }
-                if (typeof dbDataAndLiveDataOld[processVariablesSchemaKeys[key]].newValueTrigger!=='undefined'){
-                  newValueTrigger=dbDataAndLiveDataOld[processVariablesSchemaKeys[key]].newValueTrigger;
-                }
-                else{
-                  newValueTrigger=0;
-                }
-                if (typeof dbDataAndLiveDataOld[processVariablesSchemaKeys[key]].initialized!=='undefined'){
-                  initialized=dbDataAndLiveDataOld[processVariablesSchemaKeys[key]].initialized;
-                }
-                else{
-                  initialized=false;
-                }
-                if (typeof dbDataAndLiveDataOld[processVariablesSchemaKeys[key]].severity!=='undefined'){
-                  severity=dbDataAndLiveDataOld[processVariablesSchemaKeys[key]].severity;
-                }
-                else{
-                  severity=0;
-                }
-                if (typeof dbDataAndLiveDataOld[processVariablesSchemaKeys[key]].metadata!=='undefined'){
-                  metadata=dbDataAndLiveDataOld[processVariablesSchemaKeys[key]].metadata;
-                }
-                else{
-                  metadata={};
-                }
-              }
-              else{
-                pvValue=undefined;
-                newValue=undefined;
-                newValueTrigger=0;
-                initialized=false;
-                severity=0;
-                metadata={};
-              }
-              let description=process_variables[processVariablesSchemaKeys[key]].description;
-              let pvName=     process_variables[processVariablesSchemaKeys[key]].pvName;
-              let dbValue=    sortedData[this.state.displayIndex].process_variables[processVariablesSchemaKeys[key]].pvValue
-              dbDataAndLiveData[processVariablesSchemaKeys[key]]={description:description, pvname:pvName ,pvValue:pvValue,newValue:newValue,newValueTrigger:newValueTrigger,dbValue:dbValue,metadata:metadata,initialized:initialized,severity:severity}
-
-              //dbDataAndLiveData[processVariablesSchemaKeys[key]]={description:processVariablesSchemaKeys[key], pvname:process_variables[processVariablesSchemaKeys[key]].pvName ,pvValue:pvValue,newValue:newValue,newValueTrigger:newValueTrigger,dbValue:process_variables[processVariablesSchemaKeys[key]].pvValue  ,metadata:{},initialized:false,severity:0}
-            }
-          }
-          else{
-
-          }
-
-
-
-          this.setState({dbList:sortedData,dbDataAndLiveData:dbDataAndLiveData,dbListWriteAccess:msg.write_access,processVariablesSchemaKeys:processVariablesSchemaKeys})
-          //  console.log("dbListWriteAccess",msg.write_access)
-
-
-
-        }
-
-      }
-
-
-      componentDidMount() {
-        let socket=this.context.socket;
-
-
-
-        let jwt = JSON.parse(localStorage.getItem('jwt'));
-        if (jwt===null){
-          jwt='unauthenticated'
-        }
-
-        socket.emit('databaseBroadcastRead', {dbURL:this.state.dbListBroadcastReadPvsURL,'clientAuthorisation':jwt},(data) => {
-
-          if(data!=="OK"){
-            console.log("ackdata",data);
-          }
-        });
-
-        //console.log('emmited')
-        //  this.handleInitialConnection();
-        //this.timeout=setTimeout(this.handleInitialConnection, 3000);
-        //    console.log("this.state['pvname']",this.state['pvname']);
-        socket.on('databaseData:'+this.state.dbListBroadcastReadPvsURL,this.handleNewDbPVsList);
-        socket.on('databaseData:'+this.state.dbListBroadcastReadDataURL,this.handleNewDbDataList);
-        //socket.on('connect_error',this.connectError);
-        //socket.on('disconnect', this.disconnect);
-        //socket.on('reconnect', this.reconnect);
-        //socket.on('redirectToLogIn', this.handleRedirectToLogIn);
-        //  socket.on(this.state['pvname'],this.testFunction);
-
-
-
-
       }
 
 
 
 
-
-      handleOnClick = (index)=>()=> {
-        console.log('row index clicked',index);
-        let dbList=this.state.dbList;
-        let process_variables=dbList[index].process_variables;
-        let dbDataAndLiveData=this.state.dbDataAndLiveData;
+      this.setState({ dbList: sortedData, dbDataAndLiveData: dbDataAndLiveData, dbListWriteAccess: msg.write_access, processVariablesSchemaKeys: processVariablesSchemaKeys })
+      //  console.log("dbListWriteAccess",msg.write_access)
 
 
-        let processVariablesSchemaKeys=this.state.processVariablesSchemaKeys;
-        if(processVariablesSchemaKeys[0]){
+
+    }
+    else {
 
 
-          let key;
-          for (key in processVariablesSchemaKeys){
-            dbDataAndLiveData[processVariablesSchemaKeys[key]].dbValue=process_variables[processVariablesSchemaKeys[key]].pvValue;
-          }
+      let processVariablesSchemaKeys = this.state.processVariablesSchemaKeys;
+      let key;
+      let pvValue;
+      let newValue;
+      let newValueTrigger;
+      let initialized;
+      let severity;
+      let pvName;
+      let description;
+
+      let metadata = {};
+      for (key in processVariablesSchemaKeys) {
+        if (typeof dbDataAndLiveDataOld[processVariablesSchemaKeys[key]] !== 'undefined') {
+          dbDataAndLiveData[processVariablesSchemaKeys[key]]=dbDataAndLiveDataOld[processVariablesSchemaKeys[key]];
+          dbDataAndLiveData[processVariablesSchemaKeys[key]].dbValue=undefined;
+          dbDataAndLiveData[processVariablesSchemaKeys[key]].newValue=undefined;
         }
-
-
-        this.setState({displayIndex:index,dbDataAndLiveData:dbDataAndLiveData})
-
+      }  
+        this.setState({ dbList: sortedData, dbListWriteAccess: msg.write_access,dbDataAndLiveData:dbDataAndLiveData})
+        //dbDataAndLiveData[processVariablesSchemaKeys[key]]={description:processVariablesSchemaKeys[key], pvname:process_variables[processVariablesSchemaKeys[key]].pvName ,pvValue:pvValue,newValue:newValue,newValueTrigger:newValueTrigger,dbValue:process_variables[processVariablesSchemaKeys[key]].pvValue  ,metadata:{},initialized:false,severity:0}
       }
 
 
-      handleLoadSelectedValues = ()=> {
-        let index=this.state.displayIndex;
-        let processVariablesSchemaKeys=this.state.processVariablesSchemaKeys;
-        let dbDataAndLiveData =this.state.dbDataAndLiveData;
-        let key;
+    
 
-        for (key in processVariablesSchemaKeys){
+  }
 
 
-          //  console.log(row,dbDataAndLiveData[row].initialized)
-          //  if (dbDataAndLiveData[row].initialized){
-          dbDataAndLiveData[processVariablesSchemaKeys[key]].newValue=dbDataAndLiveData[processVariablesSchemaKeys[key]].dbValue;
+  componentDidMount() {
+    let socket = this.context.socket;
 
-          //    }
-        }
-        this.setState({dbDataAndLiveData:dbDataAndLiveData,newValuesLoaded:true})
 
+
+    let jwt = JSON.parse(localStorage.getItem('jwt'));
+    if (jwt === null) {
+      jwt = 'unauthenticated'
+    }
+
+    socket.emit('databaseBroadcastRead', { dbURL: this.state.dbListBroadcastReadPvsURL, 'clientAuthorisation': jwt }, (data) => {
+
+      if (data !== "OK") {
+        console.log("ackdata", data);
       }
+    });
 
-      handleSavedValues = ()=> {
-        let index=this.state.displayIndex;
-        let processVariablesSchemaKeys=this.state.processVariablesSchemaKeys;
-        let dbDataAndLiveData =this.state.dbDataAndLiveData;
-        let pvs=this.state.pvs;
-        let key;
-        console.log("save")
-        console.log(this.state.dbList[0])
-        let newEntry={};
-        newEntry['process_variables']={}
-        newEntry['beam_setup']={}
-        newEntry.beam_setup['Frequency']=pvs['Frequency'].value;
-        newEntry.beam_setup['Energy']=pvs['Energy'].value;
-        newEntry.beam_setup['Description']=pvs['Description'].value;
-        console.log(pvs)
-
-
-        let mydate = new Date();
-        //  let months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-        //  let year = mydate.getFullYear();
-        // let month = months[mydate.getMonth()];
-        //let date = mydate.getDate();
-        let day =mydate.getDate();
-        let month =mydate.getMonth()+1;
-        let year =mydate.getFullYear();
-        let hour = mydate.getHours();
-        let min = mydate.getMinutes();
-        let sec = mydate.getSeconds();
-        let ms = mydate.getMilliseconds()
-        if (hour<10){
-          hour='0'+hour;
-        }
-        if (ms<10){
-          ms='00'+ms;
-        }
-        else if (ms<100) {
-          ms='0'+ms;
-        }
-        //let value= hour + ':' + min + ':' + sec +':' + ms;
-        let value;
-        if( min<10){
-          min='0'+min;
-
-        }
-
-        if( sec<10){
-          sec='0'+sec;
-
-        }
-        value=day+"-"+month+"-"+year+" "+hour + ':' + min;
-        newEntry.beam_setup['DateTime']=value;
-        newEntry.beam_setup['Status']="Pending";
-        for (key in processVariablesSchemaKeys){
-
-
-          //  console.log(row,dbDataAndLiveData[row].initialized)
-          //  if (dbDataAndLiveData[row].initialized){
-          newEntry.process_variables[processVariablesSchemaKeys[key]]={pvName:dbDataAndLiveData[processVariablesSchemaKeys[key]].pvname,pvValue:dbDataAndLiveData[processVariablesSchemaKeys[key]].pvValue};
-
-          //    }
-        }
-        //this.setState({dbDataAndLiveData:dbDataAndLiveData,newValuesLoaded:true})
-        console.log(newEntry)
-
-
-        let socket=this.context.socket;
-        let jwt = JSON.parse(localStorage.getItem('jwt'));
-        if (jwt===null){
-          jwt='unauthenticated'
-        }
-        socket.emit('databaseInsertOne', {dbURL: this.state.dbListInsertOneURL,'newEntry':newEntry,'clientAuthorisation':jwt},(data) => {
-          console.log("ackdata",data);
-          if(data=="OK"){
-            socket.emit('databaseBroadcastRead', {dbURL:this.state.dbListBroadcastReadDataURL,'clientAuthorisation':jwt},(data) => {
-
-              if(data!=="OK"){
-                console.log("ackdata",data);
-              }
-            });
-          } else{
-            console.log("Save values unsuccessful")
-          }
-
-          // data will be 'woot'
-        });
+    //console.log('emmited')
+    //  this.handleInitialConnection();
+    //this.timeout=setTimeout(this.handleInitialConnection, 3000);
+    //    console.log("this.state['pvname']",this.state['pvname']);
+    socket.on('databaseData:' + this.state.dbListBroadcastReadPvsURL, this.handleNewDbPVsList);
+    socket.on('databaseData:' + this.state.dbListBroadcastReadDataURL, this.handleNewDbDataList);
+    //socket.on('connect_error',this.connectError);
+    //socket.on('disconnect', this.disconnect);
+    //socket.on('reconnect', this.reconnect);
+    //socket.on('redirectToLogIn', this.handleRedirectToLogIn);
+    //  socket.on(this.state['pvname'],this.testFunction);
 
 
 
+
+  }
+
+
+
+
+
+  handleOnClick = (index) => () => {
+    console.log('row index clicked', index);
+    let dbList = this.state.dbList;
+    let process_variables = dbList[index].process_variables;
+    let dbDataAndLiveData = this.state.dbDataAndLiveData;
+
+
+    let processVariablesSchemaKeys = this.state.processVariablesSchemaKeys;
+    if (processVariablesSchemaKeys[0]) {
+
+
+      let key;
+      for (key in processVariablesSchemaKeys) {
+        dbDataAndLiveData[processVariablesSchemaKeys[key]].dbValue = process_variables[processVariablesSchemaKeys[key]].pvValue;
       }
-
-      handleWriteNewValues = ()=> {
-
-        let processVariablesSchemaKeys=this.state.processVariablesSchemaKeys;
-        let dbDataAndLiveData =this.state.dbDataAndLiveData;
-        let key;
-
-        for (key in processVariablesSchemaKeys){
+    }
 
 
-          //  console.log(row,dbDataAndLiveData[row].initialized)
-          //  if (dbDataAndLiveData[row].initialized){
-          dbDataAndLiveData[processVariablesSchemaKeys[key]].pvValue=dbDataAndLiveData[processVariablesSchemaKeys[key]].newValue;
-          dbDataAndLiveData[processVariablesSchemaKeys[key]].newValueTrigger++;
-          //    }
-        }
-        this.setState({dbDataAndLiveData:dbDataAndLiveData})
-      }
+    this.setState({ displayIndex: index, dbDataAndLiveData: dbDataAndLiveData })
 
-      handleOnClickWorking = ()=> {
-        console.log('marking row index working',this.state.displayIndex);
-        let dbList=this.state.dbList;
+  }
 
 
+  handleLoadSelectedValues = () => {
+    let index = this.state.displayIndex;
+    let processVariablesSchemaKeys = this.state.processVariablesSchemaKeys;
+    let dbDataAndLiveData = this.state.dbDataAndLiveData;
+    let key;
 
-        let socket=this.context.socket;
-        let jwt = JSON.parse(localStorage.getItem('jwt'));
-        if (jwt===null){
-          jwt='unauthenticated'
-        }
+    for (key in processVariablesSchemaKeys) {
 
-        let id=dbList[this.state.displayIndex]['_id']['$oid'];
-        let newvalues= {'$set': {"beam_setup.Status":"Working"}}
 
-        socket.emit('databaseUpdateOne', {dbURL: this.state.dbListUpdateOneURL,'id':id,'newvalues':newvalues,'clientAuthorisation':jwt},(data) => {
-          console.log("ackdata",data);
-          if(data=="OK"){
-            socket.emit('databaseBroadcastRead', {dbURL:this.state.dbListBroadcastReadDataURL,'clientAuthorisation':jwt},(data) => {
+      //  console.log(row,dbDataAndLiveData[row].initialized)
+      //  if (dbDataAndLiveData[row].initialized){
+      dbDataAndLiveData[processVariablesSchemaKeys[key]].newValue = dbDataAndLiveData[processVariablesSchemaKeys[key]].dbValue;
 
-              if(data!=="OK"){
-                console.log("ackdata",data);
-              }
-            });
-          } else{
-            console.log("set status: working  unsuccessful")
+      //    }
+    }
+    this.setState({ dbDataAndLiveData: dbDataAndLiveData, newValuesLoaded: true })
+
+  }
+
+  handleSavedValues = () => {
+    let index = this.state.displayIndex;
+    let processVariablesSchemaKeys = this.state.processVariablesSchemaKeys;
+    let dbDataAndLiveData = this.state.dbDataAndLiveData;
+    let pvs = this.state.pvs;
+    let key;
+    console.log("save")
+    console.log(this.state.dbList[0])
+    let newEntry = {};
+    newEntry['process_variables'] = {}
+    newEntry['beam_setup'] = {}
+    newEntry.beam_setup['Frequency'] = pvs['Frequency'].value;
+    newEntry.beam_setup['Energy'] = pvs['Energy'].value;
+    newEntry.beam_setup['Description'] = pvs['Description'].value;
+    console.log(pvs)
+
+
+    let mydate = new Date();
+    //  let months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+    //  let year = mydate.getFullYear();
+    // let month = months[mydate.getMonth()];
+    //let date = mydate.getDate();
+    let day = mydate.getDate();
+    let month = mydate.getMonth() + 1;
+    let year = mydate.getFullYear();
+    let hour = mydate.getHours();
+    let min = mydate.getMinutes();
+    let sec = mydate.getSeconds();
+    let ms = mydate.getMilliseconds()
+    if (hour < 10) {
+      hour = '0' + hour;
+    }
+    if (ms < 10) {
+      ms = '00' + ms;
+    }
+    else if (ms < 100) {
+      ms = '0' + ms;
+    }
+    //let value= hour + ':' + min + ':' + sec +':' + ms;
+    let value;
+    if (min < 10) {
+      min = '0' + min;
+
+    }
+
+    if (sec < 10) {
+      sec = '0' + sec;
+
+    }
+    value = day + "-" + month + "-" + year + " " + hour + ':' + min;
+    newEntry.beam_setup['DateTime'] = value;
+    newEntry.beam_setup['Status'] = "Pending";
+    for (key in processVariablesSchemaKeys) {
+
+
+      //  console.log(row,dbDataAndLiveData[row].initialized)
+      //  if (dbDataAndLiveData[row].initialized){
+      newEntry.process_variables[processVariablesSchemaKeys[key]] = { pvName: dbDataAndLiveData[processVariablesSchemaKeys[key]].pvname, pvValue: dbDataAndLiveData[processVariablesSchemaKeys[key]].pvValue };
+
+      //    }
+    }
+    //this.setState({dbDataAndLiveData:dbDataAndLiveData,newValuesLoaded:true})
+    console.log(newEntry)
+
+
+    let socket = this.context.socket;
+    let jwt = JSON.parse(localStorage.getItem('jwt'));
+    if (jwt === null) {
+      jwt = 'unauthenticated'
+    }
+    socket.emit('databaseInsertOne', { dbURL: this.state.dbListInsertOneURL, 'newEntry': newEntry, 'clientAuthorisation': jwt }, (data) => {
+      console.log("ackdata", data);
+      if (data == "OK") {
+        socket.emit('databaseBroadcastRead', { dbURL: this.state.dbListBroadcastReadDataURL, 'clientAuthorisation': jwt }, (data) => {
+
+          if (data !== "OK") {
+            console.log("ackdata", data);
           }
         });
-        //this.setState({dbList:dbList});
-        //this.setState({displayIndex:index})
-
+      } else {
+        console.log("Save values unsuccessful")
       }
 
-      handleOnClickPending = ()=> {
-        console.log('marking row index working',this.state.displayIndex);
-        let dbList=this.state.dbList;
+      // data will be 'woot'
+    });
 
 
-        let socket=this.context.socket;
-        let jwt = JSON.parse(localStorage.getItem('jwt'));
-        if (jwt===null){
-          jwt='unauthenticated'
-        }
 
-        let id=dbList[this.state.displayIndex]['_id']['$oid'];
-        let newvalues= {'$set': {"beam_setup.Status":"Pending"}}
+  }
 
-        socket.emit('databaseUpdateOne', {dbURL: this.state.dbListUpdateOneURL,'id':id,'newvalues':newvalues,'clientAuthorisation':jwt},(data) => {
-          console.log("ackdata",data);
-          if(data=="OK"){
-            socket.emit('databaseBroadcastRead', {dbURL:this.state.dbListBroadcastReadDataURL,'clientAuthorisation':jwt},(data) => {
+  handleWriteNewValues = () => {
 
-              if(data!=="OK"){
-                console.log("ackdata",data);
-              }
-            });
-          } else{
-            console.log("set status: pending  unsuccessful")
+    let processVariablesSchemaKeys = this.state.processVariablesSchemaKeys;
+    let dbDataAndLiveData = this.state.dbDataAndLiveData;
+    let key;
+
+    for (key in processVariablesSchemaKeys) {
+
+
+      //  console.log(row,dbDataAndLiveData[row].initialized)
+      //  if (dbDataAndLiveData[row].initialized){
+      dbDataAndLiveData[processVariablesSchemaKeys[key]].pvValue = dbDataAndLiveData[processVariablesSchemaKeys[key]].newValue;
+      dbDataAndLiveData[processVariablesSchemaKeys[key]].newValueTrigger++;
+      //    }
+    }
+    this.setState({ dbDataAndLiveData: dbDataAndLiveData })
+  }
+
+  handleOnClickWorking = () => {
+    console.log('marking row index working', this.state.displayIndex);
+    let dbList = this.state.dbList;
+
+
+
+    let socket = this.context.socket;
+    let jwt = JSON.parse(localStorage.getItem('jwt'));
+    if (jwt === null) {
+      jwt = 'unauthenticated'
+    }
+
+    let id = dbList[this.state.displayIndex]['_id']['$oid'];
+    let newvalues = { '$set': { "beam_setup.Status": "Working" } }
+
+    socket.emit('databaseUpdateOne', { dbURL: this.state.dbListUpdateOneURL, 'id': id, 'newvalues': newvalues, 'clientAuthorisation': jwt }, (data) => {
+      console.log("ackdata", data);
+      if (data == "OK") {
+        socket.emit('databaseBroadcastRead', { dbURL: this.state.dbListBroadcastReadDataURL, 'clientAuthorisation': jwt }, (data) => {
+
+          if (data !== "OK") {
+            console.log("ackdata", data);
           }
         });
-
+      } else {
+        console.log("set status: working  unsuccessful")
       }
-      handleOnClickObselete = ()=> {
-        let dbList=this.state.dbList;
+    });
+    //this.setState({dbList:dbList});
+    //this.setState({displayIndex:index})
+
+  }
+
+  handleOnClickPending = () => {
+    console.log('marking row index working', this.state.displayIndex);
+    let dbList = this.state.dbList;
 
 
+    let socket = this.context.socket;
+    let jwt = JSON.parse(localStorage.getItem('jwt'));
+    if (jwt === null) {
+      jwt = 'unauthenticated'
+    }
 
-        let socket=this.context.socket;
-        let jwt = JSON.parse(localStorage.getItem('jwt'));
-        if (jwt===null){
-          jwt='unauthenticated'
-        }
+    let id = dbList[this.state.displayIndex]['_id']['$oid'];
+    let newvalues = { '$set': { "beam_setup.Status": "Pending" } }
 
-        let id=dbList[this.state.displayIndex]['_id']['$oid'];
-        let newvalues= {'$set': {"beam_setup.Status":"Obselete"}}
+    socket.emit('databaseUpdateOne', { dbURL: this.state.dbListUpdateOneURL, 'id': id, 'newvalues': newvalues, 'clientAuthorisation': jwt }, (data) => {
+      console.log("ackdata", data);
+      if (data == "OK") {
+        socket.emit('databaseBroadcastRead', { dbURL: this.state.dbListBroadcastReadDataURL, 'clientAuthorisation': jwt }, (data) => {
 
-        socket.emit('databaseUpdateOne', {dbURL: this.state.dbListUpdateOneURL,'id':id,'newvalues':newvalues,'clientAuthorisation':jwt},(data) => {
-          console.log("ackdata",data);
-          if(data=="OK"){
-            socket.emit('databaseBroadcastRead', {dbURL:this.state.dbListBroadcastReadDataURL,'clientAuthorisation':jwt},(data) => {
-
-              if(data!=="OK"){
-                console.log("ackdata",data);
-              }
-            });
-          } else{
-            console.log("set status: Obselete  unsuccessful")
+          if (data !== "OK") {
+            console.log("ackdata", data);
           }
         });
-
+      } else {
+        console.log("set status: pending  unsuccessful")
       }
-      handleOnClickDelete = ()=> {
-        let dbList=this.state.dbList;
+    });
+
+  }
+  handleOnClickObselete = () => {
+    let dbList = this.state.dbList;
 
 
 
-        let socket=this.context.socket;
-        let jwt = JSON.parse(localStorage.getItem('jwt'));
-        if (jwt===null){
-          jwt='unauthenticated'
-        }
+    let socket = this.context.socket;
+    let jwt = JSON.parse(localStorage.getItem('jwt'));
+    if (jwt === null) {
+      jwt = 'unauthenticated'
+    }
 
-        let id=dbList[this.state.displayIndex]['_id']['$oid'];
-        let newvalues= {'$set': {"beam_setup.Status":"Delete"}}
+    let id = dbList[this.state.displayIndex]['_id']['$oid'];
+    let newvalues = { '$set': { "beam_setup.Status": "Obselete" } }
 
-        socket.emit('databaseUpdateOne', {dbURL: this.state.dbListUpdateOneURL,'id':id,'newvalues':newvalues,'clientAuthorisation':jwt},(data) => {
-          console.log("ackdata",data);
-          if(data=="OK"){
+    socket.emit('databaseUpdateOne', { dbURL: this.state.dbListUpdateOneURL, 'id': id, 'newvalues': newvalues, 'clientAuthorisation': jwt }, (data) => {
+      console.log("ackdata", data);
+      if (data == "OK") {
+        socket.emit('databaseBroadcastRead', { dbURL: this.state.dbListBroadcastReadDataURL, 'clientAuthorisation': jwt }, (data) => {
 
-            socket.emit('databaseBroadcastRead', {dbURL:this.state.dbListBroadcastReadDataURL,'clientAuthorisation':jwt},(data) => {
-
-              if(data!=="OK"){
-                console.log("ackdata",data);
-              }
-            })
-          } else{
-            console.log("set status: Delete  unsuccessful")
+          if (data !== "OK") {
+            console.log("ackdata", data);
           }
         });
+      } else {
+        console.log("set status: Obselete  unsuccessful")
       }
-      handleTabChange = (event, newValue) => {
-        //  console.log(newValue)
-        this.setState({tabValue:newValue});
-      };
-     metadataPVsDataConnections = () => {
-        //this.test("test1");
-        //this.handleInputValue();
-        let pv;
-        let DataConnections=[];
-        let id=0;
-        let metadataPVs=this.props.metadataPVs;
+    });
+
+  }
+  handleOnClickDelete = () => {
+    let dbList = this.state.dbList;
+
+
+
+    let socket = this.context.socket;
+    let jwt = JSON.parse(localStorage.getItem('jwt'));
+    if (jwt === null) {
+      jwt = 'unauthenticated'
+    }
+
+    let id = dbList[this.state.displayIndex]['_id']['$oid'];
+    let newvalues = { '$set': { "beam_setup.Status": "Delete" } }
+    if (this.state.displayIndex >= 1) {
+      this.setState({ displayIndex: this.state.displayIndex - 1 })
+    }
+    else {
+      this.setState({ displayIndex: 0 })
+    }
+    socket.emit('databaseUpdateOne', { dbURL: this.state.dbListUpdateOneURL, 'id': id, 'newvalues': newvalues, 'clientAuthorisation': jwt }, (data) => {
+      console.log("ackdata", data);
+      if (data == "OK") {
+
+        socket.emit('databaseBroadcastRead', { dbURL: this.state.dbListBroadcastReadDataURL, 'clientAuthorisation': jwt }, (data) => {
+
+          if (data !== "OK") {
+            console.log("ackdata", data);
+          }
+        })
+      } else {
+        console.log("set status: Delete  unsuccessful")
+      }
+    });
+  }
+  handleTabChange = (event, newValue) => {
+    //  console.log(newValue)
+    this.setState({ tabValue: newValue });
+  };
+  metadataPVsDataConnections = () => {
+    //this.test("test1");
+    //this.handleInputValue();
+    let pv;
+    let DataConnections = [];
+    let id = 0;
+    let metadataPVs = this.props.metadataPVs;
     //    console.log(metadataPVs)
-        let item;
-        // let pvKeys=Object.keys(pvs)
-        for (item in metadataPVs){
-        //   //  console.log(this.state.pvs[pv].pvname);
+    let item;
+    // let pvKeys=Object.keys(pvs)
+    for (item in metadataPVs) {
+      //   //  console.log(this.state.pvs[pv].pvname);
       //    console.log(metadataPVs[item])
-        // DataConnections.push(
+      // DataConnections.push(
 
-        //     <DataConnection key={metadataPVs[item].pv}
-        //       pv={metadataPVs[item].pv}
-        //       handleInputValue={this.handleInputValue(pvKeys[key])}
-        //       handleMetadata={this.handleMetadata(pvKeys[key])}
-        //     />
+      //     <DataConnection key={metadataPVs[item].pv}
+      //       pv={metadataPVs[item].pv}
+      //       handleInputValue={this.handleInputValue(pvKeys[key])}
+      //       handleMetadata={this.handleMetadata(pvKeys[key])}
+      //     />
 
-        //   )
-        }
+      //   )
+    }
 
-        return DataConnections;
+    return DataConnections;
+  }
+  multipleDataConnections = () => {
+    //this.test("test1");
+    //this.handleInputValue();
+    let pv;
+    let DataConnections = [];
+    let id = 0;
+    let pvs = this.state.pvs;
+    let key;
+    let pvKeys = Object.keys(pvs)
+    for (key in pvKeys) {
+      //  console.log(this.state.pvs[pv].pvname);
+      DataConnections.push(
+
+        <DataConnection key={this.state.pvs[pvKeys[key]].pvname + id}
+          pv={this.state.pvs[pvKeys[key]].pvname}
+          handleInputValue={this.handleInputValue(pvKeys[key])}
+          handleMetadata={this.handleMetadata(pvKeys[key])}
+        />
+
+      )
+    }
+
+    return DataConnections;
+  }
+
+  SystemsDataConnections = (displayIndex) => {
+    //this.test("test1");
+    //this.handleInputValue();
+
+    let pv;
+    let DataConnections = [];
+    let id = 0;
+    let row;
+
+
+    // //  console.log(rowPVs)
+    // let index=0;
+    let processVariablesSchemaKeys = this.state.processVariablesSchemaKeys;
+    let dbDataAndLiveData = this.state.dbDataAndLiveData;
+    let key;
+
+    for (key in processVariablesSchemaKeys) {
+
+
+
+
+
+
+      DataConnections.push(
+
+        <DataConnection
+          key={dbDataAndLiveData[processVariablesSchemaKeys[key]].pvname + id}
+          pv={dbDataAndLiveData[processVariablesSchemaKeys[key]].pvname}
+
+          handleInputValue={this.handleDbListInputValue(processVariablesSchemaKeys[key])}
+          handleMetadata={this.handleDbListMetadata(processVariablesSchemaKeys[key])}
+          outputValue={dbDataAndLiveData[processVariablesSchemaKeys[key]].pvValue}
+          newValueTrigger={dbDataAndLiveData[processVariablesSchemaKeys[key]].newValueTrigger}
+        />
+
+      );
+      id++;
+      //
+      //   //console.log("linedata: ", this.state.pvs[pv].linedata);
+      //   //    console.log(row)
+      //
+      //   if (typeof rowPVs[row].rowProps !== 'undefined'){
+      //     if (typeof rowPVs[row].rowProps.useStatus !== 'undefined'){
+      //       useStatus=rowPVs[row].rowProps.useStatus;
+      //     }
+      //     else{
+      //       useStatus=true;
+      //     }
+      //   }
+      //   else{
+      //     useStatus=false;
+      //   }
+      //   DataConnections.push(
+      //
+      //     <DataConnection
+      //       key={id.toString() +rowPVs[row].setpointPV.pvname+"setpointPV"}
+      //       pv={rowPVs[row].setpointPV.pvname}
+      //       handleInputValue={this.handleInputValue(id,'setpointPV')}
+      //       handleMetadata={this.handleMetadata(id,'setpointPV')}
+      //
+      //     />
+      //
+      //   );
+      //
+      //   DataConnections.push(
+      //
+      //     <DataConnection
+      //       key={id.toString()+ rowPVs[row].readbackPV.pvname+'readbackPV' }
+      //       pv={rowPVs[row].readbackPV.pvname}
+      //       handleInputValue={this.handleInputValue(id,'readbackPV')}
+      //       handleMetadata={this.handleMetadata(id,'readbackPV')}
+      //
+      //     />
+      //
+      //   );
+      //   if (useStatus){
+      //     DataConnections.push(
+      //
+      //       <DataConnection
+      //         key={id.toString()+ rowPVs[row].statusPV.pvname+'statusPV'}
+      //         pv={rowPVs[row].statusPV.pvname}
+      //         handleInputValue={this.handleInputValue(id,'statusPV')}
+      //         handleMetadata={this.handleMetadata(id,'statusPV')}
+      //         useStringValue={true}
+      //
+      //       />
+      //
+      //     );
+      //   }
+      //
+      //
+      //   id++;
+      // }
+      // //console.log(DataConnections[0]);
+      //
+      // //  this.setState({rows:rows});
+    }
+    return DataConnections;
+  }
+
+  pvValueTextUpdate = (pv) => {
+    //  console.log(pv)
+    const initialized = pv.initialized;
+    const pvValue = pv.pvValue;
+    const pvName = pv.pvname;
+    if (initialized) {
+
+      return pvValue;
+    }
+    else {
+      return (
+        <React.Fragment>
+          <LanDisconnect style={{ color: this.props.theme.palette.error.main, verticalAlign: "middle" }} fontSize='small' />   {pvName}
+
+        </React.Fragment>
+      );
+    }
+  }
+  render() {
+    const { classes } = this.props;
+    const tabValue = this.state.tabValue;
+    const dbList = this.state.dbList;
+    let item;
+    let rows = [];
+    // for (item in dbList){
+    //   rows=
+    // }
+
+
+
+    let process_variables2;
+    let disableDeleteButton = true;
+    const dbDataAndLiveData = this.state.dbDataAndLiveData;
+    let disableLoadButton = true;
+    if (typeof dbList[this.state.displayIndex] !== 'undefined') {
+      disableLoadButton = false
+      if (dbList[this.state.displayIndex].beam_setup.Status == "Obselete") {
+        disableDeleteButton = false;
+
       }
-      multipleDataConnections = () => {
-        //this.test("test1");
-        //this.handleInputValue();
-        let pv;
-        let DataConnections=[];
-        let id=0;
-        let pvs=this.state.pvs;
-        let key;
-        let pvKeys=Object.keys(pvs)
-        for (key in pvKeys){
-          //  console.log(this.state.pvs[pv].pvname);
-          DataConnections.push(
-
-            <DataConnection key={this.state.pvs[pvKeys[key]].pvname+id}
-              pv={this.state.pvs[pvKeys[key]].pvname}
-              handleInputValue={this.handleInputValue(pvKeys[key])}
-              handleMetadata={this.handleMetadata(pvKeys[key])}
-            />
-
-          )
-        }
-
-        return DataConnections;
+      else {
+        disableDeleteButton = true;
       }
 
-      SystemsDataConnections = (displayIndex) => {
-        //this.test("test1");
-        //this.handleInputValue();
 
-        let pv;
-        let DataConnections=[];
-        let id=0;
-        let row;
-
-
-        // //  console.log(rowPVs)
-        // let index=0;
-        let processVariablesSchemaKeys=this.state.processVariablesSchemaKeys;
-        let dbDataAndLiveData =this.state.dbDataAndLiveData;
-        let key;
-
-        for (key in processVariablesSchemaKeys){
+    }
+    else {
+      disableLoadButton = true;
+    }
 
 
 
+    const dbListWriteAccess = !this.state.dbListWriteAccess;
 
 
+    //  console.log(dbDataAndLiveData)
 
-          DataConnections.push(
+    let dbDataAndLiveDataKeys = Object.keys(dbDataAndLiveData);
+    // console.log("this.state.metadataComponents",this.state.metadataComponents)
+    return (
+      <React.Fragment>
+        {this.metadataPVsDataConnections()}
+        {this.multipleDataConnections()}
+        {this.SystemsDataConnections(this.state.displayIndex)}
 
-            <DataConnection
-              key={dbDataAndLiveData[processVariablesSchemaKeys[key]].pvname +id}
-              pv={dbDataAndLiveData[processVariablesSchemaKeys[key]].pvname}
+        <Grid
+          container
+          direction="row"
+          justify="flex-start"
+          alignItems="flex-start"
+          spacing={2}
+          style={{ padding: 8 }}
+        >
+          <Grid item xs={12} sm={12} md={12} lg={12} >
+            <Card style={{ padding: 8 }}>
 
-              handleInputValue={this.handleDbListInputValue(processVariablesSchemaKeys[key])}
-              handleMetadata={this.handleDbListMetadata(processVariablesSchemaKeys[key])}
-              outputValue=  {dbDataAndLiveData[processVariablesSchemaKeys[key]].pvValue}
-              newValueTrigger={dbDataAndLiveData[processVariablesSchemaKeys[key]].newValueTrigger}
-            />
+              <Grid
+                container
+                direction="row"
+                justify="flex-start"
+                alignItems="flex-start"
+                spacing={2}
 
-          );
-          id++;
-          //
-          //   //console.log("linedata: ", this.state.pvs[pv].linedata);
-          //   //    console.log(row)
-          //
-          //   if (typeof rowPVs[row].rowProps !== 'undefined'){
-          //     if (typeof rowPVs[row].rowProps.useStatus !== 'undefined'){
-          //       useStatus=rowPVs[row].rowProps.useStatus;
-          //     }
-          //     else{
-          //       useStatus=true;
-          //     }
-          //   }
-          //   else{
-          //     useStatus=false;
-          //   }
-          //   DataConnections.push(
-          //
-          //     <DataConnection
-          //       key={id.toString() +rowPVs[row].setpointPV.pvname+"setpointPV"}
-          //       pv={rowPVs[row].setpointPV.pvname}
-          //       handleInputValue={this.handleInputValue(id,'setpointPV')}
-          //       handleMetadata={this.handleMetadata(id,'setpointPV')}
-          //
-          //     />
-          //
-          //   );
-          //
-          //   DataConnections.push(
-          //
-          //     <DataConnection
-          //       key={id.toString()+ rowPVs[row].readbackPV.pvname+'readbackPV' }
-          //       pv={rowPVs[row].readbackPV.pvname}
-          //       handleInputValue={this.handleInputValue(id,'readbackPV')}
-          //       handleMetadata={this.handleMetadata(id,'readbackPV')}
-          //
-          //     />
-          //
-          //   );
-          //   if (useStatus){
-          //     DataConnections.push(
-          //
-          //       <DataConnection
-          //         key={id.toString()+ rowPVs[row].statusPV.pvname+'statusPV'}
-          //         pv={rowPVs[row].statusPV.pvname}
-          //         handleInputValue={this.handleInputValue(id,'statusPV')}
-          //         handleMetadata={this.handleMetadata(id,'statusPV')}
-          //         useStringValue={true}
-          //
-          //       />
-          //
-          //     );
-          //   }
-          //
-          //
-          //   id++;
-          // }
-          // //console.log(DataConnections[0]);
-          //
-          // //  this.setState({rows:rows});
-        }
-        return DataConnections;
-      }
-
-      pvValueTextUpdate=(pv)=>{
-        //  console.log(pv)
-        const initialized= pv.initialized;
-        const pvValue= pv.pvValue;
-        const pvName=pv.pvname;
-        if(initialized){
-
-          return pvValue;
-        }
-        else{
-          return (
-            <React.Fragment>
-              <LanDisconnect style={{color:this.props.theme.palette.error.main,verticalAlign: "middle"}} fontSize='small'/>   {pvName}
-
-            </React.Fragment>
-          );
-        }
-      }
-      render(){
-        const { classes } = this.props;
-        const tabValue=this.state.tabValue;
-        const dbList=this.state.dbList;
-        let item;
-        let rows=[];
-        // for (item in dbList){
-        //   rows=
-        // }
+              > {this.state.metadataComponents.map((item, index) => (
+                <Grid key={index.toString()} item xs={12} sm={12} md={3} lg={2} >
+                  {item.component == "TextInput" &&
+                    <TextInput
 
 
+                      macros={this.props.macros}
 
-        let process_variables2;
-        let disableDeleteButton=true;
-        const dbDataAndLiveData=this.state.dbDataAndLiveData;
-        let disableLoadButton=true;
-        if (typeof dbList[this.state.displayIndex]!=='undefined'){
-          disableLoadButton=false
-          if (dbList[this.state.displayIndex].beam_setup.Status=="Obselete"){
-            disableDeleteButton=false;
-
-          }
-          else{
-            disableDeleteButton=true;
-          }
-
-
-        }
-        else{
-          disableLoadButton=true;
-        }
-
-
-
-        const dbListWriteAccess=!this.state.dbListWriteAccess;
-
-
-        //  console.log(dbDataAndLiveData)
-
-        let dbDataAndLiveDataKeys=Object.keys(dbDataAndLiveData);
-       // console.log("this.state.metadataComponents",this.state.metadataComponents)
-        return (
-          <React.Fragment>
-            {this.metadataPVsDataConnections()}
-            {this.multipleDataConnections()}
-            {this.SystemsDataConnections(this.state.displayIndex)}
-
-            <Grid
-              container
-              direction="row"
-              justify="flex-start"
-              alignItems="flex-start"
-              spacing={2}
-              style={{padding:8}}
-            >
-              <Grid item xs={12} sm={12} md={12} lg={12} >
-                <Card style={{padding:8}}>
-
-                  <Grid
-                    container
-                    direction="row"
-                    justify="flex-start"
-                    alignItems="flex-start"
-                    spacing={2}
-
-                  > {this.state.metadataComponents.map((item,index) => (
-                    <Grid key={index.toString()} item xs={12} sm={12} md={3} lg={2} >
-                    {item.component=="TextInput"&&
-                      <TextInput
-                       
-                       
-                       macros={this.props.macros}
-                       
-                       {...item.props}
-                     />
-                    } 
-                    {item.component=="TextOutput"&&
-                       <TextOutput
-                       
-                       
-                       macros={this.props.macros}
-                       
-                       {...item.props}
-                     />}
-                  </Grid>
-                    )
-
-                  )
+                      {...item.props}
+                    />
                   }
-                   
+                  {item.component == "TextOutput" &&
+                    <TextOutput
 
-                  </Grid>
-                </Card>
+
+                      macros={this.props.macros}
+
+                      {...item.props}
+                    />}
+                </Grid>
+              )
+
+              )
+                }
+
+
               </Grid>
+            </Card>
+          </Grid>
 
-              <Grid item xs={12} sm={12} md={6} lg={5} >
-                <Card>
-                  <Paper className={classes.root}>
-                    <div className={classes.tableWrapper}>
-                      <Table className={classes.table} stickyHeader size="small" aria-label="sticky table">
-                        <TableHead>
-                          <TableRow>
-                            <TableCell>Frequency [MHz]</TableCell>
-                            <TableCell align="center">Energy [MeV]</TableCell>
-                            <TableCell align="center">Date </TableCell>
-                            <TableCell align="center">Description</TableCell>
-                            <TableCell align="center">Status</TableCell>
-                          </TableRow>
-                        </TableHead>
-                        <TableBody>
-                          {dbList.map((row,index) => (
-                            <TableRow key ={index} hover role="checkbox" small onClick={this.handleOnClick(index)} selected={index==this.state.displayIndex}>
+          <Grid item xs={12} sm={12} md={6} lg={5} >
+            <Card>
+              <Paper className={classes.root}>
+                <div className={classes.tableWrapper}>
+                  <Table className={classes.table} stickyHeader size="small" aria-label="sticky table">
+                    <TableHead>
+                      <TableRow>
+                        <TableCell>Frequency [MHz]</TableCell>
+                        <TableCell align="center">Energy [MeV]</TableCell>
+                        <TableCell align="center">Date </TableCell>
+                        <TableCell align="center">Description</TableCell>
+                        <TableCell align="center">Status</TableCell>
+                      </TableRow>
+                    </TableHead>
+                    <TableBody>
+                      {dbList.map((row, index) => (
+                        <TableRow key={index} hover role="checkbox" small onClick={this.handleOnClick(index)} selected={index == this.state.displayIndex}>
 
-                              <TableCell className={classes.tableCell} component="th" scope="row" >
-                                {row.beam_setup.Frequency}
-                              </TableCell>
-                              <TableCell className={classes.tableCell} component="th" scope="row"  align='center'>
-                                {row.beam_setup.Energy}
-                              </TableCell>
-                              <TableCell className={classes.tableCell} component="th" scope="row" align='center'>
-                                {row.beam_setup.DateTime}
-                              </TableCell>
-                              <TableCell className={classes.tableCell} component="th" scope="row" align='center'>
-                                {row.beam_setup.Description}
-                              </TableCell>
-                              <TableCell className={row.beam_setup.Status=="Working"?classes.tableCellWorking:row.beam_setup.Status=="Pending"?classes.tableCellPending:row.beam_setup.Status=="Obselete"?classes.tableCellObselete:classes.tableCell}  component="th" scope="row" align='center'>
-                                <span >
-                                  {row.beam_setup.Status}
-                                </span>
-                              </TableCell>
-                            </TableRow>
-                          ))}
-                        </TableBody>
-                      </Table>
-                    </div>
-                  </Paper>
-                </Card>
-              </Grid>
-              <Grid item xs={12} sm={12} md={6} lg={7} >
-                <Card>
-                  <Paper className={classes.root}>
-                    <div className={classes.tableWrapper}>
-                      <Table className={classes.table} stickyHeader size="small" aria-label="sticky table">
-                        <TableHead>
-                          <TableRow>
-                            <TableCell>Device Description</TableCell>
+                          <TableCell className={classes.tableCell} component="th" scope="row" >
+                            {row.beam_setup.Frequency}
+                          </TableCell>
+                          <TableCell className={classes.tableCell} component="th" scope="row" align='center'>
+                            {row.beam_setup.Energy}
+                          </TableCell>
+                          <TableCell className={classes.tableCell} component="th" scope="row" align='center'>
+                            {row.beam_setup.DateTime}
+                          </TableCell>
+                          <TableCell className={classes.tableCell} component="th" scope="row" align='center'>
+                            {row.beam_setup.Description}
+                          </TableCell>
+                          <TableCell className={row.beam_setup.Status == "Working" ? classes.tableCellWorking : row.beam_setup.Status == "Pending" ? classes.tableCellPending : row.beam_setup.Status == "Obselete" ? classes.tableCellObselete : classes.tableCell} component="th" scope="row" align='center'>
+                            <span >
+                              {row.beam_setup.Status}
+                            </span>
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </div>
+              </Paper>
+            </Card>
+          </Grid>
+          <Grid item xs={12} sm={12} md={6} lg={7} >
+            <Card>
+              <Paper className={classes.root}>
+                <div className={classes.tableWrapper}>
+                  <Table className={classes.table} stickyHeader size="small" aria-label="sticky table">
+                    <TableHead>
+                      <TableRow>
+                        <TableCell>Device Description</TableCell>
 
-                            <TableCell align="center">Saved Value</TableCell>
-                            <TableCell align="center">New Value</TableCell>
-                            <TableCell align="center">PV Value</TableCell>
-                          </TableRow>
-                        </TableHead>
-                        <TableBody>
-                          {dbDataAndLiveDataKeys.map((value,index) => (
-                            <TableRow key={index} hover role="checkbox" small>
+                        <TableCell align="center">Saved Value</TableCell>
+                        <TableCell align="center">New Value</TableCell>
+                        <TableCell align="center">PV Value</TableCell>
+                      </TableRow>
+                    </TableHead>
+                    <TableBody>
+                      {dbDataAndLiveDataKeys.map((value, index) => (
+                        <TableRow key={index} hover role="checkbox" small>
 
-                              <TableCell className={classes.tableCell} component="th" scope="row" >
-                                {dbDataAndLiveData[value].description}
-                              </TableCell>
-                              <TableCell  className={classes.tableCell} style={{backgroundColor:compareValues(dbDataAndLiveData[value].dbValue,dbDataAndLiveData[value].pvValue,dbDataAndLiveData[value].initialized)?green[500]:undefined}} align="center">
+                          <TableCell className={classes.tableCell} component="th" scope="row" >
+                            {dbDataAndLiveData[value].description}
+                          </TableCell>
+                          <TableCell className={classes.tableCell} style={{ backgroundColor: compareValues(dbDataAndLiveData[value].dbValue, dbDataAndLiveData[value].pvValue, dbDataAndLiveData[value].initialized) ? green[500] : undefined }} align="center">
 
-                                {dbDataAndLiveData[value].dbValue}
+                            {dbDataAndLiveData[value].dbValue}
 
-                              </TableCell>
-                              <TableCell  className={classes.tableCell}  style={{backgroundColor:compareValues(dbDataAndLiveData[value].newValue,dbDataAndLiveData[value].pvValue,dbDataAndLiveData[value].initialized)?green[500]:undefined}} align="center">
-                                {dbDataAndLiveData[value].newValue}
-                              </TableCell>
-                              <TableCell className={classes.tableCell}   style={{backgroundColor:(compareValues(dbDataAndLiveData[value].newValue,dbDataAndLiveData[value].pvValue,dbDataAndLiveData[value].initialized)||compareValues(dbDataAndLiveData[value].dbValue,dbDataAndLiveData[value].pvValue,dbDataAndLiveData[value].initialized))?green[500]:undefined}} align="center">
+                          </TableCell>
+                          <TableCell className={classes.tableCell} style={{ backgroundColor: compareValues(dbDataAndLiveData[value].newValue, dbDataAndLiveData[value].pvValue, dbDataAndLiveData[value].initialized) ? green[500] : undefined }} align="center">
+                            {dbDataAndLiveData[value].newValue}
+                          </TableCell>
+                          <TableCell className={classes.tableCell} style={{ backgroundColor: (compareValues(dbDataAndLiveData[value].newValue, dbDataAndLiveData[value].pvValue, dbDataAndLiveData[value].initialized) || compareValues(dbDataAndLiveData[value].dbValue, dbDataAndLiveData[value].pvValue, dbDataAndLiveData[value].initialized)) ? green[500] : undefined }} align="center">
 
 
-                                {/*dbDataAndLiveData[value].pvValue*/}
-                                {this.pvValueTextUpdate(dbDataAndLiveData[value])}
-                                {/* <TextUpdate
+                            {/*dbDataAndLiveData[value].pvValue*/}
+                            {this.pvValueTextUpdate(dbDataAndLiveData[value])}
+                            {/* <TextUpdate
                                   pv={dbDataAndLiveData[value].pvname}
                                   alarmSensitive={true}
                                   usePvUnits={true}
                                 /> */}
 
-                              </TableCell>
+                          </TableCell>
 
-                              {/* <TableCell className={classes.tableCell} align="right">
+                          {/* <TableCell className={classes.tableCell} align="right">
                                   <TextUpdate
                                   pv={row.readbackPV.pvname}
                                   usePrecision={(typeof row.rowProps)==='undefined'?undefined:(typeof row.rowProps.usePrecision)==='undefined'?undefined:row.rowProps.usePrecision}
@@ -1205,145 +1237,145 @@ function TabPanel(props) {
                                 <TableCell  className={classes.tableCell} align="right">
                                 {(typeof row.rowProps)==='undefined'?undefined:(typeof row.rowProps.useStatus)==='undefined'?'-':row.rowProps.useStatus===true?row.statusPV.value:'-'}
                               </TableCell> */}
-                            </TableRow>
-                          ))}
-                        </TableBody>
-                      </Table>
-                    </div>
-                  </Paper>
-                </Card>
-              </Grid>
-              <Grid item xs={12} sm={12} md={12} lg={5} >
-                <Card>
-                  <AppBar position="static" color="inherit">
-                    <Tabs  aria-label="simple tabs example" value={tabValue} onChange={this.handleTabChange}>
-                      <Tab label="Operator" />
-                      <Tab label="Advanced"  />
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </div>
+              </Paper>
+            </Card>
+          </Grid>
+          <Grid item xs={12} sm={12} md={12} lg={5} >
+            <Card>
+              <AppBar position="static" color="inherit">
+                <Tabs aria-label="simple tabs example" value={tabValue} onChange={this.handleTabChange}>
+                  <Tab label="Operator" />
+                  <Tab label="Advanced" />
 
-                    </Tabs>
-                  </AppBar>
-                  <TabPanel value={tabValue} index={0}>
-                    <Grid
-                      container
-                      direction="row"
-                      justify="flex-start"
-                      alignItems="flex-start"
-                      spacing={1}
+                </Tabs>
+              </AppBar>
+              <TabPanel value={tabValue} index={0}>
+                <Grid
+                  container
+                  direction="row"
+                  justify="flex-start"
+                  alignItems="flex-start"
+                  spacing={1}
+                >
+                  <Grid item xs={12} sm={6} md={6} lg={3} >
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      className={classes.Button}
+                      onClick={this.handleLoadSelectedValues}
+                      disabled={disableLoadButton}
                     >
-                      <Grid item xs={12} sm={6} md={6} lg={3} >
-                        <Button
-                          variant="contained"
-                          color="primary"
-                          className={classes.Button}
-                          onClick={this.handleLoadSelectedValues}
-                          disabled={disableLoadButton}
-                        >
-                          Load New Values
+                      Load New Values
                         </Button>
-                      </Grid>
-                      <Grid item xs={12} sm={6} md={6} lg={3} >
-                        <Button
-                          variant="contained"
-                          color="primary"
-                          className={classes.Button}
-                          onClick={this.handleWriteNewValues}
-                          disabled={(!this.state.newValuesLoaded)||(this.state.pvs['RFOnOFF'].initialized==false)||(this.state.pvs['RFOnOFF'].value!=0)}
-                        >
-                          Write New Values
-                        </Button>
-                      </Grid>
-                      <Grid item xs={12} sm={6} md={6} lg={3} >
-                        <Button
-                          variant="contained"
-                          color="primary"
-                          className={classes.Button}
-                          onClick={this.handleSavedValues}
-
-                        >
-                          Save Values
-                        </Button>
-                      </Grid>
-                      <Grid item xs={12} sm={6} md={6} lg={3} >
-
-                      </Grid>
-                    </Grid>
-                  </TabPanel>
-                  <TabPanel value={tabValue} index={1}>
-
-                    <Grid
-                      container
-                      direction="row"
-                      justify="flex-start"
-                      alignItems="flex-start"
-                      spacing={1}
+                  </Grid>
+                  <Grid item xs={12} sm={6} md={6} lg={3} >
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      className={classes.Button}
+                      onClick={this.handleWriteNewValues}
+                      disabled={(!this.state.newValuesLoaded) || (this.state.pvs['RFOnOFF'].initialized == false) || (this.state.pvs['RFOnOFF'].value != 0)}
                     >
-                      <Grid item xs={12} sm={6} md={6} lg={3} >
-                        <Button
-                          variant="contained"
-
-                          className={classes.workingButton}
-                          onClick={this.handleOnClickWorking}
-                          disabled={dbListWriteAccess}
-                        >
-                          Working
+                      Write New Values
                         </Button>
-                      </Grid>
-                      <Grid item xs={12} sm={6} md={6} lg={3} >
-                        <Button
-                          variant="contained"
+                  </Grid>
+                  <Grid item xs={12} sm={6} md={6} lg={3} >
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      className={classes.Button}
+                      onClick={this.handleSavedValues}
 
-                          className={classes.pendingButton}
-                          onClick={this.handleOnClickPending}
-                          disabled={dbListWriteAccess}
-                        >
-                          Pending
+                    >
+                      Save Values
                         </Button>
-                      </Grid>
-                      <Grid item xs={12} sm={6} md={6} lg={3} >
-                        <Button
-                          variant="contained"
+                  </Grid>
+                  <Grid item xs={12} sm={6} md={6} lg={3} >
 
-                          className={classes.obseleteButton}
-                          onClick={this.handleOnClickObselete}
-                          disabled={dbListWriteAccess}
-                        >
-                          Obselete
+                  </Grid>
+                </Grid>
+              </TabPanel>
+              <TabPanel value={tabValue} index={1}>
+
+                <Grid
+                  container
+                  direction="row"
+                  justify="flex-start"
+                  alignItems="flex-start"
+                  spacing={1}
+                >
+                  <Grid item xs={12} sm={6} md={6} lg={3} >
+                    <Button
+                      variant="contained"
+
+                      className={classes.workingButton}
+                      onClick={this.handleOnClickWorking}
+                      disabled={dbListWriteAccess}
+                    >
+                      Working
                         </Button>
-                      </Grid>
-                      <Grid item xs={12} sm={6} md={6} lg={3} >
-                        <Button
-                          variant="contained"
-                          color="secondary"
-                          className={classes.button}
-                          onClick={this.handleOnClickDelete}
-                          disabled={disableDeleteButton||dbListWriteAccess}
-                        >
-                          Delete
+                  </Grid>
+                  <Grid item xs={12} sm={6} md={6} lg={3} >
+                    <Button
+                      variant="contained"
+
+                      className={classes.pendingButton}
+                      onClick={this.handleOnClickPending}
+                      disabled={dbListWriteAccess}
+                    >
+                      Pending
+                        </Button>
+                  </Grid>
+                  <Grid item xs={12} sm={6} md={6} lg={3} >
+                    <Button
+                      variant="contained"
+
+                      className={classes.obseleteButton}
+                      onClick={this.handleOnClickObselete}
+                      disabled={dbListWriteAccess}
+                    >
+                      Obselete
+                        </Button>
+                  </Grid>
+                  <Grid item xs={12} sm={6} md={6} lg={3} >
+                    <Button
+                      variant="contained"
+                      color="secondary"
+                      className={classes.button}
+                      onClick={this.handleOnClickDelete}
+                      disabled={disableDeleteButton || dbListWriteAccess}
+                    >
+                      Delete
                         </Button>
 
-                      </Grid>
-                    </Grid>
+                  </Grid>
+                </Grid>
 
 
-                  </TabPanel>
+              </TabPanel>
 
-                </Card>
-              </Grid>
-              {typeof this.props.loadEnablePV!=='undefined'&&<Grid item xs={12} sm={12} md={12} lg={1} >
-              {typeof this.props.loadEnablePV.label!=='undefined'&& <h4 style={{margin:0}}>{this.props.loadEnablePV.label}</h4>}
-                <Card style={{padding:8}}>
-                  <ToggleButton  pv={this.props.loadEnablePV.pv} macros={this.props.macros}  custom_selection_strings={["OFF","ON"]}  />
-                </Card>
-              </Grid>}
-            </Grid>
+            </Card>
+          </Grid>
+          {typeof this.props.loadEnablePV !== 'undefined' && <Grid item xs={12} sm={12} md={12} lg={1} >
+            {typeof this.props.loadEnablePV.label !== 'undefined' && <h4 style={{ margin: 0 }}>{this.props.loadEnablePV.label}</h4>}
+            <Card style={{ padding: 8 }}>
+              <ToggleButton pv={this.props.loadEnablePV.pv} macros={this.props.macros} custom_selection_strings={["OFF", "ON"]} />
+            </Card>
+          </Grid>}
+        </Grid>
 
-          </React.Fragment>
-                        );
-                      }
-                    }
+      </React.Fragment>
+    );
+  }
+}
 
-                    LoadSave.propTypes = {
-                      classes: PropTypes.object.isRequired,
-                    };
-                    LoadSave.contextType=AutomationStudioContext;
-                    export default withStyles(styles,{withTheme:true})(LoadSave);
+LoadSave.propTypes = {
+  classes: PropTypes.object.isRequired,
+};
+LoadSave.contextType = AutomationStudioContext;
+export default withStyles(styles, { withTheme: true })(LoadSave);

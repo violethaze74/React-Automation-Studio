@@ -45,7 +45,7 @@ import Toolbar from '@material-ui/core/Toolbar';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
 import LoadSave from '../loadSaveComponent/LoadSave';
-
+import AutomationStudioContext from '../SystemComponents/AutomationStudioContext';
 
 const systemName = 'testIOC';
 
@@ -146,7 +146,7 @@ class LoadSaveExample extends React.Component {
   render() {
     //      console.log("state: ",this.state);
     //console.log('displayHarps',this.state.displayHarps)
-
+    console.log(this.context.userData)
     const { classes } = this.props;
     const topTabValue = this.state.topTabValue;
     const sideTabValue = this.state.sideTabValue;
@@ -248,6 +248,6 @@ class LoadSaveExample extends React.Component {
 LoadSaveExample.propTypes = {
   classes: PropTypes.object.isRequired,
 };
-
+LoadSaveExample.contextType=AutomationStudioContext;
 export default withStyles(styles)(LoadSaveExample);
 //export default LoadSaveExample;
