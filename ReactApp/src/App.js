@@ -151,7 +151,27 @@ class App extends Component {
       this.setState({themeStyle:themeStyle,theme:theme} )
       localStorage.setItem('themeStyle', JSON.stringify(themeStyle));
     }
-
+    this.setUserData=(username)=>{
+      let system=this.state.system;
+      let userData={ 
+        username:username,
+        roles:[]
+      };
+      system.userData=userData;
+    
+      this.setState({system:system})
+    }
+    this.logout=()=>{
+      localStorage.removeItem('jwt');
+      let system=this.state.system;
+      let userData={ 
+        username:'',
+        roles:[]
+      };
+      system.userData=userData;
+    
+      this.setState({system:system})
+    }
     this.updateLocalVariable = (name,data) => {
       let system=this.state.system;
       let localVariables=system.localVariables;
@@ -165,9 +185,13 @@ class App extends Component {
       //console.log('name',name)
       //console.log('data',data)
     };
-
+    let userData={ 
+      username:'',
+      roles:[]
+    };
+   
     let localVariables={};
-    let system={socket:socket,toggleTheme:this.toggleTheme,localVariables:localVariables,updateLocalVariable:this.updateLocalVariable,enableProbe:true,styleGuideRedirect:true}
+    let system={socket:socket,toggleTheme:this.toggleTheme,localVariables:localVariables,updateLocalVariable:this.updateLocalVariable,userData:userData,setUserData:this.setUserData,logout:this.logout,enableProbe:true,styleGuideRedirect:true}
     this.state={
       themeStyle:themeStyle,
       theme :theme,
@@ -198,9 +222,10 @@ class App extends Component {
 
   }
   handleClientAuthorisation(msg){
-
+    this.state.system.setUserData(msg.username);
     this.setState({'Authorised':msg.successful,'AuthorisationFailed':msg.successful!==true});
-
+    
+    
 
   }
   componentDidMount(){

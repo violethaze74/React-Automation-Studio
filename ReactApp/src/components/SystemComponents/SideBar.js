@@ -15,6 +15,7 @@ import Menu from '@material-ui/icons/Menu';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import {Link} from 'react-router-dom'
 import AutomationStudioContext from '../SystemComponents/AutomationStudioContext';
+import {Logout} from 'mdi-material-ui/'
 const styles = {
   list: {
     width: 250,
@@ -45,7 +46,7 @@ class SideBar extends React.Component {
     let socket=this.context.socket;
     socket.emit('disconnect', {"goodebye":"see you later"});
     socket.close()
-    localStorage.removeItem('jwt');
+    this.context.logout();
 
   }
   render() {
@@ -63,8 +64,12 @@ class SideBar extends React.Component {
         </List>
           {process.env.REACT_APP_EnableLogin==='true'&&<React.Fragment>
         <Divider />
-        <ListItem button key={"Log Out"} onClick={this.logout} component={Link} to="/LogIn" >
+        <ListItem button key={"user name"} >
           <ListItemIcon><AccountCircle/></ListItemIcon>
+          <ListItemText style={{textOverflow: 'ellipsis'}} primary={this.context.userData.username} />
+        </ListItem>
+        <ListItem button key={"Log Out"} onClick={this.logout} component={Link} to="/LogIn" >
+          <ListItemIcon><Logout/></ListItemIcon>
           <ListItemText primary={"Log Out"} />
         </ListItem>
         </React.Fragment>}
