@@ -134,13 +134,14 @@ def  AuthoriseUser(JWT):
     try:
         #print(decoded_jwt)
         if JWT in knownUsers:
+            username=knownUsers[JWT]['username']
 #            print("match")
-            return True
+            return {'authorised':True,'username':username}
         else:
 #            print("no match")
-            return False
+            return {'authorised':False}
     except:
-        return False
+        return {'authorised':False}
     #print(user)
 
 
@@ -153,9 +154,10 @@ def AuthenticateUser(user):
         #print("keys", keys)
         for JWT in knownUsers:
             #print("JWT", JWT)
-            if user['email']==knownUsers[JWT]['username']:
+            username=knownUsers[JWT]['username']
+            if user['email']==username:
                 if bcrypt.checkpw( user['password'].encode('utf-8'), knownUsers[JWT]['password'].encode('utf-8')):
-                    return JWT
+                    return {'JWT':JWT,'username':username}
 
         else:
             print('Uknown user:' + str(user['email']))

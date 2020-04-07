@@ -656,9 +656,9 @@ def test_authorise(message):
     global REACT_APP_DisableLogin
 
     if (not REACT_APP_DisableLogin ):
-        jwt=AuthenticateUser(message['user'])
-        if not (jwt is None) :
-            emit('clientAuthenticated', {'successful': True, 'jwt':jwt},room=request.sid,namespace='/pvServer')
+        userData=AuthenticateUser(message['user'])
+        if not (userData is None) :
+            emit('clientAuthenticated', {'successful': True, 'jwt':userData['JWT'],'username':userData['username']},room=request.sid,namespace='/pvServer')
         else:
             emit('clientAuthenticated', {'successful': False},room=request.sid,namespace='/pvServer')
             socketio.emit('redirectToLogIn',room=request.sid,namespace='/pvServer')
@@ -670,8 +670,9 @@ def test_authenticate(message):
     global REACT_APP_DisableLogin
 
     if (not REACT_APP_DisableLogin ):
-        if  AuthoriseUser(message):
-            emit('clientAuthorisation', {'successful': True},room=request.sid,namespace='/pvServer')
+        userData=AuthoriseUser(message)
+        if userData['authorised']:
+            emit('clientAuthorisation', {'successful': True,'username':userData['username']},room=request.sid,namespace='/pvServer')
         else:
             emit('clientAuthorisation', {'successful': False},room=request.sid,namespace='/pvServer')
             socketio.emit('redirectToLogIn',room=request.sid,namespace='/pvServer')
