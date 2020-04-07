@@ -113,7 +113,7 @@ handleSubmitClick=()=>{
 }
 
 handleResponse=(response) =>{
-  console.log(response)
+  //console.log(response)
   return response.text().then(text => {
     const data = text && JSON.parse(text);
     if (!response.ok) {
@@ -133,10 +133,10 @@ handleResponse=(response) =>{
 
 
 handleAuthentication(msg){
-    console.log('clientAuthenticated',msg)
+    //console.log('clientAuthenticated',msg)
   if (typeof msg.jwt !== 'undefined'){
     localStorage.setItem('jwt', JSON.stringify(msg.jwt));
-    this.context.setUserData(msg.username);
+    this.context.setUserData(msg.username,msg.roles);
   }
   else {
     localStorage.setItem('jwt', JSON.stringify(null));

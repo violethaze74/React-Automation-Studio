@@ -76,7 +76,7 @@ class App extends Component {
       localStorage.setItem('themeStyle', JSON.stringify(themeStyle));
     }
 
-    console.log(themeStyle)
+    //console.log(themeStyle)
     let theme = createMuiTheme({
       palette: {
         type:themeStyle,
@@ -151,11 +151,11 @@ class App extends Component {
       this.setState({themeStyle:themeStyle,theme:theme} )
       localStorage.setItem('themeStyle', JSON.stringify(themeStyle));
     }
-    this.setUserData=(username)=>{
+    this.setUserData=(username,roles)=>{
       let system=this.state.system;
       let userData={ 
         username:username,
-        roles:[]
+        roles:roles
       };
       system.userData=userData;
     
@@ -222,7 +222,7 @@ class App extends Component {
 
   }
   handleClientAuthorisation(msg){
-    this.state.system.setUserData(msg.username);
+    this.state.system.setUserData(msg.username,msg.roles);
     this.setState({'Authorised':msg.successful,'AuthorisationFailed':msg.successful!==true});
     
     
@@ -246,7 +246,7 @@ class App extends Component {
 
   }
   componentWillUnmount(){
-    console.log('unmounted')
+   // console.log('unmounted')
     let socket=this.state.system.socket;
     socket.removeListener('connect',this.handleConnect);
     //  socket.removeListener('redirectToLogIn', this.handleRedirectToLogIn);
