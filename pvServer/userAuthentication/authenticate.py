@@ -89,7 +89,7 @@ if (not REACT_APP_DisableLogin) :
 def checkPermissions(pvname,username):
     #print("Checking permissions")
     global UAGS
-    d={'read':False,'write':False}
+    d={'read':False,'write':False,'roles':[]}
     for uag in list(UAGS['userGroups'].keys()):
         for usernames in UAGS['userGroups'][uag]['usernames']:
             #print(usernames)
@@ -99,9 +99,29 @@ def checkPermissions(pvname,username):
                     match=re.search(str(rules['rule']),str(pvname))
                     if (match):
                         #print(str(pvname)+" :"+str(rules['rule'])+" : "+ str(True))
-                        d= {'read':rules['read'],'write':rules['write']}
+                        d['read']=rules['read']
+                        d['write']=rules['write']
+                if 'roles' in UAGS['userGroups'][uag]:
+                    for roles in UAGS['userGroups'][uag]['roles']:
+                        d['roles'].append(roles)
+                        #print("username: "+str(username) + ' role: '+ roles)
     return d
             #print(str(pvname)+" :"+str(rules['rule'])+" : "+ str(False))
+
+def checkUserRole(username):
+    #print("Checking permissions")
+    global UAGS
+    roles=[]
+    for uag in list(UAGS['userGroups'].keys()):
+        for usernames in UAGS['userGroups'][uag]['usernames']:
+            #print(usernames)
+            if ((username==usernames)or (usernames=="*")) :
+                if 'roles' in UAGS['userGroups'][uag]:
+                    for role in UAGS['userGroups'][uag]['roles']:
+                        roles.append(role)
+                        #print("username: "+str(username) + ' role: '+ role)
+    return roles
+            
 
 
 #print(knownUsers)
@@ -135,8 +155,10 @@ def  AuthoriseUser(JWT):
         #print(decoded_jwt)
         if JWT in knownUsers:
             username=knownUsers[JWT]['username']
+            roles=checkUserRole(username)
+            
 #            print("match")
-            return {'authorised':True,'username':username}
+            return {'authorised':True,'username':username,'roles':roles}
         else:
 #            print("no match")
             return {'authorised':False}
@@ -157,7 +179,8 @@ def AuthenticateUser(user):
             username=knownUsers[JWT]['username']
             if user['email']==username:
                 if bcrypt.checkpw( user['password'].encode('utf-8'), knownUsers[JWT]['password'].encode('utf-8')):
-                    return {'JWT':JWT,'username':username}
+                    roles=checkUserRole(username)
+                    return {'JWT':JWT,'username':username,'roles':roles}
 
         else:
             print('Uknown user:' + str(user['email']))
