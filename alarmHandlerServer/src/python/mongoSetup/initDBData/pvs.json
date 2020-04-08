@@ -1,0 +1,1826 @@
+[
+    {
+        "area": "BEAMLINE",
+        "enable": true,
+        "pvs": {
+            "pv0": {
+                "name": "$(DEMO_ALARMS_IOC):BEAMLINE-pv0",
+                "enable": true,
+                "latch": true,
+                "notify": true,
+                "lastAlarmVal": "",
+                "lastAlarmTime": "",
+                "lastAlarmAckTime": ""
+            },
+            "pv1": {
+                "name": "$(DEMO_ALARMS_IOC):BEAMLINE-pv1",
+                "enable": true,
+                "latch": true,
+                "notify": true,
+                "lastAlarmVal": "",
+                "lastAlarmTime": "",
+                "lastAlarmAckTime": ""
+            },
+            "pv2": {
+                "name": "$(DEMO_ALARMS_IOC):BEAMLINE-pv2",
+                "enable": true,
+                "latch": true,
+                "notify": true,
+                "lastAlarmVal": "",
+                "lastAlarmTime": "",
+                "lastAlarmAckTime": ""
+            },
+            "pv3": {
+                "name": "$(DEMO_ALARMS_IOC):BEAMLINE-pv3",
+                "enable": true,
+                "latch": true,
+                "notify": true,
+                "lastAlarmVal": "",
+                "lastAlarmTime": "",
+                "lastAlarmAckTime": ""
+            },
+            "pv4": {
+                "name": "$(DEMO_ALARMS_IOC):BEAMLINE-pv4",
+                "enable": true,
+                "latch": true,
+                "notify": true,
+                "lastAlarmVal": "",
+                "lastAlarmTime": "",
+                "lastAlarmAckTime": ""
+            },
+            "pv5": {
+                "name": "$(DEMO_ALARMS_IOC):BEAMLINE-pv5",
+                "enable": true,
+                "latch": true,
+                "notify": true,
+                "lastAlarmVal": "",
+                "lastAlarmTime": "",
+                "lastAlarmAckTime": ""
+            },
+            "pv6": {
+                "name": "$(DEMO_ALARMS_IOC):BEAMLINE-pv6",
+                "enable": true,
+                "latch": true,
+                "notify": true,
+                "lastAlarmVal": "",
+                "lastAlarmTime": "",
+                "lastAlarmAckTime": ""
+            },
+            "pv7": {
+                "name": "$(DEMO_ALARMS_IOC):BEAMLINE-pv7",
+                "enable": true,
+                "latch": true,
+                "notify": true,
+                "lastAlarmVal": "",
+                "lastAlarmTime": "",
+                "lastAlarmAckTime": ""
+            },
+            "pv8": {
+                "name": "$(DEMO_ALARMS_IOC):BEAMLINE-pv8",
+                "enable": true,
+                "latch": true,
+                "notify": true,
+                "lastAlarmVal": "",
+                "lastAlarmTime": "",
+                "lastAlarmAckTime": ""
+            },
+            "pv9": {
+                "name": "$(DEMO_ALARMS_IOC):BEAMLINE-pv9",
+                "enable": true,
+                "latch": true,
+                "notify": true,
+                "lastAlarmVal": "",
+                "lastAlarmTime": "",
+                "lastAlarmAckTime": ""
+            }
+        },
+        "subArea0": {
+            "name": "AIR",
+            "enable": true,
+            "pvs": {
+                "pv0": {
+                    "name": "$(DEMO_ALARMS_IOC):BEAMLINE-AIR-pv0",
+                    "enable": true,
+                    "latch": true,
+                    "notify": true,
+                    "lastAlarmVal": "",
+                    "lastAlarmTime": "",
+                    "lastAlarmAckTime": ""
+                },
+                "pv1": {
+                    "name": "$(DEMO_ALARMS_IOC):BEAMLINE-AIR-pv1",
+                    "enable": true,
+                    "latch": true,
+                    "notify": true,
+                    "lastAlarmVal": "",
+                    "lastAlarmTime": "",
+                    "lastAlarmAckTime": ""
+                },
+                "pv2": {
+                    "name": "$(DEMO_ALARMS_IOC):BEAMLINE-AIR-pv2",
+                    "enable": true,
+                    "latch": true,
+                    "notify": true,
+                    "lastAlarmVal": "",
+                    "lastAlarmTime": "",
+                    "lastAlarmAckTime": ""
+                },
+                "pv3": {
+                    "name": "$(DEMO_ALARMS_IOC):BEAMLINE-AIR-pv3",
+                    "enable": true,
+                    "latch": true,
+                    "notify": true,
+                    "lastAlarmVal": "",
+                    "lastAlarmTime": "",
+                    "lastAlarmAckTime": ""
+                },
+                "pv4": {
+                    "name": "$(DEMO_ALARMS_IOC):BEAMLINE-AIR-pv4",
+                    "enable": true,
+                    "latch": true,
+                    "notify": true,
+                    "lastAlarmVal": "",
+                    "lastAlarmTime": "",
+                    "lastAlarmAckTime": ""
+                },
+                "pv5": {
+                    "name": "$(DEMO_ALARMS_IOC):BEAMLINE-AIR-pv5",
+                    "enable": true,
+                    "latch": true,
+                    "notify": true,
+                    "lastAlarmVal": "",
+                    "lastAlarmTime": "",
+                    "lastAlarmAckTime": ""
+                },
+                "pv6": {
+                    "name": "$(DEMO_ALARMS_IOC):BEAMLINE-AIR-pv6",
+                    "enable": true,
+                    "latch": true,
+                    "notify": true,
+                    "lastAlarmVal": "",
+                    "lastAlarmTime": "",
+                    "lastAlarmAckTime": ""
+                },
+                "pv7": {
+                    "name": "$(DEMO_ALARMS_IOC):BEAMLINE-AIR-pv7",
+                    "enable": true,
+                    "latch": true,
+                    "notify": true,
+                    "lastAlarmVal": "",
+                    "lastAlarmTime": "",
+                    "lastAlarmAckTime": ""
+                },
+                "pv8": {
+                    "name": "$(DEMO_ALARMS_IOC):BEAMLINE-AIR-pv8",
+                    "enable": true,
+                    "latch": true,
+                    "notify": true,
+                    "lastAlarmVal": "",
+                    "lastAlarmTime": "",
+                    "lastAlarmAckTime": ""
+                },
+                "pv9": {
+                    "name": "$(DEMO_ALARMS_IOC):BEAMLINE-AIR-pv9",
+                    "enable": true,
+                    "latch": true,
+                    "notify": true,
+                    "lastAlarmVal": "",
+                    "lastAlarmTime": "",
+                    "lastAlarmAckTime": ""
+                }
+            }
+        },
+        "subArea1": {
+            "name": "FCUPS",
+            "enable": true,
+            "pvs": {
+                "pv0": {
+                    "name": "$(DEMO_ALARMS_IOC):BEAMLINE-FCUPS-pv0",
+                    "enable": true,
+                    "latch": true,
+                    "notify": true,
+                    "lastAlarmVal": "",
+                    "lastAlarmTime": "",
+                    "lastAlarmAckTime": ""
+                },
+                "pv1": {
+                    "name": "$(DEMO_ALARMS_IOC):BEAMLINE-FCUPS-pv1",
+                    "enable": true,
+                    "latch": true,
+                    "notify": true,
+                    "lastAlarmVal": "",
+                    "lastAlarmTime": "",
+                    "lastAlarmAckTime": ""
+                },
+                "pv2": {
+                    "name": "$(DEMO_ALARMS_IOC):BEAMLINE-FCUPS-pv2",
+                    "enable": true,
+                    "latch": true,
+                    "notify": true,
+                    "lastAlarmVal": "",
+                    "lastAlarmTime": "",
+                    "lastAlarmAckTime": ""
+                },
+                "pv3": {
+                    "name": "$(DEMO_ALARMS_IOC):BEAMLINE-FCUPS-pv3",
+                    "enable": true,
+                    "latch": true,
+                    "notify": true,
+                    "lastAlarmVal": "",
+                    "lastAlarmTime": "",
+                    "lastAlarmAckTime": ""
+                },
+                "pv4": {
+                    "name": "$(DEMO_ALARMS_IOC):BEAMLINE-FCUPS-pv4",
+                    "enable": true,
+                    "latch": true,
+                    "notify": true,
+                    "lastAlarmVal": "",
+                    "lastAlarmTime": "",
+                    "lastAlarmAckTime": ""
+                },
+                "pv5": {
+                    "name": "$(DEMO_ALARMS_IOC):BEAMLINE-FCUPS-pv5",
+                    "enable": true,
+                    "latch": true,
+                    "notify": true,
+                    "lastAlarmVal": "",
+                    "lastAlarmTime": "",
+                    "lastAlarmAckTime": ""
+                },
+                "pv6": {
+                    "name": "$(DEMO_ALARMS_IOC):BEAMLINE-FCUPS-pv6",
+                    "enable": true,
+                    "latch": true,
+                    "notify": true,
+                    "lastAlarmVal": "",
+                    "lastAlarmTime": "",
+                    "lastAlarmAckTime": ""
+                },
+                "pv7": {
+                    "name": "$(DEMO_ALARMS_IOC):BEAMLINE-FCUPS-pv7",
+                    "enable": true,
+                    "latch": true,
+                    "notify": true,
+                    "lastAlarmVal": "",
+                    "lastAlarmTime": "",
+                    "lastAlarmAckTime": ""
+                },
+                "pv8": {
+                    "name": "$(DEMO_ALARMS_IOC):BEAMLINE-FCUPS-pv8",
+                    "enable": true,
+                    "latch": true,
+                    "notify": true,
+                    "lastAlarmVal": "",
+                    "lastAlarmTime": "",
+                    "lastAlarmAckTime": ""
+                },
+                "pv9": {
+                    "name": "$(DEMO_ALARMS_IOC):BEAMLINE-FCUPS-pv9",
+                    "enable": true,
+                    "latch": true,
+                    "notify": true,
+                    "lastAlarmVal": "",
+                    "lastAlarmTime": "",
+                    "lastAlarmAckTime": ""
+                }
+            }
+        },
+        "subArea2": {
+            "name": "VACUUM",
+            "enable": true,
+            "pvs": {
+                "pv0": {
+                    "name": "$(DEMO_ALARMS_IOC):BEAMLINE-VACUUM-pv0",
+                    "enable": true,
+                    "latch": true,
+                    "notify": true,
+                    "lastAlarmVal": "",
+                    "lastAlarmTime": "",
+                    "lastAlarmAckTime": ""
+                },
+                "pv1": {
+                    "name": "$(DEMO_ALARMS_IOC):BEAMLINE-VACUUM-pv1",
+                    "enable": true,
+                    "latch": true,
+                    "notify": true,
+                    "lastAlarmVal": "",
+                    "lastAlarmTime": "",
+                    "lastAlarmAckTime": ""
+                },
+                "pv2": {
+                    "name": "$(DEMO_ALARMS_IOC):BEAMLINE-VACUUM-pv2",
+                    "enable": true,
+                    "latch": true,
+                    "notify": true,
+                    "lastAlarmVal": "",
+                    "lastAlarmTime": "",
+                    "lastAlarmAckTime": ""
+                },
+                "pv3": {
+                    "name": "$(DEMO_ALARMS_IOC):BEAMLINE-VACUUM-pv3",
+                    "enable": true,
+                    "latch": true,
+                    "notify": true,
+                    "lastAlarmVal": "",
+                    "lastAlarmTime": "",
+                    "lastAlarmAckTime": ""
+                },
+                "pv4": {
+                    "name": "$(DEMO_ALARMS_IOC):BEAMLINE-VACUUM-pv4",
+                    "enable": true,
+                    "latch": true,
+                    "notify": true,
+                    "lastAlarmVal": "",
+                    "lastAlarmTime": "",
+                    "lastAlarmAckTime": ""
+                },
+                "pv5": {
+                    "name": "$(DEMO_ALARMS_IOC):BEAMLINE-VACUUM-pv5",
+                    "enable": true,
+                    "latch": true,
+                    "notify": true,
+                    "lastAlarmVal": "",
+                    "lastAlarmTime": "",
+                    "lastAlarmAckTime": ""
+                },
+                "pv6": {
+                    "name": "$(DEMO_ALARMS_IOC):BEAMLINE-VACUUM-pv6",
+                    "enable": true,
+                    "latch": true,
+                    "notify": true,
+                    "lastAlarmVal": "",
+                    "lastAlarmTime": "",
+                    "lastAlarmAckTime": ""
+                },
+                "pv7": {
+                    "name": "$(DEMO_ALARMS_IOC):BEAMLINE-VACUUM-pv7",
+                    "enable": true,
+                    "latch": true,
+                    "notify": true,
+                    "lastAlarmVal": "",
+                    "lastAlarmTime": "",
+                    "lastAlarmAckTime": ""
+                },
+                "pv8": {
+                    "name": "$(DEMO_ALARMS_IOC):BEAMLINE-VACUUM-pv8",
+                    "enable": true,
+                    "latch": true,
+                    "notify": true,
+                    "lastAlarmVal": "",
+                    "lastAlarmTime": "",
+                    "lastAlarmAckTime": ""
+                },
+                "pv9": {
+                    "name": "$(DEMO_ALARMS_IOC):BEAMLINE-VACUUM-pv9",
+                    "enable": true,
+                    "latch": true,
+                    "notify": true,
+                    "lastAlarmVal": "",
+                    "lastAlarmTime": "",
+                    "lastAlarmAckTime": ""
+                }
+            }
+        },
+        "subArea3": {
+            "name": "WATER",
+            "enable": true,
+            "pvs": {
+                "pv0": {
+                    "name": "$(DEMO_ALARMS_IOC):BEAMLINE-WATER-pv0",
+                    "enable": true,
+                    "latch": true,
+                    "notify": true,
+                    "lastAlarmVal": "",
+                    "lastAlarmTime": "",
+                    "lastAlarmAckTime": ""
+                },
+                "pv1": {
+                    "name": "$(DEMO_ALARMS_IOC):BEAMLINE-WATER-pv1",
+                    "enable": true,
+                    "latch": true,
+                    "notify": true,
+                    "lastAlarmVal": "",
+                    "lastAlarmTime": "",
+                    "lastAlarmAckTime": ""
+                },
+                "pv2": {
+                    "name": "$(DEMO_ALARMS_IOC):BEAMLINE-WATER-pv2",
+                    "enable": true,
+                    "latch": true,
+                    "notify": true,
+                    "lastAlarmVal": "",
+                    "lastAlarmTime": "",
+                    "lastAlarmAckTime": ""
+                },
+                "pv3": {
+                    "name": "$(DEMO_ALARMS_IOC):BEAMLINE-WATER-pv3",
+                    "enable": true,
+                    "latch": true,
+                    "notify": true,
+                    "lastAlarmVal": "",
+                    "lastAlarmTime": "",
+                    "lastAlarmAckTime": ""
+                },
+                "pv4": {
+                    "name": "$(DEMO_ALARMS_IOC):BEAMLINE-WATER-pv4",
+                    "enable": true,
+                    "latch": true,
+                    "notify": true,
+                    "lastAlarmVal": "",
+                    "lastAlarmTime": "",
+                    "lastAlarmAckTime": ""
+                },
+                "pv5": {
+                    "name": "$(DEMO_ALARMS_IOC):BEAMLINE-WATER-pv5",
+                    "enable": true,
+                    "latch": true,
+                    "notify": true,
+                    "lastAlarmVal": "",
+                    "lastAlarmTime": "",
+                    "lastAlarmAckTime": ""
+                },
+                "pv6": {
+                    "name": "$(DEMO_ALARMS_IOC):BEAMLINE-WATER-pv6",
+                    "enable": true,
+                    "latch": true,
+                    "notify": true,
+                    "lastAlarmVal": "",
+                    "lastAlarmTime": "",
+                    "lastAlarmAckTime": ""
+                },
+                "pv7": {
+                    "name": "$(DEMO_ALARMS_IOC):BEAMLINE-WATER-pv7",
+                    "enable": true,
+                    "latch": true,
+                    "notify": true,
+                    "lastAlarmVal": "",
+                    "lastAlarmTime": "",
+                    "lastAlarmAckTime": ""
+                },
+                "pv8": {
+                    "name": "$(DEMO_ALARMS_IOC):BEAMLINE-WATER-pv8",
+                    "enable": true,
+                    "latch": true,
+                    "notify": true,
+                    "lastAlarmVal": "",
+                    "lastAlarmTime": "",
+                    "lastAlarmAckTime": ""
+                },
+                "pv9": {
+                    "name": "$(DEMO_ALARMS_IOC):BEAMLINE-WATER-pv9",
+                    "enable": true,
+                    "latch": true,
+                    "notify": true,
+                    "lastAlarmVal": "",
+                    "lastAlarmTime": "",
+                    "lastAlarmAckTime": ""
+                }
+            }
+        }
+    },
+    {
+        "area": "BUILDING",
+        "enable": true,
+        "pvs": {
+            "pv0": {
+                "name": "$(DEMO_ALARMS_IOC):BUILDING-pv0",
+                "enable": true,
+                "latch": true,
+                "notify": true,
+                "lastAlarmVal": "",
+                "lastAlarmTime": "",
+                "lastAlarmAckTime": ""
+            },
+            "pv1": {
+                "name": "$(DEMO_ALARMS_IOC):BUILDING-pv1",
+                "enable": true,
+                "latch": true,
+                "notify": true,
+                "lastAlarmVal": "",
+                "lastAlarmTime": "",
+                "lastAlarmAckTime": ""
+            },
+            "pv2": {
+                "name": "$(DEMO_ALARMS_IOC):BUILDING-pv2",
+                "enable": true,
+                "latch": true,
+                "notify": true,
+                "lastAlarmVal": "",
+                "lastAlarmTime": "",
+                "lastAlarmAckTime": ""
+            },
+            "pv3": {
+                "name": "$(DEMO_ALARMS_IOC):BUILDING-pv3",
+                "enable": true,
+                "latch": true,
+                "notify": true,
+                "lastAlarmVal": "",
+                "lastAlarmTime": "",
+                "lastAlarmAckTime": ""
+            },
+            "pv4": {
+                "name": "$(DEMO_ALARMS_IOC):BUILDING-pv4",
+                "enable": true,
+                "latch": true,
+                "notify": true,
+                "lastAlarmVal": "",
+                "lastAlarmTime": "",
+                "lastAlarmAckTime": ""
+            },
+            "pv5": {
+                "name": "$(DEMO_ALARMS_IOC):BUILDING-pv5",
+                "enable": true,
+                "latch": true,
+                "notify": true,
+                "lastAlarmVal": "",
+                "lastAlarmTime": "",
+                "lastAlarmAckTime": ""
+            },
+            "pv6": {
+                "name": "$(DEMO_ALARMS_IOC):BUILDING-pv6",
+                "enable": true,
+                "latch": true,
+                "notify": true,
+                "lastAlarmVal": "",
+                "lastAlarmTime": "",
+                "lastAlarmAckTime": ""
+            },
+            "pv7": {
+                "name": "$(DEMO_ALARMS_IOC):BUILDING-pv7",
+                "enable": true,
+                "latch": true,
+                "notify": true,
+                "lastAlarmVal": "",
+                "lastAlarmTime": "",
+                "lastAlarmAckTime": ""
+            },
+            "pv8": {
+                "name": "$(DEMO_ALARMS_IOC):BUILDING-pv8",
+                "enable": true,
+                "latch": true,
+                "notify": true,
+                "lastAlarmVal": "",
+                "lastAlarmTime": "",
+                "lastAlarmAckTime": ""
+            },
+            "pv9": {
+                "name": "$(DEMO_ALARMS_IOC):BUILDING-pv9",
+                "enable": true,
+                "latch": true,
+                "notify": true,
+                "lastAlarmVal": "",
+                "lastAlarmTime": "",
+                "lastAlarmAckTime": ""
+            }
+        },
+        "subArea0": {
+            "name": "FIRE",
+            "enable": true,
+            "pvs": {
+                "pv0": {
+                    "name": "$(DEMO_ALARMS_IOC):BUILDING-FIRE-pv0",
+                    "enable": true,
+                    "latch": true,
+                    "notify": true,
+                    "lastAlarmVal": "",
+                    "lastAlarmTime": "",
+                    "lastAlarmAckTime": ""
+                },
+                "pv1": {
+                    "name": "$(DEMO_ALARMS_IOC):BUILDING-FIRE-pv1",
+                    "enable": true,
+                    "latch": true,
+                    "notify": true,
+                    "lastAlarmVal": "",
+                    "lastAlarmTime": "",
+                    "lastAlarmAckTime": ""
+                },
+                "pv2": {
+                    "name": "$(DEMO_ALARMS_IOC):BUILDING-FIRE-pv2",
+                    "enable": true,
+                    "latch": true,
+                    "notify": true,
+                    "lastAlarmVal": "",
+                    "lastAlarmTime": "",
+                    "lastAlarmAckTime": ""
+                },
+                "pv3": {
+                    "name": "$(DEMO_ALARMS_IOC):BUILDING-FIRE-pv3",
+                    "enable": true,
+                    "latch": true,
+                    "notify": true,
+                    "lastAlarmVal": "",
+                    "lastAlarmTime": "",
+                    "lastAlarmAckTime": ""
+                },
+                "pv4": {
+                    "name": "$(DEMO_ALARMS_IOC):BUILDING-FIRE-pv4",
+                    "enable": true,
+                    "latch": true,
+                    "notify": true,
+                    "lastAlarmVal": "",
+                    "lastAlarmTime": "",
+                    "lastAlarmAckTime": ""
+                },
+                "pv5": {
+                    "name": "$(DEMO_ALARMS_IOC):BUILDING-FIRE-pv5",
+                    "enable": true,
+                    "latch": true,
+                    "notify": true,
+                    "lastAlarmVal": "",
+                    "lastAlarmTime": "",
+                    "lastAlarmAckTime": ""
+                },
+                "pv6": {
+                    "name": "$(DEMO_ALARMS_IOC):BUILDING-FIRE-pv6",
+                    "enable": true,
+                    "latch": true,
+                    "notify": true,
+                    "lastAlarmVal": "",
+                    "lastAlarmTime": "",
+                    "lastAlarmAckTime": ""
+                },
+                "pv7": {
+                    "name": "$(DEMO_ALARMS_IOC):BUILDING-FIRE-pv7",
+                    "enable": true,
+                    "latch": true,
+                    "notify": true,
+                    "lastAlarmVal": "",
+                    "lastAlarmTime": "",
+                    "lastAlarmAckTime": ""
+                },
+                "pv8": {
+                    "name": "$(DEMO_ALARMS_IOC):BUILDING-FIRE-pv8",
+                    "enable": true,
+                    "latch": true,
+                    "notify": true,
+                    "lastAlarmVal": "",
+                    "lastAlarmTime": "",
+                    "lastAlarmAckTime": ""
+                },
+                "pv9": {
+                    "name": "$(DEMO_ALARMS_IOC):BUILDING-FIRE-pv9",
+                    "enable": true,
+                    "latch": true,
+                    "notify": true,
+                    "lastAlarmVal": "",
+                    "lastAlarmTime": "",
+                    "lastAlarmAckTime": ""
+                }
+            }
+        },
+        "subArea1": {
+            "name": "HVAC",
+            "enable": true,
+            "pvs": {
+                "pv0": {
+                    "name": "$(DEMO_ALARMS_IOC):BUILDING-HVAC-pv0",
+                    "enable": true,
+                    "latch": true,
+                    "notify": true,
+                    "lastAlarmVal": "",
+                    "lastAlarmTime": "",
+                    "lastAlarmAckTime": ""
+                },
+                "pv1": {
+                    "name": "$(DEMO_ALARMS_IOC):BUILDING-HVAC-pv1",
+                    "enable": true,
+                    "latch": true,
+                    "notify": true,
+                    "lastAlarmVal": "",
+                    "lastAlarmTime": "",
+                    "lastAlarmAckTime": ""
+                },
+                "pv2": {
+                    "name": "$(DEMO_ALARMS_IOC):BUILDING-HVAC-pv2",
+                    "enable": true,
+                    "latch": true,
+                    "notify": true,
+                    "lastAlarmVal": "",
+                    "lastAlarmTime": "",
+                    "lastAlarmAckTime": ""
+                },
+                "pv3": {
+                    "name": "$(DEMO_ALARMS_IOC):BUILDING-HVAC-pv3",
+                    "enable": true,
+                    "latch": true,
+                    "notify": true,
+                    "lastAlarmVal": "",
+                    "lastAlarmTime": "",
+                    "lastAlarmAckTime": ""
+                },
+                "pv4": {
+                    "name": "$(DEMO_ALARMS_IOC):BUILDING-HVAC-pv4",
+                    "enable": true,
+                    "latch": true,
+                    "notify": true,
+                    "lastAlarmVal": "",
+                    "lastAlarmTime": "",
+                    "lastAlarmAckTime": ""
+                },
+                "pv5": {
+                    "name": "$(DEMO_ALARMS_IOC):BUILDING-HVAC-pv5",
+                    "enable": true,
+                    "latch": true,
+                    "notify": true,
+                    "lastAlarmVal": "",
+                    "lastAlarmTime": "",
+                    "lastAlarmAckTime": ""
+                },
+                "pv6": {
+                    "name": "$(DEMO_ALARMS_IOC):BUILDING-HVAC-pv6",
+                    "enable": true,
+                    "latch": true,
+                    "notify": true,
+                    "lastAlarmVal": "",
+                    "lastAlarmTime": "",
+                    "lastAlarmAckTime": ""
+                },
+                "pv7": {
+                    "name": "$(DEMO_ALARMS_IOC):BUILDING-HVAC-pv7",
+                    "enable": true,
+                    "latch": true,
+                    "notify": true,
+                    "lastAlarmVal": "",
+                    "lastAlarmTime": "",
+                    "lastAlarmAckTime": ""
+                },
+                "pv8": {
+                    "name": "$(DEMO_ALARMS_IOC):BUILDING-HVAC-pv8",
+                    "enable": true,
+                    "latch": true,
+                    "notify": true,
+                    "lastAlarmVal": "",
+                    "lastAlarmTime": "",
+                    "lastAlarmAckTime": ""
+                },
+                "pv9": {
+                    "name": "$(DEMO_ALARMS_IOC):BUILDING-HVAC-pv9",
+                    "enable": true,
+                    "latch": true,
+                    "notify": true,
+                    "lastAlarmVal": "",
+                    "lastAlarmTime": "",
+                    "lastAlarmAckTime": ""
+                }
+            }
+        },
+        "subArea2": {
+            "name": "SECURITY",
+            "enable": true,
+            "pvs": {
+                "pv0": {
+                    "name": "$(DEMO_ALARMS_IOC):BUILDING-SECURITY-pv0",
+                    "enable": true,
+                    "latch": true,
+                    "notify": true,
+                    "lastAlarmVal": "",
+                    "lastAlarmTime": "",
+                    "lastAlarmAckTime": ""
+                },
+                "pv1": {
+                    "name": "$(DEMO_ALARMS_IOC):BUILDING-SECURITY-pv1",
+                    "enable": true,
+                    "latch": true,
+                    "notify": true,
+                    "lastAlarmVal": "",
+                    "lastAlarmTime": "",
+                    "lastAlarmAckTime": ""
+                },
+                "pv2": {
+                    "name": "$(DEMO_ALARMS_IOC):BUILDING-SECURITY-pv2",
+                    "enable": true,
+                    "latch": true,
+                    "notify": true,
+                    "lastAlarmVal": "",
+                    "lastAlarmTime": "",
+                    "lastAlarmAckTime": ""
+                },
+                "pv3": {
+                    "name": "$(DEMO_ALARMS_IOC):BUILDING-SECURITY-pv3",
+                    "enable": true,
+                    "latch": true,
+                    "notify": true,
+                    "lastAlarmVal": "",
+                    "lastAlarmTime": "",
+                    "lastAlarmAckTime": ""
+                },
+                "pv4": {
+                    "name": "$(DEMO_ALARMS_IOC):BUILDING-SECURITY-pv4",
+                    "enable": true,
+                    "latch": true,
+                    "notify": true,
+                    "lastAlarmVal": "",
+                    "lastAlarmTime": "",
+                    "lastAlarmAckTime": ""
+                },
+                "pv5": {
+                    "name": "$(DEMO_ALARMS_IOC):BUILDING-SECURITY-pv5",
+                    "enable": true,
+                    "latch": true,
+                    "notify": true,
+                    "lastAlarmVal": "",
+                    "lastAlarmTime": "",
+                    "lastAlarmAckTime": ""
+                },
+                "pv6": {
+                    "name": "$(DEMO_ALARMS_IOC):BUILDING-SECURITY-pv6",
+                    "enable": true,
+                    "latch": true,
+                    "notify": true,
+                    "lastAlarmVal": "",
+                    "lastAlarmTime": "",
+                    "lastAlarmAckTime": ""
+                },
+                "pv7": {
+                    "name": "$(DEMO_ALARMS_IOC):BUILDING-SECURITY-pv7",
+                    "enable": true,
+                    "latch": true,
+                    "notify": true,
+                    "lastAlarmVal": "",
+                    "lastAlarmTime": "",
+                    "lastAlarmAckTime": ""
+                },
+                "pv8": {
+                    "name": "$(DEMO_ALARMS_IOC):BUILDING-SECURITY-pv8",
+                    "enable": true,
+                    "latch": true,
+                    "notify": true,
+                    "lastAlarmVal": "",
+                    "lastAlarmTime": "",
+                    "lastAlarmAckTime": ""
+                },
+                "pv9": {
+                    "name": "$(DEMO_ALARMS_IOC):BUILDING-SECURITY-pv9",
+                    "enable": true,
+                    "latch": true,
+                    "notify": true,
+                    "lastAlarmVal": "",
+                    "lastAlarmTime": "",
+                    "lastAlarmAckTime": ""
+                }
+            }
+        }
+    },
+    {
+        "area": "CYCLOTRON",
+        "enable": true,
+        "pvs": {
+            "pv0": {
+                "name": "$(DEMO_ALARMS_IOC):CYCLOTRON-pv0",
+                "enable": true,
+                "latch": true,
+                "notify": true,
+                "lastAlarmVal": "",
+                "lastAlarmTime": "",
+                "lastAlarmAckTime": ""
+            },
+            "pv1": {
+                "name": "$(DEMO_ALARMS_IOC):CYCLOTRON-pv1",
+                "enable": true,
+                "latch": true,
+                "notify": true,
+                "lastAlarmVal": "",
+                "lastAlarmTime": "",
+                "lastAlarmAckTime": ""
+            },
+            "pv2": {
+                "name": "$(DEMO_ALARMS_IOC):CYCLOTRON-pv2",
+                "enable": true,
+                "latch": true,
+                "notify": true,
+                "lastAlarmVal": "",
+                "lastAlarmTime": "",
+                "lastAlarmAckTime": ""
+            },
+            "pv3": {
+                "name": "$(DEMO_ALARMS_IOC):CYCLOTRON-pv3",
+                "enable": true,
+                "latch": true,
+                "notify": true,
+                "lastAlarmVal": "",
+                "lastAlarmTime": "",
+                "lastAlarmAckTime": ""
+            },
+            "pv4": {
+                "name": "$(DEMO_ALARMS_IOC):CYCLOTRON-pv4",
+                "enable": true,
+                "latch": true,
+                "notify": true,
+                "lastAlarmVal": "",
+                "lastAlarmTime": "",
+                "lastAlarmAckTime": ""
+            },
+            "pv5": {
+                "name": "$(DEMO_ALARMS_IOC):CYCLOTRON-pv5",
+                "enable": true,
+                "latch": true,
+                "notify": true,
+                "lastAlarmVal": "",
+                "lastAlarmTime": "",
+                "lastAlarmAckTime": ""
+            },
+            "pv6": {
+                "name": "$(DEMO_ALARMS_IOC):CYCLOTRON-pv6",
+                "enable": true,
+                "latch": true,
+                "notify": true,
+                "lastAlarmVal": "",
+                "lastAlarmTime": "",
+                "lastAlarmAckTime": ""
+            },
+            "pv7": {
+                "name": "$(DEMO_ALARMS_IOC):CYCLOTRON-pv7",
+                "enable": true,
+                "latch": true,
+                "notify": true,
+                "lastAlarmVal": "",
+                "lastAlarmTime": "",
+                "lastAlarmAckTime": ""
+            },
+            "pv8": {
+                "name": "$(DEMO_ALARMS_IOC):CYCLOTRON-pv8",
+                "enable": true,
+                "latch": true,
+                "notify": true,
+                "lastAlarmVal": "",
+                "lastAlarmTime": "",
+                "lastAlarmAckTime": ""
+            },
+            "pv9": {
+                "name": "$(DEMO_ALARMS_IOC):CYCLOTRON-pv9",
+                "enable": true,
+                "latch": true,
+                "notify": true,
+                "lastAlarmVal": "",
+                "lastAlarmTime": "",
+                "lastAlarmAckTime": ""
+            }
+        },
+        "subArea0": {
+            "name": "AIR",
+            "enable": true,
+            "pvs": {
+                "pv0": {
+                    "name": "$(DEMO_ALARMS_IOC):CYCLOTRON-AIR-pv0",
+                    "enable": true,
+                    "latch": true,
+                    "notify": true,
+                    "lastAlarmVal": "",
+                    "lastAlarmTime": "",
+                    "lastAlarmAckTime": ""
+                },
+                "pv1": {
+                    "name": "$(DEMO_ALARMS_IOC):CYCLOTRON-AIR-pv1",
+                    "enable": true,
+                    "latch": true,
+                    "notify": true,
+                    "lastAlarmVal": "",
+                    "lastAlarmTime": "",
+                    "lastAlarmAckTime": ""
+                },
+                "pv2": {
+                    "name": "$(DEMO_ALARMS_IOC):CYCLOTRON-AIR-pv2",
+                    "enable": true,
+                    "latch": true,
+                    "notify": true,
+                    "lastAlarmVal": "",
+                    "lastAlarmTime": "",
+                    "lastAlarmAckTime": ""
+                },
+                "pv3": {
+                    "name": "$(DEMO_ALARMS_IOC):CYCLOTRON-AIR-pv3",
+                    "enable": true,
+                    "latch": true,
+                    "notify": true,
+                    "lastAlarmVal": "",
+                    "lastAlarmTime": "",
+                    "lastAlarmAckTime": ""
+                },
+                "pv4": {
+                    "name": "$(DEMO_ALARMS_IOC):CYCLOTRON-AIR-pv4",
+                    "enable": true,
+                    "latch": true,
+                    "notify": true,
+                    "lastAlarmVal": "",
+                    "lastAlarmTime": "",
+                    "lastAlarmAckTime": ""
+                },
+                "pv5": {
+                    "name": "$(DEMO_ALARMS_IOC):CYCLOTRON-AIR-pv5",
+                    "enable": true,
+                    "latch": true,
+                    "notify": true,
+                    "lastAlarmVal": "",
+                    "lastAlarmTime": "",
+                    "lastAlarmAckTime": ""
+                },
+                "pv6": {
+                    "name": "$(DEMO_ALARMS_IOC):CYCLOTRON-AIR-pv6",
+                    "enable": true,
+                    "latch": true,
+                    "notify": true,
+                    "lastAlarmVal": "",
+                    "lastAlarmTime": "",
+                    "lastAlarmAckTime": ""
+                },
+                "pv7": {
+                    "name": "$(DEMO_ALARMS_IOC):CYCLOTRON-AIR-pv7",
+                    "enable": true,
+                    "latch": true,
+                    "notify": true,
+                    "lastAlarmVal": "",
+                    "lastAlarmTime": "",
+                    "lastAlarmAckTime": ""
+                },
+                "pv8": {
+                    "name": "$(DEMO_ALARMS_IOC):CYCLOTRON-AIR-pv8",
+                    "enable": true,
+                    "latch": true,
+                    "notify": true,
+                    "lastAlarmVal": "",
+                    "lastAlarmTime": "",
+                    "lastAlarmAckTime": ""
+                },
+                "pv9": {
+                    "name": "$(DEMO_ALARMS_IOC):CYCLOTRON-AIR-pv9",
+                    "enable": true,
+                    "latch": true,
+                    "notify": true,
+                    "lastAlarmVal": "",
+                    "lastAlarmTime": "",
+                    "lastAlarmAckTime": ""
+                }
+            }
+        },
+        "subArea1": {
+            "name": "CROOM",
+            "enable": true,
+            "pvs": {
+                "pv0": {
+                    "name": "$(DEMO_ALARMS_IOC):CYCLOTRON-CROOM-pv0",
+                    "enable": true,
+                    "latch": true,
+                    "notify": true,
+                    "lastAlarmVal": "",
+                    "lastAlarmTime": "",
+                    "lastAlarmAckTime": ""
+                },
+                "pv1": {
+                    "name": "$(DEMO_ALARMS_IOC):CYCLOTRON-CROOM-pv1",
+                    "enable": true,
+                    "latch": true,
+                    "notify": true,
+                    "lastAlarmVal": "",
+                    "lastAlarmTime": "",
+                    "lastAlarmAckTime": ""
+                },
+                "pv2": {
+                    "name": "$(DEMO_ALARMS_IOC):CYCLOTRON-CROOM-pv2",
+                    "enable": true,
+                    "latch": true,
+                    "notify": true,
+                    "lastAlarmVal": "",
+                    "lastAlarmTime": "",
+                    "lastAlarmAckTime": ""
+                },
+                "pv3": {
+                    "name": "$(DEMO_ALARMS_IOC):CYCLOTRON-CROOM-pv3",
+                    "enable": true,
+                    "latch": true,
+                    "notify": true,
+                    "lastAlarmVal": "",
+                    "lastAlarmTime": "",
+                    "lastAlarmAckTime": ""
+                },
+                "pv4": {
+                    "name": "$(DEMO_ALARMS_IOC):CYCLOTRON-CROOM-pv4",
+                    "enable": true,
+                    "latch": true,
+                    "notify": true,
+                    "lastAlarmVal": "",
+                    "lastAlarmTime": "",
+                    "lastAlarmAckTime": ""
+                },
+                "pv5": {
+                    "name": "$(DEMO_ALARMS_IOC):CYCLOTRON-CROOM-pv5",
+                    "enable": true,
+                    "latch": true,
+                    "notify": true,
+                    "lastAlarmVal": "",
+                    "lastAlarmTime": "",
+                    "lastAlarmAckTime": ""
+                },
+                "pv6": {
+                    "name": "$(DEMO_ALARMS_IOC):CYCLOTRON-CROOM-pv6",
+                    "enable": true,
+                    "latch": true,
+                    "notify": true,
+                    "lastAlarmVal": "",
+                    "lastAlarmTime": "",
+                    "lastAlarmAckTime": ""
+                },
+                "pv7": {
+                    "name": "$(DEMO_ALARMS_IOC):CYCLOTRON-CROOM-pv7",
+                    "enable": true,
+                    "latch": true,
+                    "notify": true,
+                    "lastAlarmVal": "",
+                    "lastAlarmTime": "",
+                    "lastAlarmAckTime": ""
+                },
+                "pv8": {
+                    "name": "$(DEMO_ALARMS_IOC):CYCLOTRON-CROOM-pv8",
+                    "enable": true,
+                    "latch": true,
+                    "notify": true,
+                    "lastAlarmVal": "",
+                    "lastAlarmTime": "",
+                    "lastAlarmAckTime": ""
+                },
+                "pv9": {
+                    "name": "$(DEMO_ALARMS_IOC):CYCLOTRON-CROOM-pv9",
+                    "enable": true,
+                    "latch": true,
+                    "notify": true,
+                    "lastAlarmVal": "",
+                    "lastAlarmTime": "",
+                    "lastAlarmAckTime": ""
+                }
+            }
+        },
+        "subArea2": {
+            "name": "SAFETY",
+            "enable": true,
+            "pvs": {
+                "pv0": {
+                    "name": "$(DEMO_ALARMS_IOC):CYCLOTRON-SAFETY-pv0",
+                    "enable": true,
+                    "latch": true,
+                    "notify": true,
+                    "lastAlarmVal": "",
+                    "lastAlarmTime": "",
+                    "lastAlarmAckTime": ""
+                },
+                "pv1": {
+                    "name": "$(DEMO_ALARMS_IOC):CYCLOTRON-SAFETY-pv1",
+                    "enable": true,
+                    "latch": true,
+                    "notify": true,
+                    "lastAlarmVal": "",
+                    "lastAlarmTime": "",
+                    "lastAlarmAckTime": ""
+                },
+                "pv2": {
+                    "name": "$(DEMO_ALARMS_IOC):CYCLOTRON-SAFETY-pv2",
+                    "enable": true,
+                    "latch": true,
+                    "notify": true,
+                    "lastAlarmVal": "",
+                    "lastAlarmTime": "",
+                    "lastAlarmAckTime": ""
+                },
+                "pv3": {
+                    "name": "$(DEMO_ALARMS_IOC):CYCLOTRON-SAFETY-pv3",
+                    "enable": true,
+                    "latch": true,
+                    "notify": true,
+                    "lastAlarmVal": "",
+                    "lastAlarmTime": "",
+                    "lastAlarmAckTime": ""
+                },
+                "pv4": {
+                    "name": "$(DEMO_ALARMS_IOC):CYCLOTRON-SAFETY-pv4",
+                    "enable": true,
+                    "latch": true,
+                    "notify": true,
+                    "lastAlarmVal": "",
+                    "lastAlarmTime": "",
+                    "lastAlarmAckTime": ""
+                },
+                "pv5": {
+                    "name": "$(DEMO_ALARMS_IOC):CYCLOTRON-SAFETY-pv5",
+                    "enable": true,
+                    "latch": true,
+                    "notify": true,
+                    "lastAlarmVal": "",
+                    "lastAlarmTime": "",
+                    "lastAlarmAckTime": ""
+                },
+                "pv6": {
+                    "name": "$(DEMO_ALARMS_IOC):CYCLOTRON-SAFETY-pv6",
+                    "enable": true,
+                    "latch": true,
+                    "notify": true,
+                    "lastAlarmVal": "",
+                    "lastAlarmTime": "",
+                    "lastAlarmAckTime": ""
+                },
+                "pv7": {
+                    "name": "$(DEMO_ALARMS_IOC):CYCLOTRON-SAFETY-pv7",
+                    "enable": true,
+                    "latch": true,
+                    "notify": true,
+                    "lastAlarmVal": "",
+                    "lastAlarmTime": "",
+                    "lastAlarmAckTime": ""
+                },
+                "pv8": {
+                    "name": "$(DEMO_ALARMS_IOC):CYCLOTRON-SAFETY-pv8",
+                    "enable": true,
+                    "latch": true,
+                    "notify": true,
+                    "lastAlarmVal": "",
+                    "lastAlarmTime": "",
+                    "lastAlarmAckTime": ""
+                },
+                "pv9": {
+                    "name": "$(DEMO_ALARMS_IOC):CYCLOTRON-SAFETY-pv9",
+                    "enable": true,
+                    "latch": true,
+                    "notify": true,
+                    "lastAlarmVal": "",
+                    "lastAlarmTime": "",
+                    "lastAlarmAckTime": ""
+                }
+            }
+        },
+        "subArea3": {
+            "name": "VACUUM",
+            "enable": true,
+            "pvs": {
+                "pv0": {
+                    "name": "$(DEMO_ALARMS_IOC):CYCLOTRON-VACUUM-pv0",
+                    "enable": true,
+                    "latch": true,
+                    "notify": true,
+                    "lastAlarmVal": "",
+                    "lastAlarmTime": "",
+                    "lastAlarmAckTime": ""
+                },
+                "pv1": {
+                    "name": "$(DEMO_ALARMS_IOC):CYCLOTRON-VACUUM-pv1",
+                    "enable": true,
+                    "latch": true,
+                    "notify": true,
+                    "lastAlarmVal": "",
+                    "lastAlarmTime": "",
+                    "lastAlarmAckTime": ""
+                },
+                "pv2": {
+                    "name": "$(DEMO_ALARMS_IOC):CYCLOTRON-VACUUM-pv2",
+                    "enable": true,
+                    "latch": true,
+                    "notify": true,
+                    "lastAlarmVal": "",
+                    "lastAlarmTime": "",
+                    "lastAlarmAckTime": ""
+                },
+                "pv3": {
+                    "name": "$(DEMO_ALARMS_IOC):CYCLOTRON-VACUUM-pv3",
+                    "enable": true,
+                    "latch": true,
+                    "notify": true,
+                    "lastAlarmVal": "",
+                    "lastAlarmTime": "",
+                    "lastAlarmAckTime": ""
+                },
+                "pv4": {
+                    "name": "$(DEMO_ALARMS_IOC):CYCLOTRON-VACUUM-pv4",
+                    "enable": true,
+                    "latch": true,
+                    "notify": true,
+                    "lastAlarmVal": "",
+                    "lastAlarmTime": "",
+                    "lastAlarmAckTime": ""
+                },
+                "pv5": {
+                    "name": "$(DEMO_ALARMS_IOC):CYCLOTRON-VACUUM-pv5",
+                    "enable": true,
+                    "latch": true,
+                    "notify": true,
+                    "lastAlarmVal": "",
+                    "lastAlarmTime": "",
+                    "lastAlarmAckTime": ""
+                },
+                "pv6": {
+                    "name": "$(DEMO_ALARMS_IOC):CYCLOTRON-VACUUM-pv6",
+                    "enable": true,
+                    "latch": true,
+                    "notify": true,
+                    "lastAlarmVal": "",
+                    "lastAlarmTime": "",
+                    "lastAlarmAckTime": ""
+                },
+                "pv7": {
+                    "name": "$(DEMO_ALARMS_IOC):CYCLOTRON-VACUUM-pv7",
+                    "enable": true,
+                    "latch": true,
+                    "notify": true,
+                    "lastAlarmVal": "",
+                    "lastAlarmTime": "",
+                    "lastAlarmAckTime": ""
+                },
+                "pv8": {
+                    "name": "$(DEMO_ALARMS_IOC):CYCLOTRON-VACUUM-pv8",
+                    "enable": true,
+                    "latch": true,
+                    "notify": true,
+                    "lastAlarmVal": "",
+                    "lastAlarmTime": "",
+                    "lastAlarmAckTime": ""
+                },
+                "pv9": {
+                    "name": "$(DEMO_ALARMS_IOC):CYCLOTRON-VACUUM-pv9",
+                    "enable": true,
+                    "latch": true,
+                    "notify": true,
+                    "lastAlarmVal": "",
+                    "lastAlarmTime": "",
+                    "lastAlarmAckTime": ""
+                }
+            }
+        },
+        "subArea4": {
+            "name": "WATER",
+            "enable": true,
+            "pvs": {
+                "pv0": {
+                    "name": "$(DEMO_ALARMS_IOC):CYCLOTRON-WATER-pv0",
+                    "enable": true,
+                    "latch": true,
+                    "notify": true,
+                    "lastAlarmVal": "",
+                    "lastAlarmTime": "",
+                    "lastAlarmAckTime": ""
+                },
+                "pv1": {
+                    "name": "$(DEMO_ALARMS_IOC):CYCLOTRON-WATER-pv1",
+                    "enable": true,
+                    "latch": true,
+                    "notify": true,
+                    "lastAlarmVal": "",
+                    "lastAlarmTime": "",
+                    "lastAlarmAckTime": ""
+                },
+                "pv2": {
+                    "name": "$(DEMO_ALARMS_IOC):CYCLOTRON-WATER-pv2",
+                    "enable": true,
+                    "latch": true,
+                    "notify": true,
+                    "lastAlarmVal": "",
+                    "lastAlarmTime": "",
+                    "lastAlarmAckTime": ""
+                },
+                "pv3": {
+                    "name": "$(DEMO_ALARMS_IOC):CYCLOTRON-WATER-pv3",
+                    "enable": true,
+                    "latch": true,
+                    "notify": true,
+                    "lastAlarmVal": "",
+                    "lastAlarmTime": "",
+                    "lastAlarmAckTime": ""
+                },
+                "pv4": {
+                    "name": "$(DEMO_ALARMS_IOC):CYCLOTRON-WATER-pv4",
+                    "enable": true,
+                    "latch": true,
+                    "notify": true,
+                    "lastAlarmVal": "",
+                    "lastAlarmTime": "",
+                    "lastAlarmAckTime": ""
+                },
+                "pv5": {
+                    "name": "$(DEMO_ALARMS_IOC):CYCLOTRON-WATER-pv5",
+                    "enable": true,
+                    "latch": true,
+                    "notify": true,
+                    "lastAlarmVal": "",
+                    "lastAlarmTime": "",
+                    "lastAlarmAckTime": ""
+                },
+                "pv6": {
+                    "name": "$(DEMO_ALARMS_IOC):CYCLOTRON-WATER-pv6",
+                    "enable": true,
+                    "latch": true,
+                    "notify": true,
+                    "lastAlarmVal": "",
+                    "lastAlarmTime": "",
+                    "lastAlarmAckTime": ""
+                },
+                "pv7": {
+                    "name": "$(DEMO_ALARMS_IOC):CYCLOTRON-WATER-pv7",
+                    "enable": true,
+                    "latch": true,
+                    "notify": true,
+                    "lastAlarmVal": "",
+                    "lastAlarmTime": "",
+                    "lastAlarmAckTime": ""
+                },
+                "pv8": {
+                    "name": "$(DEMO_ALARMS_IOC):CYCLOTRON-WATER-pv8",
+                    "enable": true,
+                    "latch": true,
+                    "notify": true,
+                    "lastAlarmVal": "",
+                    "lastAlarmTime": "",
+                    "lastAlarmAckTime": ""
+                },
+                "pv9": {
+                    "name": "$(DEMO_ALARMS_IOC):CYCLOTRON-WATER-pv9",
+                    "enable": true,
+                    "latch": true,
+                    "notify": true,
+                    "lastAlarmVal": "",
+                    "lastAlarmTime": "",
+                    "lastAlarmAckTime": ""
+                }
+            }
+        }
+    },
+    {
+        "area": "VAULT",
+        "enable": true,
+        "pvs": {
+            "pv0": {
+                "name": "$(DEMO_ALARMS_IOC):VAULT-pv0",
+                "enable": true,
+                "latch": true,
+                "notify": true,
+                "lastAlarmVal": "",
+                "lastAlarmTime": "",
+                "lastAlarmAckTime": ""
+            },
+            "pv1": {
+                "name": "$(DEMO_ALARMS_IOC):VAULT-pv1",
+                "enable": true,
+                "latch": true,
+                "notify": true,
+                "lastAlarmVal": "",
+                "lastAlarmTime": "",
+                "lastAlarmAckTime": ""
+            },
+            "pv2": {
+                "name": "$(DEMO_ALARMS_IOC):VAULT-pv2",
+                "enable": true,
+                "latch": true,
+                "notify": true,
+                "lastAlarmVal": "",
+                "lastAlarmTime": "",
+                "lastAlarmAckTime": ""
+            },
+            "pv3": {
+                "name": "$(DEMO_ALARMS_IOC):VAULT-pv3",
+                "enable": true,
+                "latch": true,
+                "notify": true,
+                "lastAlarmVal": "",
+                "lastAlarmTime": "",
+                "lastAlarmAckTime": ""
+            },
+            "pv4": {
+                "name": "$(DEMO_ALARMS_IOC):VAULT-pv4",
+                "enable": true,
+                "latch": true,
+                "notify": true,
+                "lastAlarmVal": "",
+                "lastAlarmTime": "",
+                "lastAlarmAckTime": ""
+            },
+            "pv5": {
+                "name": "$(DEMO_ALARMS_IOC):VAULT-pv5",
+                "enable": true,
+                "latch": true,
+                "notify": true,
+                "lastAlarmVal": "",
+                "lastAlarmTime": "",
+                "lastAlarmAckTime": ""
+            },
+            "pv6": {
+                "name": "$(DEMO_ALARMS_IOC):VAULT-pv6",
+                "enable": true,
+                "latch": true,
+                "notify": true,
+                "lastAlarmVal": "",
+                "lastAlarmTime": "",
+                "lastAlarmAckTime": ""
+            },
+            "pv7": {
+                "name": "$(DEMO_ALARMS_IOC):VAULT-pv7",
+                "enable": true,
+                "latch": true,
+                "notify": true,
+                "lastAlarmVal": "",
+                "lastAlarmTime": "",
+                "lastAlarmAckTime": ""
+            },
+            "pv8": {
+                "name": "$(DEMO_ALARMS_IOC):VAULT-pv8",
+                "enable": true,
+                "latch": true,
+                "notify": true,
+                "lastAlarmVal": "",
+                "lastAlarmTime": "",
+                "lastAlarmAckTime": ""
+            },
+            "pv9": {
+                "name": "$(DEMO_ALARMS_IOC):VAULT-pv9",
+                "enable": true,
+                "latch": true,
+                "notify": true,
+                "lastAlarmVal": "",
+                "lastAlarmTime": "",
+                "lastAlarmAckTime": ""
+            }
+        },
+        "subArea0": {
+            "name": "ARMS",
+            "enable": true,
+            "pvs": {
+                "pv0": {
+                    "name": "$(DEMO_ALARMS_IOC):VAULT-ARMS-pv0",
+                    "enable": true,
+                    "latch": true,
+                    "notify": true,
+                    "lastAlarmVal": "",
+                    "lastAlarmTime": "",
+                    "lastAlarmAckTime": ""
+                },
+                "pv1": {
+                    "name": "$(DEMO_ALARMS_IOC):VAULT-ARMS-pv1",
+                    "enable": true,
+                    "latch": true,
+                    "notify": true,
+                    "lastAlarmVal": "",
+                    "lastAlarmTime": "",
+                    "lastAlarmAckTime": ""
+                },
+                "pv2": {
+                    "name": "$(DEMO_ALARMS_IOC):VAULT-ARMS-pv2",
+                    "enable": true,
+                    "latch": true,
+                    "notify": true,
+                    "lastAlarmVal": "",
+                    "lastAlarmTime": "",
+                    "lastAlarmAckTime": ""
+                },
+                "pv3": {
+                    "name": "$(DEMO_ALARMS_IOC):VAULT-ARMS-pv3",
+                    "enable": true,
+                    "latch": true,
+                    "notify": true,
+                    "lastAlarmVal": "",
+                    "lastAlarmTime": "",
+                    "lastAlarmAckTime": ""
+                },
+                "pv4": {
+                    "name": "$(DEMO_ALARMS_IOC):VAULT-ARMS-pv4",
+                    "enable": true,
+                    "latch": true,
+                    "notify": true,
+                    "lastAlarmVal": "",
+                    "lastAlarmTime": "",
+                    "lastAlarmAckTime": ""
+                },
+                "pv5": {
+                    "name": "$(DEMO_ALARMS_IOC):VAULT-ARMS-pv5",
+                    "enable": true,
+                    "latch": true,
+                    "notify": true,
+                    "lastAlarmVal": "",
+                    "lastAlarmTime": "",
+                    "lastAlarmAckTime": ""
+                },
+                "pv6": {
+                    "name": "$(DEMO_ALARMS_IOC):VAULT-ARMS-pv6",
+                    "enable": true,
+                    "latch": true,
+                    "notify": true,
+                    "lastAlarmVal": "",
+                    "lastAlarmTime": "",
+                    "lastAlarmAckTime": ""
+                },
+                "pv7": {
+                    "name": "$(DEMO_ALARMS_IOC):VAULT-ARMS-pv7",
+                    "enable": true,
+                    "latch": true,
+                    "notify": true,
+                    "lastAlarmVal": "",
+                    "lastAlarmTime": "",
+                    "lastAlarmAckTime": ""
+                },
+                "pv8": {
+                    "name": "$(DEMO_ALARMS_IOC):VAULT-ARMS-pv8",
+                    "enable": true,
+                    "latch": true,
+                    "notify": true,
+                    "lastAlarmVal": "",
+                    "lastAlarmTime": "",
+                    "lastAlarmAckTime": ""
+                },
+                "pv9": {
+                    "name": "$(DEMO_ALARMS_IOC):VAULT-ARMS-pv9",
+                    "enable": true,
+                    "latch": true,
+                    "notify": true,
+                    "lastAlarmVal": "",
+                    "lastAlarmTime": "",
+                    "lastAlarmAckTime": ""
+                }
+            }
+        },
+        "subArea1": {
+            "name": "CLEARANCE",
+            "enable": true,
+            "pvs": {
+                "pv0": {
+                    "name": "$(DEMO_ALARMS_IOC):VAULT-CLEARANCE-pv0",
+                    "enable": true,
+                    "latch": true,
+                    "notify": true,
+                    "lastAlarmVal": "",
+                    "lastAlarmTime": "",
+                    "lastAlarmAckTime": ""
+                },
+                "pv1": {
+                    "name": "$(DEMO_ALARMS_IOC):VAULT-CLEARANCE-pv1",
+                    "enable": true,
+                    "latch": true,
+                    "notify": true,
+                    "lastAlarmVal": "",
+                    "lastAlarmTime": "",
+                    "lastAlarmAckTime": ""
+                },
+                "pv2": {
+                    "name": "$(DEMO_ALARMS_IOC):VAULT-CLEARANCE-pv2",
+                    "enable": true,
+                    "latch": true,
+                    "notify": true,
+                    "lastAlarmVal": "",
+                    "lastAlarmTime": "",
+                    "lastAlarmAckTime": ""
+                },
+                "pv3": {
+                    "name": "$(DEMO_ALARMS_IOC):VAULT-CLEARANCE-pv3",
+                    "enable": true,
+                    "latch": true,
+                    "notify": true,
+                    "lastAlarmVal": "",
+                    "lastAlarmTime": "",
+                    "lastAlarmAckTime": ""
+                },
+                "pv4": {
+                    "name": "$(DEMO_ALARMS_IOC):VAULT-CLEARANCE-pv4",
+                    "enable": true,
+                    "latch": true,
+                    "notify": true,
+                    "lastAlarmVal": "",
+                    "lastAlarmTime": "",
+                    "lastAlarmAckTime": ""
+                },
+                "pv5": {
+                    "name": "$(DEMO_ALARMS_IOC):VAULT-CLEARANCE-pv5",
+                    "enable": true,
+                    "latch": true,
+                    "notify": true,
+                    "lastAlarmVal": "",
+                    "lastAlarmTime": "",
+                    "lastAlarmAckTime": ""
+                },
+                "pv6": {
+                    "name": "$(DEMO_ALARMS_IOC):VAULT-CLEARANCE-pv6",
+                    "enable": true,
+                    "latch": true,
+                    "notify": true,
+                    "lastAlarmVal": "",
+                    "lastAlarmTime": "",
+                    "lastAlarmAckTime": ""
+                },
+                "pv7": {
+                    "name": "$(DEMO_ALARMS_IOC):VAULT-CLEARANCE-pv7",
+                    "enable": true,
+                    "latch": true,
+                    "notify": true,
+                    "lastAlarmVal": "",
+                    "lastAlarmTime": "",
+                    "lastAlarmAckTime": ""
+                },
+                "pv8": {
+                    "name": "$(DEMO_ALARMS_IOC):VAULT-CLEARANCE-pv8",
+                    "enable": true,
+                    "latch": true,
+                    "notify": true,
+                    "lastAlarmVal": "",
+                    "lastAlarmTime": "",
+                    "lastAlarmAckTime": ""
+                },
+                "pv9": {
+                    "name": "$(DEMO_ALARMS_IOC):VAULT-CLEARANCE-pv9",
+                    "enable": true,
+                    "latch": true,
+                    "notify": true,
+                    "lastAlarmVal": "",
+                    "lastAlarmTime": "",
+                    "lastAlarmAckTime": ""
+                }
+            }
+        },
+        "subArea2": {
+            "name": "HVAC",
+            "enable": true,
+            "pvs": {
+                "pv0": {
+                    "name": "$(DEMO_ALARMS_IOC):VAULT-HVAC-pv0",
+                    "enable": true,
+                    "latch": true,
+                    "notify": true,
+                    "lastAlarmVal": "",
+                    "lastAlarmTime": "",
+                    "lastAlarmAckTime": ""
+                },
+                "pv1": {
+                    "name": "$(DEMO_ALARMS_IOC):VAULT-HVAC-pv1",
+                    "enable": true,
+                    "latch": true,
+                    "notify": true,
+                    "lastAlarmVal": "",
+                    "lastAlarmTime": "",
+                    "lastAlarmAckTime": ""
+                },
+                "pv2": {
+                    "name": "$(DEMO_ALARMS_IOC):VAULT-HVAC-pv2",
+                    "enable": true,
+                    "latch": true,
+                    "notify": true,
+                    "lastAlarmVal": "",
+                    "lastAlarmTime": "",
+                    "lastAlarmAckTime": ""
+                },
+                "pv3": {
+                    "name": "$(DEMO_ALARMS_IOC):VAULT-HVAC-pv3",
+                    "enable": true,
+                    "latch": true,
+                    "notify": true,
+                    "lastAlarmVal": "",
+                    "lastAlarmTime": "",
+                    "lastAlarmAckTime": ""
+                },
+                "pv4": {
+                    "name": "$(DEMO_ALARMS_IOC):VAULT-HVAC-pv4",
+                    "enable": true,
+                    "latch": true,
+                    "notify": true,
+                    "lastAlarmVal": "",
+                    "lastAlarmTime": "",
+                    "lastAlarmAckTime": ""
+                },
+                "pv5": {
+                    "name": "$(DEMO_ALARMS_IOC):VAULT-HVAC-pv5",
+                    "enable": true,
+                    "latch": true,
+                    "notify": true,
+                    "lastAlarmVal": "",
+                    "lastAlarmTime": "",
+                    "lastAlarmAckTime": ""
+                },
+                "pv6": {
+                    "name": "$(DEMO_ALARMS_IOC):VAULT-HVAC-pv6",
+                    "enable": true,
+                    "latch": true,
+                    "notify": true,
+                    "lastAlarmVal": "",
+                    "lastAlarmTime": "",
+                    "lastAlarmAckTime": ""
+                },
+                "pv7": {
+                    "name": "$(DEMO_ALARMS_IOC):VAULT-HVAC-pv7",
+                    "enable": true,
+                    "latch": true,
+                    "notify": true,
+                    "lastAlarmVal": "",
+                    "lastAlarmTime": "",
+                    "lastAlarmAckTime": ""
+                },
+                "pv8": {
+                    "name": "$(DEMO_ALARMS_IOC):VAULT-HVAC-pv8",
+                    "enable": true,
+                    "latch": true,
+                    "notify": true,
+                    "lastAlarmVal": "",
+                    "lastAlarmTime": "",
+                    "lastAlarmAckTime": ""
+                },
+                "pv9": {
+                    "name": "$(DEMO_ALARMS_IOC):VAULT-HVAC-pv9",
+                    "enable": true,
+                    "latch": true,
+                    "notify": true,
+                    "lastAlarmVal": "",
+                    "lastAlarmTime": "",
+                    "lastAlarmAckTime": ""
+                }
+            }
+        }
+    }
+]

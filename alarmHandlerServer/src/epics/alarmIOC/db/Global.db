@@ -1,0 +1,6 @@
+# ACK PV
+record(stringin, "$(ioc):ACK_PV") {
+    field(DTYP, "Soft Channel")
+    field(PINI, "YES")
+    field(VAL, "")
+}

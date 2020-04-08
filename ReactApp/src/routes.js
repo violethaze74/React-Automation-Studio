@@ -12,6 +12,8 @@ import MobileDemo1 from './components/Examples/Mobile/MobileDemo1';
 import Main from './Main';
 import ControlTestHarp1 from './components/ControlScreens/ControlTestHarp1';
 
+import AlarmHandler from './components/AlarmHandler/AlarmHandler';
+
 import ControlTableExample from './components/ControlScreens/ControlTableExample';
 import ComponentsWithMultiplePVs from './components/Examples/ComponentsWithMultiplePVs';
 import Staging from './components/staging/Staging';
@@ -56,6 +58,8 @@ export default props=>(
     <Route path="/Example1" component={Example1} />
     <Route path="/Example2" component={Example2} />
     <Route path="/Example3" component={Example3} />
+
+    <Route path="/AlarmHandlerDemo" component={AlarmHandler} />
 
 
 
