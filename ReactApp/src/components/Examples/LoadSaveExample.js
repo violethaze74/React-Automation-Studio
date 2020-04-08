@@ -194,36 +194,12 @@ class LoadSaveExample extends React.Component {
                 database='DATABASE1'
                 collection='testIOCSystems'
                 macros={{ '$(systemName)': this.state.systemName }}
-                metadataPVs={
-                  [
-                    {
-                      label: 'Frequency',
-                      pv: 'pva://$(systemName):rf_frequency',
-                      //units: 'GHz'
-                      usePvUnits:true
-                    },
+                loadEnablePV={'pva://$(systemName):loadSaveEnable'}
 
-                    {
-                      label: 'Energy',
-                      pv: 'pva://$(systemName):energy',
-                      units: 'GeV',
-                      inputEnable:true,
+                loadEnableLabel={'System On/Off'}
+                showLoadEnableButton={true}
+                useLoadEnable={true}
 
-                    },
-                    {
-                      label: 'Description',
-                      pv: 'pva://$(systemName):description',
-                      inputEnable:true,
-                    }
-                  ]
-                }
-                loadEnablePV={
-                  {
-                    pv: 'pva://$(systemName):loadSaveEnable',
-                    label:'System On/Off',
-                    showButton: true
-                  }
-                }
 
               />
 
@@ -248,6 +224,6 @@ class LoadSaveExample extends React.Component {
 LoadSaveExample.propTypes = {
   classes: PropTypes.object.isRequired,
 };
-LoadSaveExample.contextType=AutomationStudioContext;
+LoadSaveExample.contextType = AutomationStudioContext;
 export default withStyles(styles)(LoadSaveExample);
 //export default LoadSaveExample;

@@ -166,7 +166,7 @@ class LoadSave extends React.Component {
 
     //   console.log(metadataPVs)
     //   let item;
-    let pvname;
+
     //   // let pvKeys=Object.keys(pvs)
     //   for (item in this.props.metadataPVs){
 
@@ -183,50 +183,29 @@ class LoadSave extends React.Component {
     // }
     //   // DataConnections.push(
 
-    let Frequency = 'pva://$(systemName):frequency_rf';
-    let Energy = 'pva://$(systemName):energy';
-    let Description = 'pva://$(systemName):description';
-    let RFOnOFF = 'pva://$(systemName):RF_enable_disable';
 
-    let pvs = {}
 
-    pvname = Frequency;
-    if (typeof this.props.macros !== 'undefined') {
 
-      let macro;
-      for (macro in this.props.macros) {
-        pvname = pvname.replace(macro.toString(), this.props.macros[macro].toString());
+    let pvs = {};
+    if (this.props.useLoadEnable) {
+      let loadEnablePV = this.props.loadEnablePV
+      let pvname = loadEnablePV;
+      if (typeof this.props.macros !== 'undefined') {
+
+        let macro;
+        for (macro in this.props.macros) {
+          pvname = pvname.replace(macro.toString(), this.props.macros[macro].toString());
+        }
       }
+      pvs['loadEnablePV'] = {
+        label: "",
+        initialized: false,
+        pvname: pvname,
+        value: "",
+        metadata: {}
+      };
     }
-    pvs['Frequency'] = { label: "", initialized: false, pvname: pvname, value: "", metadata: {} };
-    pvname = Energy;
-    if (typeof this.props.macros !== 'undefined') {
-
-      let macro;
-      for (macro in this.props.macros) {
-        pvname = pvname.replace(macro.toString(), this.props.macros[macro].toString());
-      }
-    }
-    pvs['Energy'] = { label: "", initialized: false, pvname: pvname, value: "", metadata: {} };
-    pvname = Description;
-    if (typeof this.props.macros !== 'undefined') {
-
-      let macro;
-      for (macro in this.props.macros) {
-        pvname = pvname.replace(macro.toString(), this.props.macros[macro].toString());
-      }
-    }
-    pvs['Description'] = { label: "", initialized: false, pvname: pvname, value: "", metadata: {} };
-    pvname = RFOnOFF;
-    if (typeof this.props.macros !== 'undefined') {
-
-      let macro;
-      for (macro in this.props.macros) {
-        pvname = pvname.replace(macro.toString(), this.props.macros[macro].toString());
-      }
-    }
-    pvs['RFOnOFF'] = { label: "", initialized: false, pvname: pvname, value: "", metadata: {} };
-
+    console.log(pvs)
 
     this.state = {
       pvs: pvs,
@@ -241,7 +220,8 @@ class LoadSave extends React.Component {
       dbListUpdateOneURL: dbListUpdateOneURL,
       dbListInsertOneURL: dbListInsertOneURL,
       newValuesLoaded: false,
-      metadataComponents: []
+      metadataComponents: [],
+      metadataComponentsPVs: [],
     };
     //    console.log(rowPVs)
 
@@ -296,6 +276,37 @@ class LoadSave extends React.Component {
   }
 
 
+  handleMetadataComponentsPVsInputValue = index => (inputValue, pvname, initialized, severity) => {
+    //  console.log("test");
+    //  console.log("value: ",inputValue);
+    //  console.log("pvname:", pvname);
+    let metadataComponentsPVs = this.state.metadataComponentsPVs;
+
+    metadataComponentsPVs[index].value = inputValue;
+    metadataComponentsPVs[index].initialized = initialized;
+    metadataComponentsPVs[index].severity = severity;
+
+    this.setState({ metadataComponentsPVs: metadataComponentsPVs });
+
+
+    //state.pvs[pvname].inputValue=inputValue;
+    //pvData.pvs[pvname].initialized=initialized;
+    //pvData.pvs[pvname].severity=severity;
+
+    //console.log("pvData:",pvData)
+
+    //this.setState(pvData);
+
+  }
+
+  handleMetadataComponentsPVsMetadata = index => (metadata) => {
+
+    let metadataComponentsPVs = this.state.metadataComponentsPVs;
+    metadataComponentsPVs[index].metadata = metadata;
+    this.setState({ metadataComponentsPVs: metadataComponentsPVs });
+    //  console.log("metadata",metadata)
+
+  }
 
   handleInputValueLabel = pvname => (inputValue) => {
 
@@ -350,6 +361,23 @@ class LoadSave extends React.Component {
     let oldDbDataAndLiveData = this.state.dbDataAndLiveData;
     let dbDataAndLiveData = {}
 
+    let metadataComponentsPVs = [];
+    let component;
+    let pvname;
+
+    for (component in metadataComponents) {
+      pvname = metadataComponents[component].props.pv;
+      if (typeof this.props.macros !== 'undefined') {
+
+        let macro;
+        for (macro in this.props.macros) {
+          pvname = pvname.replace(macro.toString(), this.props.macros[macro].toString());
+        }
+      }
+
+
+      metadataComponentsPVs.push({ label: "", initialized: false, pvname: pvname, value: "", metadata: {}, componentProps: metadataComponents[component].props });
+    }
     let key;
 
     for (key in processVariablesSchemaKeys) {
@@ -371,7 +399,7 @@ class LoadSave extends React.Component {
 
     //console.log(processVariablesSchemaKeys)
     //console.log(dbDataAndLiveData)
-    this.setState({ processVariablesSchemaKeys: processVariablesSchemaKeys, dbDataAndLiveData: dbDataAndLiveData, process_variables: process_variables, metadataComponents: metadataComponents })
+    this.setState({ processVariablesSchemaKeys: processVariablesSchemaKeys, dbDataAndLiveData: dbDataAndLiveData, process_variables: process_variables, metadataComponents: metadataComponents, metadataComponentsPVs: metadataComponentsPVs })
     socket.emit('databaseBroadcastRead', { dbURL: this.state.dbListBroadcastReadDataURL, 'clientAuthorisation': jwt }, (data) => {
 
       if (data !== "OK") {
@@ -542,17 +570,17 @@ class LoadSave extends React.Component {
       let metadata = {};
       for (key in processVariablesSchemaKeys) {
         if (typeof dbDataAndLiveDataOld[processVariablesSchemaKeys[key]] !== 'undefined') {
-          dbDataAndLiveData[processVariablesSchemaKeys[key]]=dbDataAndLiveDataOld[processVariablesSchemaKeys[key]];
-          dbDataAndLiveData[processVariablesSchemaKeys[key]].dbValue=undefined;
-          dbDataAndLiveData[processVariablesSchemaKeys[key]].newValue=undefined;
+          dbDataAndLiveData[processVariablesSchemaKeys[key]] = dbDataAndLiveDataOld[processVariablesSchemaKeys[key]];
+          dbDataAndLiveData[processVariablesSchemaKeys[key]].dbValue = undefined;
+          dbDataAndLiveData[processVariablesSchemaKeys[key]].newValue = undefined;
         }
-      }  
-        this.setState({ dbList: sortedData, dbListWriteAccess: msg.write_access,dbDataAndLiveData:dbDataAndLiveData})
-        //dbDataAndLiveData[processVariablesSchemaKeys[key]]={description:processVariablesSchemaKeys[key], pvname:process_variables[processVariablesSchemaKeys[key]].pvName ,pvValue:pvValue,newValue:newValue,newValueTrigger:newValueTrigger,dbValue:process_variables[processVariablesSchemaKeys[key]].pvValue  ,metadata:{},initialized:false,severity:0}
       }
+      this.setState({ dbList: sortedData, dbListWriteAccess: msg.write_access, dbDataAndLiveData: dbDataAndLiveData })
+      //dbDataAndLiveData[processVariablesSchemaKeys[key]]={description:processVariablesSchemaKeys[key], pvname:process_variables[processVariablesSchemaKeys[key]].pvName ,pvValue:pvValue,newValue:newValue,newValueTrigger:newValueTrigger,dbValue:process_variables[processVariablesSchemaKeys[key]].pvValue  ,metadata:{},initialized:false,severity:0}
+    }
 
 
-    
+
 
   }
 
@@ -641,17 +669,30 @@ class LoadSave extends React.Component {
     let index = this.state.displayIndex;
     let processVariablesSchemaKeys = this.state.processVariablesSchemaKeys;
     let dbDataAndLiveData = this.state.dbDataAndLiveData;
-    let pvs = this.state.pvs;
+    let metadataComponentsPVs = this.state.metadataComponentsPVs;
     let key;
     console.log("save")
     console.log(this.state.dbList[0])
     let newEntry = {};
     newEntry['process_variables'] = {}
     newEntry['beam_setup'] = {}
-    newEntry.beam_setup['Frequency'] = pvs['Frequency'].value;
-    newEntry.beam_setup['Energy'] = pvs['Energy'].value;
-    newEntry.beam_setup['Description'] = pvs['Description'].value;
-    console.log(pvs)
+    let component;
+
+    for (component in metadataComponentsPVs) {
+      let key;
+      if (metadataComponentsPVs[component].componentProps.usePvLabel === true) {
+        key = metadataComponentsPVs[component].label;
+      }
+      else {
+        key = metadataComponentsPVs[component].componentProps.label;
+      }
+      newEntry.beam_setup[key] = metadataComponentsPVs[component].value;
+    }
+
+    // newEntry.beam_setup['Frequency'] = pvs['Frequency'].value;
+    // newEntry.beam_setup['Energy'] = pvs['Energy'].value;
+    // newEntry.beam_setup['Description'] = pvs['Description'].value;
+    // console.log(pvs)
 
 
     let mydate = new Date();
@@ -880,22 +921,25 @@ class LoadSave extends React.Component {
     let pv;
     let DataConnections = [];
     let id = 0;
-    let metadataPVs = this.props.metadataPVs;
+    let metadataComponents = this.state.metadataComponents;
     //    console.log(metadataPVs)
     let item;
     // let pvKeys=Object.keys(pvs)
-    for (item in metadataPVs) {
+    for (item in metadataComponents) {
       //   //  console.log(this.state.pvs[pv].pvname);
       //    console.log(metadataPVs[item])
-      // DataConnections.push(
+      const index = item;
+      DataConnections.push(
 
-      //     <DataConnection key={metadataPVs[item].pv}
-      //       pv={metadataPVs[item].pv}
-      //       handleInputValue={this.handleInputValue(pvKeys[key])}
-      //       handleMetadata={this.handleMetadata(pvKeys[key])}
-      //     />
+        <DataConnection
+          key={metadataComponents[item].props.pv}
 
-      //   )
+          handleInputValue={this.handleMetadataComponentsPVsInputValue(index)}
+          handleMetadata={this.handleMetadataComponentsPVsMetadata(index)}
+          {...metadataComponents[item].props}
+        />
+
+      )
     }
 
     return DataConnections;
@@ -1083,13 +1127,13 @@ class LoadSave extends React.Component {
     //  console.log(dbDataAndLiveData)
 
     let dbDataAndLiveDataKeys = Object.keys(dbDataAndLiveData);
-    // console.log("this.state.metadataComponents",this.state.metadataComponents)
+    console.log("this.state.metadataComponentsPVs", this.state.metadataComponentsPVs)
     return (
       <React.Fragment>
-        {this.metadataPVsDataConnections()}
+
         {this.multipleDataConnections()}
         {this.SystemsDataConnections(this.state.displayIndex)}
-
+        {this.metadataPVsDataConnections()}
         <Grid
           container
           direction="row"
@@ -1145,29 +1189,30 @@ class LoadSave extends React.Component {
                   <Table className={classes.table} stickyHeader size="small" aria-label="sticky table">
                     <TableHead>
                       <TableRow>
-                        <TableCell>Frequency [MHz]</TableCell>
-                        <TableCell align="center">Energy [MeV]</TableCell>
+                        {this.state.metadataComponentsPVs.map((item) =>
+                          <TableCell align="center">{item.componentProps.usePvLabel === true ? item.label : item.componentProps.label}  {item.componentProps.usePvUnits === true ? '[' + item.metadata.units + ']' : typeof item.componentProps.units !== 'undefined' ? '[' + item.componentProps.units + ']' : ""}</TableCell>
+
+                        )}
+
+
                         <TableCell align="center">Date </TableCell>
-                        <TableCell align="center">Description</TableCell>
+
                         <TableCell align="center">Status</TableCell>
                       </TableRow>
                     </TableHead>
                     <TableBody>
                       {dbList.map((row, index) => (
                         <TableRow key={index} hover role="checkbox" small onClick={this.handleOnClick(index)} selected={index == this.state.displayIndex}>
+                          {this.state.metadataComponentsPVs.map((item) =>
+                            <TableCell align="center">{row.beam_setup[item.componentProps.usePvLabel === true ? item.label : item.componentProps.label]}  </TableCell>
 
-                          <TableCell className={classes.tableCell} component="th" scope="row" >
-                            {row.beam_setup.Frequency}
-                          </TableCell>
-                          <TableCell className={classes.tableCell} component="th" scope="row" align='center'>
-                            {row.beam_setup.Energy}
-                          </TableCell>
+                          )}
+
+
                           <TableCell className={classes.tableCell} component="th" scope="row" align='center'>
                             {row.beam_setup.DateTime}
                           </TableCell>
-                          <TableCell className={classes.tableCell} component="th" scope="row" align='center'>
-                            {row.beam_setup.Description}
-                          </TableCell>
+
                           <TableCell className={row.beam_setup.Status == "Working" ? classes.tableCellWorking : row.beam_setup.Status == "Pending" ? classes.tableCellPending : row.beam_setup.Status == "Obselete" ? classes.tableCellObselete : classes.tableCell} component="th" scope="row" align='center'>
                             <span >
                               {row.beam_setup.Status}
@@ -1274,15 +1319,24 @@ class LoadSave extends React.Component {
                         </Button>
                   </Grid>
                   <Grid item xs={12} sm={6} md={6} lg={3} >
-                    <Button
+                    {this.props.useLoadEnable == true && <Button
                       variant="contained"
                       color="primary"
                       className={classes.Button}
                       onClick={this.handleWriteNewValues}
-                      disabled={(!this.state.newValuesLoaded) || (this.state.pvs['RFOnOFF'].initialized == false) || (this.state.pvs['RFOnOFF'].value != 0)}
+                      disabled={(!this.state.newValuesLoaded) || (this.state.pvs['loadEnablePV'].initialized == false) || (this.state.pvs['loadEnablePV'].value != 0)}
                     >
                       Write New Values
-                        </Button>
+                    </Button>}
+                    {this.props.useLoadEnable == false && <Button
+                      variant="contained"
+                      color="primary"
+                      className={classes.Button}
+                      onClick={this.handleWriteNewValues}
+                      disabled={(!this.state.newValuesLoaded)}
+                    >
+                      Write New Values
+                    </Button>}
                   </Grid>
                   <Grid item xs={12} sm={6} md={6} lg={3} >
                     <Button
@@ -1361,12 +1415,15 @@ class LoadSave extends React.Component {
 
             </Card>
           </Grid>
-          {typeof this.props.loadEnablePV !== 'undefined' && <Grid item xs={12} sm={12} md={12} lg={1} >
-            {typeof this.props.loadEnablePV.label !== 'undefined' && <h4 style={{ margin: 0 }}>{this.props.loadEnablePV.label}</h4>}
-            <Card style={{ padding: 8 }}>
-              <ToggleButton pv={this.props.loadEnablePV.pv} macros={this.props.macros} custom_selection_strings={["OFF", "ON"]} />
-            </Card>
-          </Grid>}
+          {this.props.useLoadEnable && <React.Fragment>
+            {(typeof this.props.loadEnablePV !== 'undefined' && this.props.showLoadEnableButton === true) && <Grid item xs={12} sm={12} md={12} lg={1} >
+              {typeof this.props.loadEnableLabel !== 'undefined' && <h4 style={{ margin: 0 }}>{this.props.loadEnableLabel}</h4>}
+              <Card style={{ padding: 8 }}>
+                <ToggleButton pv={this.props.loadEnablePV} macros={this.props.macros} custom_selection_strings={["OFF", "ON"]} />
+              </Card>
+            </Grid>}
+          </React.Fragment>
+          }
         </Grid>
 
       </React.Fragment>
@@ -1375,7 +1432,11 @@ class LoadSave extends React.Component {
 }
 
 LoadSave.propTypes = {
-  classes: PropTypes.object.isRequired,
+  /** if true, when the value of loadEnablePV does not equal 0, then the new values can be loaded into the pv values*/
+  useLoadEnable: PropTypes.bool
 };
+LoadSave.defaultProps = {
+  useLoadEnable: false
+}
 LoadSave.contextType = AutomationStudioContext;
 export default withStyles(styles, { withTheme: true })(LoadSave);
