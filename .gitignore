@@ -8,7 +8,7 @@
 
 /.pnp
 .pnp.js
-
+/db/
 # testing
 /coverage
 

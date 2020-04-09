@@ -1,0 +1,9 @@
+# Area status
+record(mbbi, "$(area_name)") {
+    field(DTYP, "Soft Channel")
+    field(ZRST, "ALARM")            field(ZRSV, "MAJOR")
+    field(ONST, "ACKED")            field(ONSV, "MINOR")
+    field(TWST, "NO_ALARM")         field(TWSV, "NO_ALARM")
+    field(PINI, "YES")
+    field(VAL, "2")
+}

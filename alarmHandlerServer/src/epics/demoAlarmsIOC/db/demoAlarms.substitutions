@@ -1,0 +1,28 @@
+file "db/dbDemoAlarm.db" {
+    { area = BEAMLINE           }
+    { area = BEAMLINE-AIR       }
+    { area = BEAMLINE-FCUPS     }
+    { area = BEAMLINE-VACUUM    }
+    { area = BEAMLINE-WATER     }
+    { area = BUILDING           }
+    { area = BUILDING-FIRE      }
+    { area = BUILDING-HVAC      }
+    { area = BUILDING-SECURITY  }
+    { area = CYCLOTRON          }
+    { area = CYCLOTRON-AIR      }
+    { area = CYCLOTRON-CROOM    }
+    { area = CYCLOTRON-SAFETY   }
+    { area = CYCLOTRON-VACUUM   }
+    { area = CYCLOTRON-WATER    }
+    { area = VAULT              }
+    { area = VAULT-ARMS         }
+    { area = VAULT-CLEARANCE    }
+    { area = VAULT-HVAC         }
+
+}
+
+
+
+
+
+
