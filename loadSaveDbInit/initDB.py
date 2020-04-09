@@ -3,6 +3,10 @@ import sys
 import os
 import configparser
 import json
+
+from time import sleep
+from pymongo.errors import NotMasterError
+
 path='savedConfig/'
 sys.path.insert(0,path )
 #######
@@ -76,6 +80,12 @@ else:
 
                 dict['process_variables']=system['PVs']
             mycol = mydb[systemName+'_PVs']
-            x = mycol.insert_one(dict)
-            
+            waitingForMaster = True
+            while(waitingForMaster):
+                try:
+                    x = mycol.insert_one(dict)
+                    waitingForMaster = False
+                except NotMasterError as err:
+                    print("Waiting for mongodb PRIMARY to step up.")
+                    sleep(1.0)         
         

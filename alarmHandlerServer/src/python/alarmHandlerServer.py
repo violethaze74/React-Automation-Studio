@@ -1,4 +1,5 @@
 from pymongo import MongoClient
+from pymongo.errors import NotMasterError
 import urllib.parse
 import os
 import numpy as np
@@ -58,7 +59,8 @@ while(waitingForMaster):
         alarmIOCPVPrefix = doc["alarmIOCPVPrefix"]
         alarmIOCPVSuffix = doc["alarmIOCPVSuffix"]
         waitingForMaster = False
-    except:
+    except (NotMasterError, TypeError) as err:
+        print("Waiting for mongodb PRIMARY to step up.")
         sleep(1.0)
 
 
