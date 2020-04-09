@@ -25,6 +25,8 @@ import Test3D from './components/Experimental/Test3D';
 import Probe from './components/SettingsPages/Probe';
 import SettingsSteererXY from './components/SettingsPages/SettingsSteererXY';
 import SettingsSinglePS from './components/SettingsPages/SettingsSinglePS';
+import LoadSaveExample from './components/Examples/LoadSaveExample.js';
+
 import LogIn from './LogIn';
 import { Redirect } from 'react-router-dom'
 export default props=>(
@@ -48,6 +50,7 @@ export default props=>(
     <Route path="/ControlTestHarp1" component={ControlTestHarp1} />
 
     <Route path="/ControlTableExample" component={ControlTableExample} />
+    <Route path="/LoadSaveExample" component={LoadSaveExample} />
     <Route path="/EpicsDemos" component={EpicsDemos} />
     <Route path="/Help" component={Help} />
     <Route path="/Staging" component={Staging} />

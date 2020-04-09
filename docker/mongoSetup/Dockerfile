@@ -1,5 +1,4 @@
-FROM python:3.9.0a3-buster
-
+FROM python:3.7.5
 # Install python dependencies
 WORKDIR /usr/src/app
 

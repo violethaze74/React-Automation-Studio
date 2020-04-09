@@ -157,6 +157,9 @@ class Main extends Component {
               <Grid item xs={12}  >
                 <Button  fullWidth className= {classes.button} component={Link} to="/ControlTableExample" color="primary" variant='contained'> Control Table Example</Button>
               </Grid>
+              <Grid item xs={12}  >
+                <Button  fullWidth className= {classes.button} component={Link} to="/LoadSaveExample" color="primary" variant='contained'> LoadSave Example</Button>
+              </Grid>
               {/* <Grid item xs={12}  >
                 <Button  fullWidth className= {classes.button} component={Link} to="/Help" color="secondary" variant='contained'>  Help </Button>
               </Grid> */}

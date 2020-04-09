@@ -113,7 +113,7 @@ handleSubmitClick=()=>{
 }
 
 handleResponse=(response) =>{
-  console.log(response)
+  //console.log(response)
   return response.text().then(text => {
     const data = text && JSON.parse(text);
     if (!response.ok) {
@@ -133,9 +133,10 @@ handleResponse=(response) =>{
 
 
 handleAuthentication(msg){
-  //  console.log('clientAuthenticated',msg)
+    //console.log('clientAuthenticated',msg)
   if (typeof msg.jwt !== 'undefined'){
     localStorage.setItem('jwt', JSON.stringify(msg.jwt));
+    this.context.setUserData(msg.username,msg.roles);
   }
   else {
     localStorage.setItem('jwt', JSON.stringify(null));
@@ -257,7 +258,7 @@ render(){
           </Typography>
           <form className={classes.form}>
             <FormControl margin="normal" required fullWidth>
-              <InputLabel htmlFor="email">Username or Email Address</InputLabel>
+              <InputLabel htmlFor="email">Username</InputLabel>
               <Input id="email" name="email" autoComplete="email" autoFocus onChange={this.handleChange('emailAddress')} onKeyPress={this.catchReturn('password')}/>
             </FormControl>
             <FormControl margin="normal" required fullWidth>
