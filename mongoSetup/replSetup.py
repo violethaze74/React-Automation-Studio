@@ -13,7 +13,7 @@ def masterStepUp():
 
 client = MongoClient('localhost')
 
-sleep(3)
+sleep(5)
 
 try:
     client.admin.command({"replSetGetStatus": 1})

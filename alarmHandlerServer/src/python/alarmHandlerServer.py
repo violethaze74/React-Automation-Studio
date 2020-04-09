@@ -6,7 +6,8 @@ import re
 from bson.json_util import dumps
 from bson.objectid import ObjectId
 from time import sleep
-import subprocess, _thread
+import subprocess
+import _thread
 from epics import PV, caput
 from datetime import datetime
 
@@ -50,9 +51,15 @@ subAreaDict = {}
 areaPVDict = {}
 
 # Prefix and suffix for alarmIOC pvs
-doc = client[MONGO_INITDB_ALARM_DATABASE].config.find_one()
-alarmIOCPVPrefix = doc["alarmIOCPVPrefix"]
-alarmIOCPVSuffix = doc["alarmIOCPVSuffix"]
+waitingForMaster = True
+while(waitingForMaster):
+    try:
+        doc = client[MONGO_INITDB_ALARM_DATABASE].config.find_one()
+        alarmIOCPVPrefix = doc["alarmIOCPVPrefix"]
+        alarmIOCPVSuffix = doc["alarmIOCPVSuffix"]
+        waitingForMaster = False
+    except:
+        sleep(1.0)
 
 
 def printVal(pvname=None, value=None, **kw):
@@ -491,7 +498,7 @@ def initPVDict():
 
 
 def startAlarmIOC():
-    ### ALARM PVS
+    # ALARM PVS
     lines = []
     lines.append("file \"db/Alarm.db\" {\n")
     for pvname in pvNameList:
@@ -504,7 +511,7 @@ def startAlarmIOC():
     alarmsSubFile = open("/epics/alarmIOC/db/Alarms.substitutions", "w")
     alarmsSubFile.writelines(lines)
     alarmsSubFile.close()
-    ### AREA PVS
+    # AREA PVS
     lines = []
     lines.append("file \"db/Area.db\" {\n")
     for area in areaList:
@@ -517,7 +524,7 @@ def startAlarmIOC():
     areasSubFile = open("/epics/alarmIOC/db/Areas.substitutions", "w")
     areasSubFile.writelines(lines)
     areasSubFile.close()
-    ### ACK PV
+    # ACK PV
     replaceAllInFile("/epics/alarmIOC/db/Global.db", '$(ioc):',
                      alarmIOCPVPrefix)
     # run alarmIOC with newly created pvs
@@ -621,7 +628,7 @@ def initAlarmDict():
                 alarmDict[pvname]["D"] = pv
             else:
                 alarmDict[pvname][suff] = pv
-    ## ACK PV
+    # ACK PV
     pv = PV(pvname=alarmIOCPVPrefix + "ACK_PV",
             connection_timeout=0.001,
             callback=ackPVChange)
