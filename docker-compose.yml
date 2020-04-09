@@ -106,6 +106,10 @@ services:
     network_mode: host
     tty: true
     stdin_open: true
+    depends_on:
+      - mongo1
+      - mongo2
+      - mongo3
   mongo1:
     image: mongo:4.2.3-bionic
     hostname: mongo1
