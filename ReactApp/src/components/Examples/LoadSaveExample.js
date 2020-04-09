@@ -191,7 +191,7 @@ class LoadSaveExample extends React.Component {
 
               <LoadSave
                 key={" " + this.state.systemName}
-                database='DATABASE1'
+                database='LOADSAVE_DATABASE'
                 collection='testIOCSystems'
                 macros={{ '$(systemName)': this.state.systemName }}
                 loadEnablePV={'pva://$(systemName):loadSaveEnable'}
