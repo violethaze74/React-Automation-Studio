@@ -679,7 +679,7 @@ def test_authenticate(message):
 
     if (not REACT_APP_DisableLogin ):
         userData=AuthoriseUser(message)
-        print(str(userData))
+        #print(str(userData))
         if userData['authorised']:
             emit('clientAuthorisation', {'successful': True,'username':userData['username'],'roles':userData['roles']},room=request.sid,namespace='/pvServer')
         else:
@@ -718,8 +718,8 @@ if __name__ == '__main__':
     print("")
     if not (REACT_APP_PyEpicsServerURL is None):
         if 'https' in REACT_APP_PyEpicsServerURL:
-            socketio.run(app, host='0.0.0.0', debug=True, port=int(REACT_APP_PyEpicsServerPORT,10), keyfile='../certificates/server.key', certfile='../certificates/server.cer')
+            socketio.run(app, host='0.0.0.0', debug=True, port=int(REACT_APP_PyEpicsServerPORT,10), keyfile='../certificates/server.key', certfile='../certificates/server.cer',use_reloader=False)
         else:
-            socketio.run(app,host='0.0.0.0',port=int(REACT_APP_PyEpicsServerPORT,10),  debug=True)
+            socketio.run(app,host='0.0.0.0',port=int(REACT_APP_PyEpicsServerPORT,10),  debug=True,use_reloader=False)
     else:
-        socketio.run(app,host='127.0.0.1',  debug=True)
+        socketio.run(app,host='127.0.0.1',  debug=True,use_reloader=False)
