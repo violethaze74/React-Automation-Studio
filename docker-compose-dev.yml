@@ -21,7 +21,9 @@ services:
     env_file: .env
     environment:
       - ALARM_DATABASE=127.0.0.1:27017
+      - ALARM_DATABASE_REPLICA_SET_NAME=devrs
       - LOADSAVE_DATABASE=127.0.0.1:27017
+      - LOADSAVE_DATABASE_REPLICA_SET_NAME=devrs
     build:
       context: ./
       args: # Environment variables available at build-time
