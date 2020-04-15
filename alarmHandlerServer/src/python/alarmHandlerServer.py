@@ -34,9 +34,13 @@ except:
 if (mongoAuth):
     client = MongoClient(
         'mongodb://%s:%s@localhost' %
-        (MONGO_INITDB_ROOT_USERNAME, MONGO_INITDB_ROOT_PASSWORD))
+        (MONGO_INITDB_ROOT_USERNAME, MONGO_INITDB_ROOT_PASSWORD),replicaSet='devrs')
+    # Wait for MongoClient to discover the whole replica set and identify MASTER!
+    sleep(0.1)
 else:
-    client = MongoClient('mongodb://localhost')
+    client = MongoClient('mongodb://localhost',replicaSet='devrs')
+    # Wait for MongoClient to discover the whole replica set and identify MASTER!
+    sleep(0.1)
 
 pvNameList = []
 areaList = []
@@ -52,16 +56,10 @@ subAreaDict = {}
 areaPVDict = {}
 
 # Prefix and suffix for alarmIOC pvs
-waitingForMaster = True
-while(waitingForMaster):
-    try:
-        doc = client[MONGO_INITDB_ALARM_DATABASE].config.find_one()
-        alarmIOCPVPrefix = doc["alarmIOCPVPrefix"]
-        alarmIOCPVSuffix = doc["alarmIOCPVSuffix"]
-        waitingForMaster = False
-    except (NotMasterError, TypeError) as err:
-        print("Waiting for mongodb PRIMARY to step up.")
-        sleep(1.0)
+doc = client[MONGO_INITDB_ALARM_DATABASE].config.find_one()
+alarmIOCPVPrefix = doc["alarmIOCPVPrefix"]
+alarmIOCPVSuffix = doc["alarmIOCPVSuffix"]
+        
 
 
 def printVal(pvname=None, value=None, **kw):

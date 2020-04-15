@@ -3,9 +3,7 @@ import sys
 import os
 import configparser
 import json
-
 from time import sleep
-from pymongo.errors import NotMasterError
 
 path='savedConfig/'
 sys.path.insert(0,path )
@@ -20,7 +18,9 @@ if (LOADSAVE_DATABASE is None) :
     print("Enviroment variable LOADSAVE_DATABASE is not defined, can't intialize: ",databaseName)
 else:
     print("Enviroment variable LOADSAVE_DATABASE: ",LOADSAVE_DATABASE)
-    myclient = pymongo.MongoClient("mongodb://"+str(LOADSAVE_DATABASE)+"/")
+    myclient = pymongo.MongoClient("mongodb://"+str(LOADSAVE_DATABASE)+"/",replicaSet='devrs')
+    # Wait for MongoClient to discover the whole replica set and identify MASTER!
+    sleep(0.1)
     dbnames = myclient.list_database_names()
     if (databaseName in dbnames):
         print("LOADSAVE_DATABASE already intitialized, exiting")
@@ -80,12 +80,5 @@ else:
 
                 dict['process_variables']=system['PVs']
             mycol = mydb[systemName+'_PVs']
-            waitingForMaster = True
-            while(waitingForMaster):
-                try:
-                    x = mycol.insert_one(dict)
-                    waitingForMaster = False
-                except NotMasterError as err:
-                    print("Waiting for mongodb PRIMARY to step up.")
-                    sleep(1.0)         
+            x = mycol.insert_one(dict)     
         

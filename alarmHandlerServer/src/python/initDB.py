@@ -2,6 +2,7 @@ from pymongo import MongoClient
 import urllib.parse
 import os
 import json
+from time import sleep
 
 try:
     MONGO_INITDB_ROOT_USERNAME = os.environ['MONGO_INITDB_ROOT_USERNAME']
@@ -34,9 +35,13 @@ if (runDemoIOC):
 if (mongoAuth):
     client = MongoClient(
         'mongodb://%s:%s@localhost' %
-        (MONGO_INITDB_ROOT_USERNAME, MONGO_INITDB_ROOT_PASSWORD))
+        (MONGO_INITDB_ROOT_USERNAME, MONGO_INITDB_ROOT_PASSWORD),replicaSet='devrs')
+    # Wait for MongoClient to discover the whole replica set and identify MASTER!
+    sleep(0.1)
 else:
-    client = MongoClient('mongodb://localhost')
+    client = MongoClient('mongodb://localhost',replicaSet='devrs')
+    # Wait for MongoClient to discover the whole replica set and identify MASTER!
+    sleep(0.1)
 
 dbnames = client.list_database_names()
 
@@ -55,14 +60,3 @@ if (MONGO_INITDB_ALARM_DATABASE not in dbnames):
 else:
     print(MONGO_INITDB_ALARM_DATABASE,
           "databse already exists... skipping this step.")
-
-# if (OTHER_DATABASE not in dbnames):
-#     print("Instantiating database:", OTHER_DATABASE)
-#     # commands
-#     print(OTHER_DATABASE,"database instantiated successfully.")
-# else:
-#     print(OTHER_DATABASE,
-#           "databse already exists... skipping this step.")
-
-
-print("Mongo setup complete. Exiting mongosetup docker service. [mongodb still running!]")

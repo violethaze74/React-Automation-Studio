@@ -337,7 +337,9 @@ def databaseRead(message):
                         try:
                             print("connecting: "+dbURL)
                             try:
-                                myclient = pymongo.MongoClient("mongodb://"+ str(os.environ[database])+"/",serverSelectionTimeoutMS=10)
+                                myclient = pymongo.MongoClient("mongodb://"+ str(os.environ[database])+"/",serverSelectionTimeoutMS=10,replicaSet='devrs')
+                                # Wait for MongoClient to discover the whole replica set and identify MASTER!
+                                time.sleep(0.1)
                                 myclient.server_info()
                             except pymongo.errors.ServerSelectionTimeoutError as err:
                                 print(err)
@@ -435,7 +437,9 @@ def databaseBroadcastRead(message):
                         try:
     #                        print("connecting: "+dbURL)
                             try:
-                                myclient = pymongo.MongoClient("mongodb://"+ str(os.environ[database])+"/",serverSelectionTimeoutMS=10)
+                                myclient = pymongo.MongoClient("mongodb://"+ str(os.environ[database])+"/",serverSelectionTimeoutMS=10,replicaSet='devrs')
+                                # Wait for MongoClient to discover the whole replica set and identify MASTER!
+                                time.sleep(0.1)
                                 myclient.server_info()
                             except pymongo.errors.ServerSelectionTimeoutError as err:
                                 print(err)
@@ -522,7 +526,9 @@ def databaseUpdateOne(message):
                         try:
                             print("connecting: "+dbURL)
                             try:
-                                myclient = pymongo.MongoClient("mongodb://"+ str(os.environ[database])+"/")
+                                myclient = pymongo.MongoClient("mongodb://"+ str(os.environ[database])+"/",replicaSet='devrs')
+                                # Wait for MongoClient to discover the whole replica set and identify MASTER!
+                                time.sleep(0.1)
                                 myclient.server_info()
                             except pymongo.errors.ServerSelectionTimeoutError as err:
                                 print(err)
@@ -608,7 +614,9 @@ def databaseInsertOne(message):
                         try:
 #                            print("connecting: "+dbURL)
                             try:
-                                myclient = pymongo.MongoClient("mongodb://"+ str(os.environ[database])+"/")
+                                myclient = pymongo.MongoClient("mongodb://"+ str(os.environ[database])+"/",replicaSet='devrs')
+                                # Wait for MongoClient to discover the whole replica set and identify MASTER!
+                                time.sleep(0.1)
                                 myclient.server_info()
                             except pymongo.errors.ServerSelectionTimeoutError as err:
                                 print(err)

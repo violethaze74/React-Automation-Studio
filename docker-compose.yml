@@ -8,11 +8,11 @@ services:
         - https_proxy
         - no_proxy
       dockerfile: docker/frontendserver/Dockerfile
-      network: host
+      network: "host"
     volumes:
       - ./certificates:/certificates/
     restart: always
-    network_mode: host
+    network_mode: "host"
     env_file: .env
   pvserver:
     environment:
@@ -26,7 +26,7 @@ services:
         - no_proxy
       dockerfile: docker/pvserver/Dockerfile
     restart: always
-    network_mode: host
+    network_mode: "host"
     tty: true
     stdin_open: true
     env_file: .env
@@ -43,7 +43,7 @@ services:
         - no_proxy
       dockerfile: docker/pvserver/Dockerfile
     restart: always
-    network_mode: host
+    network_mode: "host"
     env_file: .env
     environment:
       - REACT_APP_PyEpicsServerPORT=5001
@@ -62,7 +62,7 @@ services:
     tty: true
     stdin_open: true
     restart: always
-    network_mode: host
+    network_mode: "host"
   styleguideserver:
     build:
       context: ./
@@ -74,7 +74,7 @@ services:
     volumes:
       - ./certificates:/certificates/
     restart: always
-    network_mode: host
+    network_mode: "host"
     env_file: .env
     environment:
       - REACT_APP_PyEpicsServerPORT=5001
@@ -86,6 +86,8 @@ services:
       dockerfile: docker/alarmHandlerServer/Dockerfile
     hostname: alarmhandlerserver
     restart: always
+    depends_on:
+      - mongosetup
     network_mode: "host"
     stdin_open: true
     tty: true
@@ -97,64 +99,78 @@ services:
       - LOADSAVE_DATABASE=127.0.0.1:27017
     build:
       context: ./
-      
       args: # Environment variables available at build-time
-                - http_proxy
-                - https_proxy
-                - no_proxy
+        - http_proxy
+        - https_proxy
+        - no_proxy
       dockerfile: docker/loadSaveDbInit/Dockerfile
-    network_mode: host
+    network_mode: "host"
     tty: true
     stdin_open: true
     depends_on:
-      - mongo1
-      - mongo2
-      - mongo3
+      - mongosetup
   mongo1:
     image: mongo:4.2.3-bionic
     hostname: mongo1
     restart: always
-    ports:
-      - 27017:27017
-    env_file: .env
+    network_mode: "host"
+    env_file: mongoSetup/mongosetup.env
     logging:
       driver: "none"
     volumes:
       - "mongo-db-data1:/data/db"
       - "mongo-db-configdb1:/data/configdb"
-    entrypoint: ["/usr/bin/mongod", "--bind_ip_all", "--replSet", "devrs"]
+    entrypoint:
+      [
+        "/usr/bin/mongod",
+        "--bind_ip_all",
+        "--port",
+        "27017",
+        "--replSet",
+        "devrs",
+      ]
 
   mongo2:
     image: mongo:4.2.3-bionic
     hostname: mongo2
     restart: always
-    depends_on:
-      - mongo1
-    ports:
-      - 27018:27017
-    env_file: .env
+    network_mode: "host"
+    env_file: mongoSetup/mongosetup.env
     logging:
       driver: "none"
     volumes:
       - "mongo-db-data2:/data/db"
       - "mongo-db-configdb2:/data/configdb"
-    entrypoint: ["/usr/bin/mongod", "--bind_ip_all", "--replSet", "devrs"]
+    entrypoint:
+      [
+        "/usr/bin/mongod",
+        "--bind_ip_all",
+        "--port",
+        "27018",
+        "--replSet",
+        "devrs",
+      ]
 
   mongo3:
     image: mongo:4.2.3-bionic
     hostname: mongo3
     restart: always
-    depends_on:
-      - mongo2
-    ports:
-      - 27019:27017
-    env_file: .env
+    network_mode: "host"
+    env_file: mongoSetup/mongosetup.env
     logging:
       driver: "none"
     volumes:
       - "mongo-db-data3:/data/db"
       - "mongo-db-configdb3:/data/configdb"
-    entrypoint: ["/usr/bin/mongod", "--bind_ip_all", "--replSet", "devrs"]
+    entrypoint:
+      [
+        "/usr/bin/mongod",
+        "--bind_ip_all",
+        "--port",
+        "27019",
+        "--replSet",
+        "devrs",
+      ]
 
   mongosetup:
     build:
@@ -170,22 +186,20 @@ services:
     stdin_open: true
     tty: true
     env_file:
-      - .env
-      - alarmHandlerServer/alarmHandler.env
+      - mongoSetup/mongosetup.env
 
   mongo-express:
     image: mongo-express:0.54.0
     hostname: mongo-express
     restart: always
-    ports:
-      - 8081:8081
+    network_mode: "host"
     depends_on:
       - mongosetup
-    env_file: .env
+    env_file: mongoSetup/mongosetup.env
     logging:
       driver: "none"
     environment:
-      - ME_CONFIG_MONGODB_SERVER=mongo1
+      - ME_CONFIG_MONGODB_SERVER=localhost
 
 volumes:
   mongo-db-data1:
@@ -194,4 +208,3 @@ volumes:
   mongo-db-configdb2:
   mongo-db-data3:
   mongo-db-configdb3:
-  
