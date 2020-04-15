@@ -17,7 +17,9 @@ services:
   pvserver:
     environment:
       - ALARM_DATABASE=127.0.0.1:27017
+      - ALARM_DATABASE_REPLICA_SET_NAME=devrs
       - LOADSAVE_DATABASE=127.0.0.1:27017
+      - LOADSAVE_DATABASE_REPLICA_SET_NAME=devrs
     build:
       context: ./
       args: # Environment variables available at build-time
@@ -97,6 +99,7 @@ services:
     env_file: .env
     environment:
       - LOADSAVE_DATABASE=127.0.0.1:27017
+      - LOADSAVE_DATABASE_REPLICA_SET_NAME=devrs
     build:
       context: ./
       args: # Environment variables available at build-time
@@ -109,6 +112,7 @@ services:
     stdin_open: true
     depends_on:
       - mongosetup
+      
   mongo1:
     image: mongo:4.2.3-bionic
     hostname: mongo1

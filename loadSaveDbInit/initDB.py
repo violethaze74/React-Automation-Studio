@@ -14,11 +14,13 @@ usePvUnits=True
 ##########
 databaseName='testIOCSystems'
 LOADSAVE_DATABASE=os.getenv('LOADSAVE_DATABASE')
+replicaSet=str(os.getenv('LOADSAVE_DATABASE_REPLICA_SET_NAME'))
 if (LOADSAVE_DATABASE is None) :
     print("Enviroment variable LOADSAVE_DATABASE is not defined, can't intialize: ",databaseName)
 else:
     print("Enviroment variable LOADSAVE_DATABASE: ",LOADSAVE_DATABASE)
-    myclient = pymongo.MongoClient("mongodb://"+str(LOADSAVE_DATABASE)+"/",replicaSet='devrs')
+    print("Enviroment variable LOADSAVE_DATABASE_REPLICA_SET_NAME: ",replicaSet)
+    myclient = pymongo.MongoClient("mongodb://"+str(LOADSAVE_DATABASE)+"/",replicaSet=replicaSet)
     # Wait for MongoClient to discover the whole replica set and identify MASTER!
     sleep(0.1)
     dbnames = myclient.list_database_names()

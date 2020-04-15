@@ -101,6 +101,7 @@ services:
     env_file: .env
     environment:
       - LOADSAVE_DATABASE=127.0.0.1:27017
+      - LOADSAVE_DATABASE_REPLICA_SET_NAME=devrs
     build:
       context: ./
       
