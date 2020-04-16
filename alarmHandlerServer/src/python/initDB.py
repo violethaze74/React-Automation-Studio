@@ -4,6 +4,9 @@ import os
 import json
 from time import sleep
 
+ALARM_DATABASE = os.environ['ALARM_DATABASE']
+ALARM_DATABASE_REPLICA_SET_NAME = os.environ['ALARM_DATABASE_REPLICA_SET_NAME']
+
 try:
     MONGO_INITDB_ROOT_USERNAME = os.environ['MONGO_INITDB_ROOT_USERNAME']
     MONGO_INITDB_ROOT_PASSWORD = os.environ['MONGO_INITDB_ROOT_PASSWORD']
@@ -34,12 +37,13 @@ if (runDemoIOC):
 
 if (mongoAuth):
     client = MongoClient(
-        'mongodb://%s:%s@localhost' %
-        (MONGO_INITDB_ROOT_USERNAME, MONGO_INITDB_ROOT_PASSWORD),replicaSet='devrs')
+        'mongodb://%s:%s@%s' %
+        (MONGO_INITDB_ROOT_USERNAME, MONGO_INITDB_ROOT_PASSWORD, ALARM_DATABASE), replicaSet=ALARM_DATABASE_REPLICA_SET_NAME)
     # Wait for MongoClient to discover the whole replica set and identify MASTER!
     sleep(0.1)
 else:
-    client = MongoClient('mongodb://localhost',replicaSet='devrs')
+    client = MongoClient('mongodb://%s' % (ALARM_DATABASE),
+                         replicaSet=ALARM_DATABASE_REPLICA_SET_NAME)
     # Wait for MongoClient to discover the whole replica set and identify MASTER!
     sleep(0.1)
 

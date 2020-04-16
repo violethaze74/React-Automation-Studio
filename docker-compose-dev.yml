@@ -97,6 +97,9 @@ services:
     tty: true
     env_file:
       - alarmHandlerServer/alarmHandler.env
+    environment:
+      - ALARM_DATABASE=localhost
+      - ALARM_DATABASE_REPLICA_SET_NAME=devrs
   initializeloadsavedb:
     env_file: .env
     environment:
@@ -194,6 +197,9 @@ services:
     tty: true
     env_file:
       - mongoSetup/mongosetup.env
+    environment:
+      - REPLICA_SET_NAME=devrs
+      - REPLICA_SET_MEMBERS=localhost:27017,localhost:27018,localhost:27019
 
   mongo-express:
     image: mongo-express:0.54.0
