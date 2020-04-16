@@ -16,9 +16,9 @@ services:
     env_file: .env
   pvserver:
     environment:
-      - ALARM_DATABASE=127.0.0.1:27017
+      - ALARM_DATABASE=localhost
       - ALARM_DATABASE_REPLICA_SET_NAME=devrs
-      - LOADSAVE_DATABASE=127.0.0.1:27017
+      - LOADSAVE_DATABASE=localhost
       - LOADSAVE_DATABASE_REPLICA_SET_NAME=devrs
     build:
       context: ./
@@ -101,7 +101,7 @@ services:
   initializeloadsavedb:
     env_file: .env
     environment:
-      - LOADSAVE_DATABASE=127.0.0.1:27017
+      - LOADSAVE_DATABASE=localhost
       - LOADSAVE_DATABASE_REPLICA_SET_NAME=devrs
     build:
       context: ./
