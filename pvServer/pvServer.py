@@ -337,10 +337,12 @@ def databaseRead(message):
                         try:
                             print("connecting: "+dbURL)
                             try:
-                                myclient = pymongo.MongoClient("mongodb://"+ str(os.environ[database])+"/",serverSelectionTimeoutMS=10,replicaSet=str(os.environ[database+"_REPLICA_SET_NAME"]))
+                                databaseString="mongodb://"+ str(os.environ[database])+"/"
+                                replicaSetName=str(os.environ[database+"_REPLICA_SET_NAME"])
+                                myclient = pymongo.MongoClient(databaseString,serverSelectionTimeoutMS=10,replicaSet=replicaSetName)
                                 # Wait for MongoClient to discover the whole replica set and identify MASTER!
                                 time.sleep(0.1)
-                                myclient.server_info()
+                                #myclient.server_info()
                             except pymongo.errors.ServerSelectionTimeoutError as err:
                                 print(err)
                                 return "Ack: Could not connect to MongoDB: "+str(dbURL)
@@ -437,10 +439,12 @@ def databaseBroadcastRead(message):
                         try:
     #                        print("connecting: "+dbURL)
                             try:
-                                myclient = myclient = pymongo.MongoClient("mongodb://"+ str(os.environ[database])+"/",serverSelectionTimeoutMS=10,replicaSet=str(os.environ[database+"_REPLICA_SET_NAME"]))
+                                databaseString="mongodb://"+ str(os.environ[database])+"/"
+                                replicaSetName=str(os.environ[database+"_REPLICA_SET_NAME"])
+                                myclient = pymongo.MongoClient(databaseString,serverSelectionTimeoutMS=10,replicaSet=replicaSetName)
                                 # Wait for MongoClient to discover the whole replica set and identify MASTER!
                                 time.sleep(0.1)
-                                myclient.server_info()
+                                #myclient.server_info()
                             except pymongo.errors.ServerSelectionTimeoutError as err:
                                 print(err)
                                 return "Ack: Could not connect to MongoDB: "+str(dbURL)
@@ -526,10 +530,12 @@ def databaseUpdateOne(message):
                         try:
                             print("connecting: "+dbURL)
                             try:
-                                myclient = myclient = pymongo.MongoClient("mongodb://"+ str(os.environ[database])+"/",serverSelectionTimeoutMS=10,replicaSet=str(os.environ[database+"_REPLICA_SET_NAME"]))
+                                databaseString="mongodb://"+ str(os.environ[database])+"/"
+                                replicaSetName=str(os.environ[database+"_REPLICA_SET_NAME"])
+                                myclient = pymongo.MongoClient(databaseString,serverSelectionTimeoutMS=10,replicaSet=replicaSetName)
                                 # Wait for MongoClient to discover the whole replica set and identify MASTER!
                                 time.sleep(0.1)
-                                myclient.server_info()
+                                #myclient.server_info()
                             except pymongo.errors.ServerSelectionTimeoutError as err:
                                 print(err)
                                 return "Ack: Could not connect to MongoDB: "+str(dbURL)
@@ -614,10 +620,12 @@ def databaseInsertOne(message):
                         try:
 #                            print("connecting: "+dbURL)
                             try:
-                                myclient = myclient = pymongo.MongoClient("mongodb://"+ str(os.environ[database])+"/",serverSelectionTimeoutMS=10,replicaSet=str(os.environ[database+"_REPLICA_SET_NAME"]))
+                                databaseString="mongodb://"+ str(os.environ[database])+"/"
+                                replicaSetName=str(os.environ[database+"_REPLICA_SET_NAME"])
+                                myclient = pymongo.MongoClient(databaseString,serverSelectionTimeoutMS=10,replicaSet=replicaSetName)
                                 # Wait for MongoClient to discover the whole replica set and identify MASTER!
                                 time.sleep(0.1)
-                                myclient.server_info()
+                                #myclient.server_info()
                             except pymongo.errors.ServerSelectionTimeoutError as err:
                                 print(err)
                                 return "Ack: Could not connect to MongoDB: "+str(dbURL)
