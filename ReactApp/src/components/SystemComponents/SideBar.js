@@ -13,9 +13,10 @@ import Home from '@material-ui/icons/Home';
 import MailIcon from '@material-ui/icons/Mail';
 import Menu from '@material-ui/icons/Menu';
 import AccountCircle from '@material-ui/icons/AccountCircle';
-import {Link} from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import AutomationStudioContext from '../SystemComponents/AutomationStudioContext';
-import {Logout} from 'mdi-material-ui/'
+import { Logout } from 'mdi-material-ui/'
+import SupervisorAccountIcon from '@material-ui/icons/SupervisorAccount';
 const styles = {
   list: {
     width: 250,
@@ -29,49 +30,59 @@ class SideBar extends React.Component {
   constructor(props) {
     super(props);
 
-  this.state = {
-    top: false,
-    left: false,
-    bottom: false,
-    right: false,
-  };
-  this.logout=this.logout.bind(this);
-}
+    this.state = {
+      top: false,
+      left: false,
+      bottom: false,
+      right: false,
+    };
+    this.logout = this.logout.bind(this);
+  }
   toggleDrawer = (side, open) => () => {
     this.setState({
       [side]: open,
     });
   };
-  logout(){
-    let socket=this.context.socket;
-    socket.emit('disconnect', {"goodebye":"see you later"});
+  logout() {
+    let socket = this.context.socket;
+    socket.emit('disconnect', { "goodebye": "see you later" });
     socket.close()
     this.context.logout();
 
   }
   render() {
     const { classes } = this.props;
-
+   
     const sideList = (
       <div className={classes.list}>
         <List>
 
-            <ListItem button key={"Home"} component={Link} to="/" >
-              <ListItemIcon><Home/></ListItemIcon>
-              <ListItemText primary={"Home"} />
-            </ListItem>
+          <ListItem button key={"Home"} component={Link} to="/" >
+            <ListItemIcon><Home /></ListItemIcon>
+            <ListItemText primary={"Home"} />
+          </ListItem>
 
         </List>
-          {process.env.REACT_APP_EnableLogin==='true'&&<React.Fragment>
-        <Divider />
-        <ListItem button key={"user name"} >
-          <ListItemIcon><AccountCircle/></ListItemIcon>
-          <ListItemText style={{textOverflow: 'ellipsis'}} primary={this.context.userData.username} />
-        </ListItem>
-        <ListItem button key={"Log Out"} onClick={this.logout} component={Link} to="/LogIn" >
-          <ListItemIcon><Logout/></ListItemIcon>
-          <ListItemText primary={"Log Out"} />
-        </ListItem>
+        {process.env.REACT_APP_EnableLogin === 'true' && <React.Fragment>
+          <Divider />
+          <ListItem button key={"user name"} component={Link} to="/UserProfile">
+            <ListItemIcon><AccountCircle /></ListItemIcon>
+            <ListItemText style={{ textOverflow: 'ellipsis' }} primary={this.context.userData.username} />
+          </ListItem>
+          
+          {process.env.REACT_APP_IncludeAdministrator&&this.context.userData.roles.includes('admin')&& 
+          <React.Fragment>  
+          <ListItem button key={"user name"} component={Link} to="/Administrator">
+            <ListItemIcon><SupervisorAccountIcon /></ListItemIcon>
+            <ListItemText style={{ textOverflow: 'ellipsis' }} primary={'Admin Settings'} />
+          </ListItem>
+          
+          </React.Fragment>}
+          <ListItem button key={"Log Out"} onClick={this.logout} component={Link} to="/LogIn" >
+            <ListItemIcon><Logout /></ListItemIcon>
+            <ListItemText primary={"Log Out"} />
+          </ListItem>
+          <Divider />
         </React.Fragment>}
       </div>
     );
@@ -100,8 +111,8 @@ class SideBar extends React.Component {
 
     return (
       <div>
-        <Button onClick={this.toggleDrawer('left', true)}><Menu/></Button>
-      {/*}  <Button onClick={this.toggleDrawer('right', true)}>Open Right</Button>
+        <Button onClick={this.toggleDrawer('left', true)}><Menu /></Button>
+        {/*}  <Button onClick={this.toggleDrawer('right', true)}>Open Right</Button>
         <Button onClick={this.toggleDrawer('top', true)}>Open Top</Button>
         <Button onClick={this.toggleDrawer('bottom', true)}>Open Bottom</Button>*/}
         <Drawer open={this.state.left} onClose={this.toggleDrawer('left', false)}>
@@ -156,5 +167,5 @@ class SideBar extends React.Component {
 SideBar.propTypes = {
   classes: PropTypes.object.isRequired,
 };
-SideBar.contextType=AutomationStudioContext;
+SideBar.contextType = AutomationStudioContext;
 export default withStyles(styles)(SideBar);
