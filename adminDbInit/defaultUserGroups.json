@@ -1,0 +1,39 @@
+{
+    "userGroups":
+  
+    {
+      "DEFAULT":
+      {
+        "usernames":["*"],
+        "rules":
+        [
+          { "rule":"[0-9].*",                       "read":true,  "write":false },
+          { "rule":"[a-z].*",                       "read":true,  "write":false },
+          { "rule":"[A-Z].*",                       "read":true,  "write":false },
+          { "rule":"^mongodb://ADMIN_DATABASE",     "read":false, "write":false },
+          { "rule":"^mongodb://ALARM_DATABASE",     "read":true,  "write":false },
+          { "rule":"^mongodb://LOADSAVE_DATABASE",  "read":true,  "write":false }
+  
+  
+        ]
+      },
+      "ADMIN":
+      {
+        "usernames":["administrator"],
+        "roles":["admin"],
+        "rules":
+        [
+          { "rule":"[0-9].*",                       "read":true,  "write":false },
+          { "rule":"[a-z].*",                       "read":true,  "write":false },
+          { "rule":"[A-Z].*",                       "read":true,  "write":false },
+          { "rule":"^mongodb://ADMIN_DATABASE",     "read":true,  "write":false },
+          { "rule":"^mongodb://ALARM_DATABASE",     "read":true,  "write":false },
+          { "rule":"^mongodb://LOADSAVE_DATABASE",  "read":true,  "write":false }
+          
+          
+  
+        ]
+      }
+     
+    }
+  }
