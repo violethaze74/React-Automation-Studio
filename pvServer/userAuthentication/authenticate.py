@@ -5,6 +5,11 @@ import random
 import string
 import os
 import bcrypt
+from bson.json_util import dumps
+import pymongo
+import time
+
+
 
 def randomString(stringLength=10):
     """Generate a random string of fixed length """
@@ -33,7 +38,7 @@ def createJTWUserIDs(UAGS):
         knownUsers={}
         for userid in users:
 
-                JWTid=str(jwt.encode({'id':str(userid)+str(timestamp)}, SECRET_PWD_KEY, algorithm='HS256').decode('utf-8'))
+                JWTid=str(jwt.encode({'id':str(userid)+str(timestamp)+str(userid['timestamp'])}, SECRET_PWD_KEY, algorithm='HS256').decode('utf-8'))
                 #print(str(userid) +" :" +str(JWTid))
                 knownUsers[JWTid]={'username':userid['username'],'password':userid['password']}
 #                print('user-id: '+userId +' email: '+email+' PW:'+pwd)
@@ -48,28 +53,82 @@ def createJTWUserIDs(UAGS):
 
 def loadPvAccess():
     try:
-        path='userAuthentication/users/pvAccess.json'
-        timestamp=os.path.getmtime(path)
-        with open(path) as json_file:
-            data = json.load(json_file)
-            data['timestamp']=str(timestamp)
-            return data
+        try:
+            database="ADMIN_DATABASE"
+            databaseURL="mongodb://"+ str(os.environ[database])
+            replicaSetName=str(os.environ[database+"_REPLICA_SET_NAME"])
+            myclient = pymongo.MongoClient(databaseURL,serverSelectionTimeoutMS=10,replicaSet=replicaSetName)
+            # Wait for MongoClient to discover the whole replica set and identify MASTER!
+            time.sleep(0.1)
+            
+        except pymongo.errors.ServerSelectionTimeoutError as err:
+            print(err)
+            #return "Ack: Could not connect to MongoDB: "+str(databaseURL)
+        mydb = myclient["adminDb"]
+        mycol=mydb["UAGS"]
+        X=mycol.find_one()
+        data={}
+        data['userGroups']=X['userGroups']
+        data['timestamp']=X['timestamp']
+        return data
     except:
-        print("Error Cant load file pvAccess.json")
+        print("Error Cant load user access groups")
         return None
+    # print("UAGS",str(X['userGroups']))
+
+
+
+
+    # try:
+    #     path='userAuthentication/users/pvAccess.json'
+    #     timestamp=os.path.getmtime(path)
+    #     with open(path) as json_file:
+    #         data = json.load(json_file)
+    #         data['timestamp']=str(timestamp)
+    #         return data
+    # except:
+    #     print("Error Cant load file pvAccess.json")
+    #     return None
 
 
 def loadUsers():
     try:
-        path='userAuthentication/users/users.json'
-        timestamp=os.path.getmtime(path)
-        with open(path) as json_file:
-            data = json.load(json_file)
-            data['timestamp']=str(timestamp)
-            return data
+        try:
+            database="ADMIN_DATABASE"
+            databaseURL="mongodb://"+ str(os.environ[database])
+            replicaSetName=str(os.environ[database+"_REPLICA_SET_NAME"])
+            myclient = pymongo.MongoClient(databaseURL,serverSelectionTimeoutMS=10,replicaSet=replicaSetName)
+            # Wait for MongoClient to discover the whole replica set and identify MASTER!
+            time.sleep(0.1)
+            
+        except pymongo.errors.ServerSelectionTimeoutError as err:
+            print(err)
+            #return "Ack: Could not connect to MongoDB: "+str(databaseURL)
+        mydb = myclient["adminDb"]
+        mycol=mydb["users"]
+        X=mycol.find()
+        data={}
+        data['users']=list(X)
+        print("data", data['users'])
+        return data
     except:
-        print("Error Cant load file users.json")
+        print("Error Cant load users in database")
         return None
+
+
+
+
+
+    # try:
+    #     path='userAuthentication/users/users.json'
+    #     timestamp=os.path.getmtime(path)
+    #     with open(path) as json_file:
+    #         data = json.load(json_file)
+    #         data['timestamp']=str(timestamp)
+    #         return data
+    # except:
+    #     print("Error Cant load file users.json")
+    #     return None
 
 REACT_APP_DisableLogin=not(os.getenv('REACT_APP_EnableLogin')=='true')
 if (not REACT_APP_DisableLogin) :
@@ -79,7 +138,7 @@ if (not REACT_APP_DisableLogin) :
     UAGS={}
     UAGS['users']=users['users']
     UAGS['userGroups']=access['userGroups']
-    UAGS['timestamp']=str(users['timestamp'])+str(access['timestamp'])
+    UAGS['timestamp']=str(access['timestamp'])
     knownUsers=createJTWUserIDs(UAGS)
     #knownUsers=loadFileUsers()
     #print(knownUsers)
