@@ -24,6 +24,8 @@ services:
       - ALARM_DATABASE_REPLICA_SET_NAME=devrs
       - LOADSAVE_DATABASE=localhost
       - LOADSAVE_DATABASE_REPLICA_SET_NAME=devrs
+      - ADMIN_DATABASE=localhost
+      - ADMIN_DATABASE_REPLICA_SET_NAME=devrs
     build:
       context: ./
       args: # Environment variables available at build-time
@@ -38,6 +40,8 @@ services:
     volumes:
       - ./certificates:/certificates/
       - ./users:/pvServer/userAuthentication/users
+    depends_on:
+      - admindbinit
   unsecurestylguidepvserver:
     env_file: .env
     environment:
@@ -118,7 +122,24 @@ services:
     stdin_open: true
     depends_on:
       - mongosetup
-
+  admindbinit:
+    env_file: .env
+    environment:
+      - ADMIN_DATABASE=localhost
+      - ADMIN_DATABASE_REPLICA_SET_NAME=devrs
+    build:
+      context: ./
+      
+      args: # Environment variables available at build-time
+                - http_proxy
+                - https_proxy
+                - no_proxy
+      dockerfile: docker/adminDbInit/Dockerfile
+    network_mode: "host"
+    tty: true
+    stdin_open: true
+    depends_on:
+      - mongosetup
   mongo1:
     image: mongo:4.2.3-bionic
     hostname: mongo1
