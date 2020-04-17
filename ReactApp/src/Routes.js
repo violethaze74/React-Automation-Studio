@@ -27,6 +27,7 @@ import SettingsSteererXY from './components/SettingsPages/SettingsSteererXY';
 import SettingsSinglePS from './components/SettingsPages/SettingsSinglePS';
 import LoadSaveExample from './components/Examples/LoadSaveExample.js';
 import Administrator from './components/Administrator/Administrator.js';
+import UserProfile from './components/SystemComponents/UserProfile';
 import AutomationStudioContext from './components/SystemComponents/AutomationStudioContext';
 import LogIn from './LogIn';
 import { Redirect } from 'react-router-dom'
@@ -59,7 +60,11 @@ render(){
 
       <Route path="/ControlTableExample" component={ControlTableExample} />
       <Route path="/LoadSaveExample" component={LoadSaveExample} />
-      <Route path="/Administrator" component={Administrator} />
+      
+      <Route exact path="/Administrator" >
+              {process.env.REACT_APP_IncludeAdministrator && this.context.userData.roles.includes('admin') ?<Administrator/>:<Redirect to="/"/> }
+      </Route>
+      <Route path="/UserProfile" component={UserProfile} />
       <Route path="/EpicsDemos" component={EpicsDemos} />
       <Route path="/Help" component={Help} />
       <Route path="/Staging" component={Staging} />
