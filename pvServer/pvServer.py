@@ -339,7 +339,7 @@ def databaseRead(message):
                             try:
                                 databaseString="mongodb://"+ str(os.environ[database])+"/"
                                 replicaSetName=str(os.environ[database+"_REPLICA_SET_NAME"])
-                                myclient = pymongo.MongoClient(databaseString,serverSelectionTimeoutMS=10,replicaSet=replicaSetName)
+                                myclient = pymongo.MongoClient(databaseString,replicaSet=replicaSetName)
                                 # Wait for MongoClient to discover the whole replica set and identify MASTER!
                                 time.sleep(0.1)
                                 #myclient.server_info()
@@ -441,7 +441,7 @@ def databaseBroadcastRead(message):
                             try:
                                 databaseString="mongodb://"+ str(os.environ[database])+"/"
                                 replicaSetName=str(os.environ[database+"_REPLICA_SET_NAME"])
-                                myclient = pymongo.MongoClient(databaseString,serverSelectionTimeoutMS=10,replicaSet=replicaSetName)
+                                myclient = pymongo.MongoClient(databaseString,replicaSet=replicaSetName)
                                 # Wait for MongoClient to discover the whole replica set and identify MASTER!
                                 time.sleep(0.1)
                                 #myclient.server_info()
@@ -532,7 +532,7 @@ def databaseUpdateOne(message):
                             try:
                                 databaseString="mongodb://"+ str(os.environ[database])+"/"
                                 replicaSetName=str(os.environ[database+"_REPLICA_SET_NAME"])
-                                myclient = pymongo.MongoClient(databaseString,serverSelectionTimeoutMS=10,replicaSet=replicaSetName)
+                                myclient = pymongo.MongoClient(databaseString,replicaSet=replicaSetName)
                                 # Wait for MongoClient to discover the whole replica set and identify MASTER!
                                 time.sleep(0.1)
                                 #myclient.server_info()
@@ -622,7 +622,7 @@ def databaseInsertOne(message):
                             try:
                                 databaseString="mongodb://"+ str(os.environ[database])+"/"
                                 replicaSetName=str(os.environ[database+"_REPLICA_SET_NAME"])
-                                myclient = pymongo.MongoClient(databaseString,serverSelectionTimeoutMS=10,replicaSet=replicaSetName)
+                                myclient = pymongo.MongoClient(databaseString,replicaSet=replicaSetName)
                                 # Wait for MongoClient to discover the whole replica set and identify MASTER!
                                 time.sleep(0.1)
                                 #myclient.server_info()

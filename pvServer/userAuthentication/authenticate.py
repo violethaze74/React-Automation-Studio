@@ -57,7 +57,7 @@ def loadPvAccess():
             database="ADMIN_DATABASE"
             databaseURL="mongodb://"+ str(os.environ[database])
             replicaSetName=str(os.environ[database+"_REPLICA_SET_NAME"])
-            myclient = pymongo.MongoClient(databaseURL,serverSelectionTimeoutMS=10,replicaSet=replicaSetName)
+            myclient = pymongo.MongoClient(databaseURL,replicaSet=replicaSetName)
             # Wait for MongoClient to discover the whole replica set and identify MASTER!
             time.sleep(0.1)
             
@@ -97,12 +97,12 @@ def loadUsers():
             database="ADMIN_DATABASE"
             databaseURL="mongodb://"+ str(os.environ[database])
             replicaSetName=str(os.environ[database+"_REPLICA_SET_NAME"])
-            myclient = pymongo.MongoClient(databaseURL,serverSelectionTimeoutMS=10,replicaSet=replicaSetName)
+            myclient = pymongo.MongoClient(databaseURL,replicaSet=replicaSetName)
             # Wait for MongoClient to discover the whole replica set and identify MASTER!
             time.sleep(0.1)
-            
-        except pymongo.errors.ServerSelectionTimeoutError as err:
-            print(err)
+        
+        except Exception as e: print(e)    
+        
             #return "Ack: Could not connect to MongoDB: "+str(databaseURL)
         mydb = myclient["adminDb"]
         mycol=mydb["users"]
@@ -111,7 +111,8 @@ def loadUsers():
         data['users']=list(X)
         print("data", data['users'])
         return data
-    except:
+    except Exception as e: 
+        print(e)
         print("Error Cant load users in database")
         return None
 

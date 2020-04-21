@@ -46,7 +46,8 @@ import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
 import LoadSave from '../loadSaveComponent/LoadSave';
 import AutomationStudioContext from '../SystemComponents/AutomationStudioContext';
-
+import AllUsers from "./AllUsers"
+import AddUsers from "./AddUsers"
 const systemName = 'testIOC';
 
 
@@ -64,36 +65,18 @@ const styles = theme => ({
   },
 });
 
-const VerticalTabs = withStyles(theme => ({
-  flexContainer: {
-    flexDirection: 'column'
-  },
-  indicator: {
-    display: 'none',
-  }
-}))(Tabs)
 
-function TabContainer(props) {
-  return (
-    <Typography component="div" style={{ padding: 8 * 0 }}>
-      {props.children}
-    </Typography>
-  );
-}
 
 class Administrator extends React.Component {
   constructor(props) {
     super(props);
-    let systemName = 'testIOC';
+    
     this.state = {
-      'editorType': 'PS',
-      'displayEditor': false,
-      'editorMacros': { '$(systemName)': "" },
-      'editorSystem': {},
-      systemName: systemName,
-      topTabValue: 0,
-      sideTabValue: 0,
-      displaySettings: false,
+      
+     
+      tabValue: 0,
+      
+     
 
 
 
@@ -103,20 +86,13 @@ class Administrator extends React.Component {
 
   }
 
- 
 
 
-  handleSideTabChange = (event, value) => {
-    this.setState({ sideTabValue: value, displayEditor: false });
+
+  handleTabChange = (event, value) => {
+    this.setState({ tabValue: value });
   };
-  handleCloseEditor = () => {
-    this.setState({
-      ['displayEditor']: false,
-    }
-    );
 
-    //  this.setState({ ['clicked']: 1});
-  }
 
   render() {
     //      console.log("state: ",this.state);
@@ -134,13 +110,23 @@ class Administrator extends React.Component {
 
 
             <h3 >{'Administrator'}</h3>
+
+            <Tabs
+              value={this.state.tabValue}
+              onChange={this.handleTabChange}
+              indicatorColor="primary"
+              textColor="primary"
+            //   centered
+            > 
+              <Tab label="All Users" />
+              <Tab label="User Access Groups" />
+              
+              <Tab label="Add User" />
+
+            </Tabs>
             <div style={{
               flexGrow: 1
             }}></div>
-
-            
-
-            
 
             <Settings />
 
@@ -159,21 +145,18 @@ class Administrator extends React.Component {
 
 
             <Grid item xs={12} sm={12} md={12} lg={12} >
+              {this.state.tabValue==0&&
+              <AllUsers
+                database='ADMIN_DATABASE'
+                collection='adminDb'
+              />}
 
-
-              {/* <LoadSave
-                key={" " + this.state.systemName}
-                database='LOADSAVE_DATABASE'
-                collection='testIOCSystems'
-                macros={{ '$(systemName)': this.state.systemName }}
-                loadEnablePV={'pva://$(systemName):loadSaveEnable'}
-
-                loadEnableLabel={'System On/Off'}
-                showLoadEnableButton={true}
-                useLoadEnable={true}
-
-
-              /> */}
+              {this.state.tabValue==2&&
+                <AddUsers
+                  database='ADMIN_DATABASE'
+                  collection='adminDb'
+                />
+              }
 
 
             </Grid>
