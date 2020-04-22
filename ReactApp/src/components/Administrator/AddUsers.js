@@ -27,6 +27,7 @@ import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
+import Button from '@material-ui/core/Button';
 const systemName = 'testIOC';
 
 
@@ -62,7 +63,12 @@ class AddUsers extends React.Component {
       tabValue: 0,
       users: [],
       username: "",
+
+      usernameHelperText: "Enter a username",
+      usernameError: false,
       password: "",
+      passwordHelperText: "Minimum length 12 characters",
+      confirmPassword: "",
       email: "",
       giveName: "",
       familyName: "",
@@ -80,9 +86,43 @@ class AddUsers extends React.Component {
   }
 
   handleChange = (name) => (event) => {
-    this.setState({ name: event.target.value })
-  }
+    console.log(name, event.target.value)
+    this.setState({ [name]: event.target.value })
 
+
+  }
+  handleOnClickAddUser=()=>{
+    // let socket = this.context.socket;
+    // let jwt = JSON.parse(localStorage.getItem('jwt'));
+    // if (jwt === null) {
+    //   jwt = 'unauthenticated'
+    // }
+    // let newEntry = {
+    //   '_id':this.state.username,
+    //   username:this.state.username,
+    //   password:this.state.password,
+    //   email:this.state.email,
+    //   giveName:this.state.giveName,
+    //   familyName:this.state.familyName,
+    //   phoneNumber:this.state.phoneNumber,
+    //   officeLocation:this.state.officeLocation
+    // };
+    // socket.emit('databaseInsertOne', { dbURL: this.state.dbListInsertOneURL, 'newEntry': newEntry, 'clientAuthorisation': jwt }, (data) => {
+    //   console.log("ackdata", data);
+    //   if (data == "OK") {
+    //     socket.emit('databaseBroadcastRead', { dbURL: this.state.dbListBroadcastReadUsersURL, 'clientAuthorisation': jwt }, (data) => {
+
+    //       if (data !== "OK") {
+    //         console.log("ackdata", data);
+    //       }
+    //     });
+    //   } else {
+    //     console.log("Save values unsuccessful")
+    //   }
+
+    //   // data will be 'woot'
+    // });
+  }
   handleNewDbUsersList = (msg) => {
     let data = JSON.parse(msg.data);
     this.setState({ users: data })
@@ -118,11 +158,32 @@ class AddUsers extends React.Component {
   render() {
     //      console.log("state: ",this.state);
     //console.log('displayHarps',this.state.displayHarps)
-    console.log(this.context.userData)
+    //console.log(this.context.userData)
+    console.log(this.state.password, this.state.confirmPassword)
     const { classes } = this.props;
     const topTabValue = this.state.topTabValue;
     const sideTabValue = this.state.sideTabValue;
     const users = this.state.users;
+    let passwordError;
+
+    if (this.state.password.length < 12) {
+      passwordError = true;
+    }
+    else {
+      passwordError = false;
+    }
+    let confirmPasswordError;
+    let confirmPasswordHelperText;
+
+    if (this.state.password == this.state.confirmPassword) {
+      confirmPasswordError = false;
+      confirmPasswordHelperText = "Passwords match"
+    }
+    else {
+      confirmPasswordError = true;
+      confirmPasswordHelperText = "Passwords do not match"
+    }
+    let addUserDisable = ((this.state.username.length > 0) && (confirmPasswordError == false) && (passwordError == false)) ? false : true;
     return (
       <React.Fragment>
 
@@ -139,9 +200,10 @@ class AddUsers extends React.Component {
 
 
             <Grid item xs={12} sm={12} md={6} lg={4} >
+              <Typography> New User</Typography>
               <Card style={{ padding: 8 }}>
                 <Grid
-                  style={{ marginTop: 8, padding: 8 }}
+                  style={{ padding: 8 }}
                   container
                   direction="row"
                   justify="flex-start"
@@ -151,20 +213,22 @@ class AddUsers extends React.Component {
                   <Grid item xs={12}  >
                     <TextField
                       inputProps={{
-                        autoComplete:'off'
+                        autoComplete: 'off'
                       }}
                       required
                       label="Username"
                       onChange={this.handleChange("username")}
                       variant="outlined"
                       fullWidth
+                      helperText={this.state.usernameHelperText}
+                      error={this.state.usernameError}
                     />
                   </Grid>
 
                   <Grid item xs={12}  >
                     <TextField
                       inputProps={{
-                        autoComplete:'off'
+                        autoComplete: 'off'
                       }}
                       required
                       type="password"
@@ -172,27 +236,31 @@ class AddUsers extends React.Component {
                       onChange={this.handleChange("password")}
                       variant="outlined"
                       fullWidth
+                      helperText={this.state.passwordHelperText}
+                      error={passwordError}
                     />
                   </Grid>
                   <Grid item xs={12}  >
                     <TextField
                       inputProps={{
-                        autoComplete:'off'
+                        autoComplete: 'off'
                       }}
                       required
                       type="password"
                       label="Confirm Password"
                       onChange={this.handleChange("confirmPassword")}
+                      helperText={confirmPasswordHelperText}
+                      error={confirmPasswordError}
                       variant="outlined"
                       fullWidth
                     />
                   </Grid>
                   <Grid item xs={12}  >
                     <TextField
-                    inputProps={{
-                      autoComplete:'off'
-                    }}
-                      
+                      inputProps={{
+                        autoComplete: 'off'
+                      }}
+
                       label="Email"
                       onChange={this.handleChange("email")}
                       variant="outlined"
@@ -202,7 +270,7 @@ class AddUsers extends React.Component {
                   <Grid item xs={12}  >
                     <TextField
                       inputProps={{
-                        autoComplete:'off'
+                        autoComplete: 'off'
                       }}
                       label="Given Name"
                       onChange={this.handleChange("givenName")}
@@ -213,7 +281,7 @@ class AddUsers extends React.Component {
                   <Grid item xs={12}  >
                     <TextField
                       inputProps={{
-                        autoComplete:'off'
+                        autoComplete: 'off'
                       }}
                       label="Family Name"
                       onChange={this.handleChange("familyName")}
@@ -224,7 +292,7 @@ class AddUsers extends React.Component {
                   <Grid item xs={12}  >
                     <TextField
                       inputProps={{
-                        autoComplete:'off'
+                        autoComplete: 'off'
                       }}
                       label="Phone Number"
                       onChange={this.handleChange("phoneNumber")}
@@ -235,13 +303,18 @@ class AddUsers extends React.Component {
                   <Grid item xs={12}  >
                     <TextField
                       inputProps={{
-                        autoComplete:'off'
+                        autoComplete: 'off'
                       }}
                       label="Office Location "
                       onChange={this.handleChange("officeLocation")}
                       variant="outlined"
                       fullWidth
                     />
+                  </Grid>
+                  <Grid item xs={12}  >
+                    <Button variant="contained" color="primary" disabled={addUserDisable} onClick={this.handleOnClickAddUser}>
+                      Add User
+                    </Button>
                   </Grid>
                 </Grid>
 
