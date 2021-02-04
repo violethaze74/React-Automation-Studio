@@ -10,6 +10,8 @@ import flask
 from flask import Flask, render_template, session, request, jsonify, send_from_directory, redirect
 from flask_socketio import SocketIO, emit, join_room, leave_room, \
     close_room, rooms, disconnect
+from flask_login import LoginManager, login_user, current_user, UserMixin
+
 from werkzeug.routing import BaseConverter
 from bson.json_util import dumps
 
@@ -66,9 +68,34 @@ REACT_APP_EnableActiveDirectoryLogin=(os.getenv('REACT_APP_EnableActiveDirectory
 print("")
 app = flask.Flask(__name__, static_folder="./build/static", template_folder="./build")
 app.url_map.converters['regex'] = RegexConverter
+app.config['SECRET_KEY'] = 'FSAFASDG!'
 
 CORS(app)
+login = LoginManager()
+# @app.route('/api/login/local', methods=['POST'])
+# def localLogin():
+#     user = request.json.get('user', None)
+#     userData=LocalAuthenticateUser(user)
+#     if (userData is None):
+#         log.info("Unknown user login: {} ",user['username'])
+#         return jsonify({'login': False}), 401
+#     username=userData['username']
+#     roles=userData['roles']
+#     jwt=userData['JWT']
+#     resp= jsonify({'login': True, 'jwt':jwt,'username':username,'roles':roles})
+#     log.info("User logged in: {} ",username)
+#     return resp, 200
+@login.user_loader
+def user_loader(id):
+    print(id)
+    return User(id)
 
+class User(UserMixin):
+    def __init__(self, username):
+        print(username)
+        self.id = username
+
+login.init_app(app)
 @app.route('/api/login/local', methods=['POST'])
 def localLogin():
     user = request.json.get('user', None)
@@ -77,11 +104,19 @@ def localLogin():
         log.info("Unknown user login: {} ",user['username'])
         return jsonify({'login': False}), 401
     username=userData['username']
+    login_user(User(username),remember=True)
     roles=userData['roles']
     jwt=userData['JWT']
     resp= jsonify({'login': True, 'jwt':jwt,'username':username,'roles':roles})
     log.info("User logged in: {} ",username)
     return resp, 200
+@app.route('/testlogin')
+def testLogin():
+    if current_user.is_anonymous:
+        return "anonymous"
+    else:
+        return str(current_user)
+
 
 @app.route('/api/login/ldap', methods=['POST'])
 def ldapLogin():
@@ -155,7 +190,7 @@ else:
     print("Authenitcation and Authorisation is ENABLED")
 print("")
 
-socketio = SocketIO(app,async_mode=async_mode,cors_allowed_origins='*')
+socketio = SocketIO(app,async_mode=async_mode,cors_allowed_origins='*',manage_session=False)
 thread = None
 thread_lock = threading.Lock()
 
@@ -1439,6 +1474,8 @@ def test_authenticate(message):
 @socketio.on('connect', namespace='/pvServer')
 def test_connect():
     global thread
+    print("current_user",current_user)
+    print("current_user.is_authenticated",current_user.is_authenticated)
     log.info('Client Connected: {}',request.sid)
     with thread_lock:
         if thread is None:
