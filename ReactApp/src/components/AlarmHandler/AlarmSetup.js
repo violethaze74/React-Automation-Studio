@@ -397,7 +397,7 @@ const AlarmSetup = (props) => {
     useEffect(() => {
         if (dbPVDataRaw !== null) {
             // Sort by area always
-            dbPVDataRaw.sort((a,b) => (a.area > b.area) ? 1 : ((b.area > a.area) ? -1 : 0))
+            dbPVDataRaw.sort((a, b) => (a.area > b.area) ? 1 : ((b.area > a.area) ? -1 : 0))
             const localAreaNames = []
             const localAreaAlarms = []
             const localAreaEnabled = {}
@@ -409,10 +409,9 @@ const AlarmSetup = (props) => {
             dbPVDataRaw.map((area, index) => {
                 areaMongoId[area["area"]] = area["_id"]["$oid"]
                 localAreaEnabled[area["area"]] = area["enable"]
-                // Backwards compatible
                 localAreaBridged[area["area"]] = {
-                    bridge: (area["bridge"] ?? false),
-                    bridgeTime: (area["bridgeTime"] ?? '')
+                    bridge: area["bridge"],
+                    bridgeTime: area["bridgeTime"]
                 }
                 localLastArea = area["area"]
                 Object.keys(area).map(areaKey => {
@@ -441,10 +440,9 @@ const AlarmSetup = (props) => {
                         areaMongoId[`${area["area"]}=${area[areaKey]["name"]}`] = area["_id"]["$oid"]
                         // Area enabled for subArea includes parent area
                         localAreaEnabled[`${area["area"]}=${area[areaKey]["name"]}`] = area[areaKey]["enable"] && localAreaEnabled[area["area"]]
-                        // Backwards compatible
                         localAreaBridged[`${area["area"]}=${area[areaKey]["name"]}`] = {
-                            bridge: (area[areaKey]["bridge"] ?? false),
-                            bridgeTime: (area[areaKey]["bridgeTime"] ?? '')
+                            bridge: area[areaKey]["bridge"],
+                            bridgeTime: area[areaKey]["bridgeTime"]
                         }
                         localLastArea = `${area["area"]}=${area[areaKey]["name"]}`
                         if (localAreaNames[index]["subAreas"]) {
@@ -1101,6 +1099,8 @@ const AlarmSetup = (props) => {
                     [`pv${key}`]: {
                         name: pvname,
                         enable: true,
+                        bridge: false,
+                        bridgeTime: "",
                         latch: true,
                         notify: true,
                         lastAlarmVal: "",

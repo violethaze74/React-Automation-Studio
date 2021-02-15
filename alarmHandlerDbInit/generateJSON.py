@@ -22,6 +22,8 @@ for area in pvData:
             pvs[areaName] = {
                 "area": areaName,
                 "enable": True,
+                "bridge": False,
+                "bridgeTime": "",
                 "pvs": {}
             }
         elif(areaKey == "pvs"):
@@ -30,6 +32,8 @@ for area in pvData:
                 pvs[areaName]["pvs"][pvKey] = {
                     "name": pvName,
                     "enable": True,
+                    "bridge": False,
+                    "bridgeTime": "",
                     "latch": True,
                     "notify": True,
                     "lastAlarmVal": "",
@@ -41,6 +45,8 @@ for area in pvData:
             pvs[areaName][areaKey] = {
                 "name": areaValue["name"],
                 "enable": True,
+                "bridge": False,
+                "bridgeTime": "",
                 "pvs": {}
             }
             # subArea pvs
@@ -48,6 +54,8 @@ for area in pvData:
                 pvs[areaName][areaKey]["pvs"][pvKey] = {
                     "name": pvName,
                     "enable": True,
+                    "bridge": False,
+                    "bridgeTime": "",
                     "latch": True,
                     "notify": True,
                     "lastAlarmVal": "",

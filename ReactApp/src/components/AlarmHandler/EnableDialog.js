@@ -47,8 +47,7 @@ const useStyles = makeStyles(theme => ({
 const EnableDialog = (props) => {
     const classes = useStyles()
 
-    // Backwards compatible
-    const dateTime = (props.data.bridge ?? false)
+    const dateTime = props.data.bridge
         ? parseISO(props.data.bridgeTime)
         : setSeconds(addHours(new Date(), 1), 0)
 
@@ -118,8 +117,7 @@ const EnableDialog = (props) => {
                             control={
                                 <Radio
                                     color="secondary"
-                                    // Backwards compatible
-                                    checked={!props.data.enable && !(props.data.bridge ?? false)}
+                                    checked={!props.data.enable && !props.data.bridge}
                                     onChange={handleDisable}
                                 />
                             }
@@ -134,8 +132,7 @@ const EnableDialog = (props) => {
                             control={
                                 <Radio
                                     color="secondary"
-                                    // Backwards compatible
-                                    checked={props.data.bridge ?? false}
+                                    checked={props.data.bridge}
                                     onChange={handleBridge}
                                 />
                             }
@@ -153,8 +150,7 @@ const EnableDialog = (props) => {
                                 ampm={false}
                                 disablePast
                                 autoOk={false}
-                                // Backwards compatible
-                                disabled={!props.data.bridge ?? true}
+                                disabled={!props.data.bridge}
                             />
                         </MuiPickersUtilsProvider>
                     </Grid>
