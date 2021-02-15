@@ -152,8 +152,7 @@ const ScheduleDialog = (props) => {
         if (global) {
             // Check oneMedium is checked
             const oneMedium = !event.target.checked
-                // Backwards compatible
-                ? props.dialogUserObject.globalSetup.sms || props.dialogUserObject.globalSetup.whatsapp || (props.dialogUserObject.globalSetup.signal ?? false)
+                ? props.dialogUserObject.globalSetup.sms || props.dialogUserObject.globalSetup.whatsapp || props.dialogUserObject.globalSetup.signal
                 : true
             //
             if (oneMedium) {
@@ -178,8 +177,7 @@ const ScheduleDialog = (props) => {
                 else {
                     // Check oneMedium is checked
                     const oneMedium = !event.target.checked
-                        // Backwards compatible
-                        ? area.notifySetup.sms || area.notifySetup.whatsapp || (area.notifySetup.signal ?? false)
+                        ? area.notifySetup.sms || area.notifySetup.whatsapp || area.notifySetup.signal
                         : true
                     //
                     if (oneMedium) {
@@ -209,8 +207,7 @@ const ScheduleDialog = (props) => {
         if (global) {
             // Check oneMedium is checked
             const oneMedium = !event.target.checked
-                // Backwards compatible
-                ? props.dialogUserObject.globalSetup.email || props.dialogUserObject.globalSetup.whatsapp || (props.dialogUserObject.globalSetup.signal ?? false)
+                ? props.dialogUserObject.globalSetup.email || props.dialogUserObject.globalSetup.whatsapp || props.dialogUserObject.globalSetup.signal
                 : true
             //
             if (oneMedium) {
@@ -234,8 +231,7 @@ const ScheduleDialog = (props) => {
                 else {
                     // Check oneMedium is checked
                     const oneMedium = !event.target.checked
-                        // Backwards compatible
-                        ? area.notifySetup.email || area.notifySetup.whatsapp || (area.notifySetup.signal ?? false)
+                        ? area.notifySetup.email || area.notifySetup.whatsapp || area.notifySetup.signal
                         : true
                     //
                     if (oneMedium) {
@@ -266,8 +262,7 @@ const ScheduleDialog = (props) => {
         if (global) {
             // Check oneMedium is checked
             const oneMedium = !event.target.checked
-                // Backwards compatible
-                ? props.dialogUserObject.globalSetup.email || props.dialogUserObject.globalSetup.sms || (props.dialogUserObject.globalSetup.signal ?? false)
+                ? props.dialogUserObject.globalSetup.email || props.dialogUserObject.globalSetup.sms || props.dialogUserObject.globalSetup.signal
                 : true
             //
             if (oneMedium) {
@@ -291,8 +286,7 @@ const ScheduleDialog = (props) => {
                 else {
                     // Check oneMedium is checked
                     const oneMedium = !event.target.checked
-                        // Backwards compatible
-                        ? area.notifySetup.email || area.notifySetup.sms || (area.notifySetup.signal ?? false)
+                        ? area.notifySetup.email || area.notifySetup.sms || area.notifySetup.signal
                         : true
                     //
                     if (oneMedium) {
@@ -347,7 +341,6 @@ const ScheduleDialog = (props) => {
                 else {
                     // Check oneMedium is checked
                     const oneMedium = !event.target.checked
-                        // Backwards compatible
                         ? area.notifySetup.email || area.notifySetup.sms || area.notifySetup.whatsapp
                         : true
                     //
@@ -921,8 +914,7 @@ const ScheduleDialog = (props) => {
                                     </Grid>
                                     <Grid item >
                                         <Checkbox
-                                            // Backwards compatible
-                                            checked={displayUserObject.alarmMinor ?? true}
+                                            checked={displayUserObject.alarmMinor}
                                             onChange={(event) => handleAlarmType(event, 'alarmMinor')}
                                             disabled={!displayUserObject.notify}
                                         />
@@ -941,8 +933,7 @@ const ScheduleDialog = (props) => {
                                     </Grid>
                                     <Grid item >
                                         <Checkbox
-                                            // Backwards compatible
-                                            checked={displayUserObject.alarmMajor ?? true}
+                                            checked={displayUserObject.alarmMajor}
                                             onChange={(event) => handleAlarmType(event, 'alarmMajor')}
                                             disabled={!displayUserObject.notify}
                                         />
@@ -961,8 +952,7 @@ const ScheduleDialog = (props) => {
                                     </Grid>
                                     <Grid item >
                                         <Checkbox
-                                            // Backwards compatible
-                                            checked={displayUserObject.alarmInvalid ?? true}
+                                            checked={displayUserObject.alarmInvalid}
                                             onChange={(event) => handleAlarmType(event, 'alarmInvalid')}
                                             disabled={!displayUserObject.notify}
                                         />
@@ -981,8 +971,7 @@ const ScheduleDialog = (props) => {
                                     </Grid>
                                     <Grid item >
                                         <Checkbox
-                                            // Backwards compatible
-                                            checked={displayUserObject.alarmDisconn ?? true}
+                                            checked={displayUserObject.alarmDisconn}
                                             onChange={(event) => handleAlarmType(event, 'alarmDisconn')}
                                             disabled={!displayUserObject.notify}
                                         />
@@ -1082,8 +1071,7 @@ const ScheduleDialog = (props) => {
                                     </Grid>
                                     <Grid item xs={3}>
                                         <Checkbox
-                                            // Backwards compatible
-                                            checked={displayUserObject.signal ?? false}
+                                            checked={displayUserObject.signal}
                                             onChange={handleSignal}
                                             disabled={!displayUserObject.notify}
                                         />

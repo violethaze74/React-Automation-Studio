@@ -177,73 +177,69 @@ const UserNotification = (props) => {
             else {
                 sumString = "Notify me about "
             }
-            // alarm types - Backwards compatible
-            if ((userObject.alarmMinor ?? true) && (userObject.alarmMajor ?? true) && (userObject.alarmInvalid ?? true) && (userObject.alarmDisconn ?? true)) {
+            // alarm types
+            if (userObject.alarmMinor && userObject.alarmMajor && userObject.alarmInvalid && userObject.alarmDisconn) {
                 sumString = sumString.concat("all alarm types on ")
             }
-            else if ((userObject.alarmMinor ?? true) && (userObject.alarmMajor ?? true) && (userObject.alarmInvalid ?? true)) {
+            else if (userObject.alarmMinor && userObject.alarmMajor && userObject.alarmInvalid) {
                 sumString = sumString.concat("MINOR, MAJOR and INVALID alarm types on ")
             }
-            else if ((userObject.alarmMinor ?? true) && (userObject.alarmMajor ?? true) && (userObject.alarmDisconn ?? true)) {
+            else if (userObject.alarmMinor && userObject.alarmMajor && userObject.alarmDisconn) {
                 sumString = sumString.concat("MINOR, MAJOR and DISCONN alarm types on ")
             }
-            else if ((userObject.alarmMinor ?? true) && (userObject.alarmInvalid ?? true) && (userObject.alarmDisconn ?? true)) {
+            else if (userObject.alarmMinor && userObject.alarmInvalid && userObject.alarmDisconn) {
                 sumString = sumString.concat("MINOR, INVALID and DISCONN alarm types on ")
             }
-            else if ((userObject.alarmMajor ?? true) && (userObject.alarmInvalid ?? true) && (userObject.alarmDisconn ?? true)) {
+            else if (userObject.alarmMajor && userObject.alarmInvalid && userObject.alarmDisconn) {
                 sumString = sumString.concat("MAJOR, INVALID and DISCONN alarm types on ")
             }
-            else if ((userObject.alarmMinor ?? true) && (userObject.alarmMajor ?? true)) {
+            else if (userObject.alarmMinor && userObject.alarmMajor) {
                 sumString = sumString.concat("MINOR and MAJOR alarm types on ")
             }
-            else if ((userObject.alarmMinor ?? true) && (userObject.alarmInvalid ?? true)) {
+            else if (userObject.alarmMinor && userObject.alarmInvalid) {
                 sumString = sumString.concat("MINOR and INVALID alarm types on ")
             }
-            else if ((userObject.alarmMinor ?? true) && (userObject.alarmDisconn ?? true)) {
+            else if (userObject.alarmMinor && userObject.alarmDisconn) {
                 sumString = sumString.concat("MINOR and DISCONN alarm types on ")
             }
-            else if ((userObject.alarmMajor ?? true) && (userObject.alarmInvalid ?? true)) {
+            else if (userObject.alarmMajor && userObject.alarmInvalid) {
                 sumString = sumString.concat("MAJOR and INVALID alarm types on ")
             }
-            else if ((userObject.alarmMajor ?? true) && (userObject.alarmDisconn ?? true)) {
+            else if (userObject.alarmMajor && userObject.alarmDisconn) {
                 sumString = sumString.concat("MAJOR and DISCONN alarm types on ")
             }
-            else if ((userObject.alarmInvalid ?? true) && (userObject.alarmDisconn ?? true)) {
+            else if (userObject.alarmInvalid && userObject.alarmDisconn) {
                 sumString = sumString.concat("INVALID and DISCONN alarm types on ")
             }
-            else if ((userObject.alarmMinor ?? true)) {
+            else if (userObject.alarmMinor) {
                 sumString = sumString.concat("MINOR alarm types on ")
             }
-            else if ((userObject.alarmMajor ?? true)) {
+            else if (userObject.alarmMajor) {
                 sumString = sumString.concat("MAJOR alarm types on ")
             }
-            else if ((userObject.alarmInvalid ?? true)) {
+            else if (userObject.alarmInvalid) {
                 sumString = sumString.concat("INVALID alarm types on ")
             }
-            else if ((userObject.alarmDisconn ?? true)) {
+            else if (userObject.alarmDisconn) {
                 sumString = sumString.concat("DISCONN alarm types on ")
             }
-            else{
+            else {
                 sumString = sumString.concat("no alarm types on ")
             }
             //
-            // Backwards compatible
-            if (userObject.email && userObject.sms && userObject.whatsapp && (userObject.signal ?? false)) {
+            if (userObject.email && userObject.sms && userObject.whatsapp && userObject.signal) {
                 sumString = sumString.concat("email, SMS, WhatsApp and Signal ")
             }
             else if (userObject.email && userObject.sms && userObject.whatsapp) {
                 sumString = sumString.concat("email, SMS and WhatsApp ")
             }
-            // Backwards compatible
-            else if (userObject.email && userObject.sms && (userObject.signal ?? false)) {
+            else if (userObject.email && userObject.sms && userObject.signal) {
                 sumString = sumString.concat("email, SMS and Signal ")
             }
-            // Backwards compatible
-            else if (userObject.email && userObject.whatsapp && (userObject.signal ?? false)) {
+            else if (userObject.email && userObject.whatsapp && userObject.signal) {
                 sumString = sumString.concat("email, WhatsApp and Signal ")
             }
-            // Backwards compatible
-            else if (userObject.sms && userObject.whatsapp && (userObject.signal ?? false)) {
+            else if (userObject.sms && userObject.whatsapp && userObject.signal) {
                 sumString = sumString.concat("SMS, WhatsApp and Signal ")
             }
             else if (userObject.email && userObject.sms) {
@@ -252,19 +248,16 @@ const UserNotification = (props) => {
             else if (userObject.email && userObject.whatsapp) {
                 sumString = sumString.concat("email and WhatsApp ")
             }
-            // Backwards compatible
-            else if (userObject.email && (userObject.signal ?? false)) {
+            else if (userObject.email && userObject.signal) {
                 sumString = sumString.concat("email and Signal ")
             }
             else if (userObject.sms && userObject.whatsapp) {
                 sumString = sumString.concat("SMS and WhatsApp ")
             }
-            // Backwards compatible
-            else if (userObject.sms && (userObject.signal ?? false)) {
+            else if (userObject.sms && userObject.signal) {
                 sumString = sumString.concat("SMS and Signal ")
             }
-            // Backwards compatible
-            else if (userObject.whatsapp && (userObject.signal ?? false)) {
+            else if (userObject.whatsapp && userObject.signal) {
                 sumString = sumString.concat("WhatsApp and Signal ")
             }
             else if (userObject.email) {
@@ -276,8 +269,7 @@ const UserNotification = (props) => {
             else if (userObject.whatsapp) {
                 sumString = sumString.concat("WhatsApp ")
             }
-            // Backwards compatible
-            else if (userObject.signal ?? false) {
+            else if (userObject.signal) {
                 sumString = sumString.concat("Signal ")
             }
             if (userObject.allDay) {
@@ -539,9 +531,14 @@ const UserNotification = (props) => {
                 "regEx": expression,
                 "notifySetup": {
                     "notify": true,
+                    "alarmMinor": true,
+                    "alarmMajor": true,
+                    "alarmInvalid": true,
+                    "alarmDisconn": true,
                     "email": true,
                     "sms": false,
                     "whatsapp": false,
+                    "signal": false,
                     "allDay": true,
                     "fromTime": "",
                     "toTime": "",

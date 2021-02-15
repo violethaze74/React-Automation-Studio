@@ -214,17 +214,12 @@ def notify(notifyBuffer):
                             notifyOnEmail = user["globalSetup"]["email"]
                             notifyOnSMS = user["globalSetup"]["sms"]
                             notifyOnWhatsApp = user["globalSetup"]["whatsapp"]
-                            # Backwards compatible
-                            notifyOnSignal = user["globalSetup"]["signal"] if (
-                                "signal" in user["globalSetup"]) else False
-                            notifyMinorAlarm = user["globalSetup"]["alarmMinor"] if (
-                                "alarmMinor" in user["globalSetup"]) else True
-                            notifyMajorAlarm = user["globalSetup"]["alarmMajor"] if (
-                                "alarmMajor" in user["globalSetup"]) else True
-                            notifyInvalidAlarm = user["globalSetup"]["alarmInvalid"] if (
-                                "alarmInvalid" in user["globalSetup"]) else True
-                            notifyDisconnAlarm = user["globalSetup"]["alarmDisconn"] if (
-                                "alarmDisconn" in user["globalSetup"]) else True
+                            #
+                            notifyOnSignal = user["globalSetup"]["signal"]
+                            notifyMinorAlarm = user["globalSetup"]["alarmMinor"]
+                            notifyMajorAlarm = user["globalSetup"]["alarmMajor"]
+                            notifyInvalidAlarm = user["globalSetup"]["alarmInvalid"]
+                            notifyDisconnAlarm = user["globalSetup"]["alarmDisconn"]
                             #
                         else:
                             if(AH_DEBUG):
@@ -233,17 +228,12 @@ def notify(notifyBuffer):
                             notifyOnEmail = notifyPV["notifySetup"]["email"]
                             notifyOnSMS = notifyPV["notifySetup"]["sms"]
                             notifyOnWhatsApp = notifyPV["notifySetup"]["whatsapp"]
-                            # Backwards compatible
-                            notifyOnSignal = notifyPV["notifySetup"]["signal"] if (
-                                "signal" in notifyPV["notifySetup"]) else False
-                            notifyMinorAlarm = notifyPV["notifySetup"]["alarmMinor"] if (
-                                "alarmMinor" in notifyPV["notifySetup"]) else True
-                            notifyMajorAlarm = notifyPV["notifySetup"]["alarmMajor"] if (
-                                "alarmMajor" in notifyPV["notifySetup"]) else True
-                            notifyInvalidAlarm = notifyPV["notifySetup"]["alarmInvalid"] if (
-                                "alarmInvalid" in notifyPV["notifySetup"]) else True
-                            notifyDisconnAlarm = notifyPV["notifySetup"]["alarmDisconn"] if (
-                                "alarmDisconn" in notifyPV["notifySetup"]) else True
+                            #
+                            notifyOnSignal = notifyPV["notifySetup"]["signal"]
+                            notifyMinorAlarm = notifyPV["notifySetup"]["alarmMinor"]
+                            notifyMajorAlarm = notifyPV["notifySetup"]["alarmMajor"]
+                            notifyInvalidAlarm = notifyPV["notifySetup"]["alarmInvalid"]
+                            notifyDisconnAlarm = notifyPV["notifySetup"]["alarmDisconn"]
                             #
                         if(AH_DEBUG):
                             print("notifyMinorAlarm", notifyMinorAlarm)
