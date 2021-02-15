@@ -1,14 +1,20 @@
 import json
 
 with open('./initDBData/pvList.json') as f:
-    data = json.load(f)
+    pvData = json.load(f)
+
+with open('./initDBData/userList.json') as f:
+    userData = json.load(f)
 
 pvs = {}
 pvsFile = []
 
+users = {}
+usersFile = []
+
 areaName = ''
 
-for area in data:
+for area in pvData:
     for areaKey, areaValue in area.items():
         if(areaKey == "area"):
             # new area template
@@ -49,6 +55,543 @@ for area in data:
                     "lastAlarmAckTime": ""
                 }
 
+for user in userData:
+    for userKey, userValue in user.items():
+        print(userKey, userValue)
+        if(userKey == "name"):
+            # new user template
+            name = userValue
+            users[name] = {
+                userKey: name,
+                "global": True,
+                "globalSetup": {
+                    "notify": True,
+                    "email": True,
+                    "sms": False,
+                    "whatsapp": False,
+                    "signal": False,
+                    "allDay": True,
+                    "fromTime": "",
+                    "toTime": "",
+                    "weekly": True,
+                    "days": {
+                        "Monday": True,
+                        "Tuesday": True,
+                        "Wednesday": True,
+                        "Thursday": True,
+                        "Friday": True,
+                        "Saturday": True,
+                        "Sunday": True
+                    },
+                    "dateRange": False,
+                    "fromDate": "",
+                    "toDate": ""
+                },
+                "notifyPVs": []
+            }
+            # For demo users only insert demo notify expressions
+            if(name == "Demo User One"):
+                users[name]["notifyPVs"] = [{
+                    "regEx": "amplitude\\b",
+                    "notifySetup": {
+                        "notify": True,
+                        "email": True,
+                        "sms": False,
+                        "whatsapp": False,
+                        "signal": False,
+                        "allDay": True,
+                        "fromTime": "",
+                        "toTime": "",
+                        "weekly": True,
+                        "days": {
+                            "Monday": True,
+                            "Tuesday": True,
+                            "Wednesday": True,
+                            "Thursday": True,
+                            "Friday": True,
+                            "Saturday": True,
+                            "Sunday": True
+                        },
+                        "dateRange": False,
+                        "fromDate": "",
+                        "toDate": ""
+                    }
+                },
+                    {
+                    "regEx": "vault",
+                    "notifySetup": {
+                        "notify": True,
+                        "email": True,
+                        "sms": False,
+                        "whatsapp": False,
+                        "signal": False,
+                        "allDay": True,
+                        "fromTime": "",
+                        "toTime": "",
+                        "weekly": True,
+                        "days": {
+                            "Monday": True,
+                            "Tuesday": True,
+                            "Wednesday": True,
+                            "Thursday": True,
+                            "Friday": True,
+                            "Saturday": True,
+                            "Sunday": True
+                        },
+                        "dateRange": False,
+                        "fromDate": "",
+                        "toDate": ""
+                    }
+                },
+                    {
+                    "regEx": "cyclotron.*RF",
+                    "notifySetup": {
+                        "notify": True,
+                        "email": True,
+                        "sms": False,
+                        "whatsapp": False,
+                        "signal": False,
+                        "allDay": True,
+                        "fromTime": "",
+                        "toTime": "",
+                        "weekly": True,
+                        "days": {
+                            "Monday": True,
+                            "Tuesday": True,
+                            "Wednesday": True,
+                            "Thursday": True,
+                            "Friday": True,
+                            "Saturday": True,
+                            "Sunday": True
+                        },
+                        "dateRange": False,
+                        "fromDate": "",
+                        "toDate": ""
+                    }
+                },
+                    {
+                    "regEx": "cyclotron.*RF\\d",
+                    "notifySetup": {
+                        "notify": True,
+                        "email": True,
+                        "sms": False,
+                        "whatsapp": False,
+                        "signal": False,
+                        "allDay": True,
+                        "fromTime": "",
+                        "toTime": "",
+                        "weekly": True,
+                        "days": {
+                            "Monday": True,
+                            "Tuesday": True,
+                            "Wednesday": True,
+                            "Thursday": True,
+                            "Friday": True,
+                            "Saturday": True,
+                            "Sunday": True
+                        },
+                        "dateRange": False,
+                        "fromDate": "",
+                        "toDate": ""
+                    }
+                },
+                    {
+                    "regEx": "air.*press",
+                    "notifySetup": {
+                        "notify": True,
+                        "email": True,
+                        "sms": False,
+                        "whatsapp": False,
+                        "signal": False,
+                        "allDay": True,
+                        "fromTime": "",
+                        "toTime": "",
+                        "weekly": True,
+                        "days": {
+                            "Monday": True,
+                            "Tuesday": True,
+                            "Wednesday": True,
+                            "Thursday": True,
+                            "Friday": True,
+                            "Saturday": True,
+                            "Sunday": True
+                        },
+                        "dateRange": False,
+                        "fromDate": "",
+                        "toDate": ""
+                    }
+                },
+                    {
+                    "regEx": "SLIT.*2",
+                    "notifySetup": {
+                        "notify": True,
+                        "email": True,
+                        "sms": False,
+                        "whatsapp": False,
+                        "signal": False,
+                        "allDay": True,
+                        "fromTime": "",
+                        "toTime": "",
+                        "weekly": True,
+                        "days": {
+                            "Monday": True,
+                            "Tuesday": True,
+                            "Wednesday": True,
+                            "Thursday": True,
+                            "Friday": True,
+                            "Saturday": True,
+                            "Sunday": True
+                        },
+                        "dateRange": False,
+                        "fromDate": "",
+                        "toDate": ""
+                    }
+                }]
+            elif(name == "Demo User Two"):
+                users[name]["notifyPVs"] = [{
+                    "regEx": "radiation",
+                    "notifySetup": {
+                        "notify": True,
+                        "email": True,
+                        "sms": False,
+                        "whatsapp": False,
+                        "signal": False,
+                        "allDay": True,
+                        "fromTime": "",
+                        "toTime": "",
+                        "weekly": True,
+                        "days": {
+                            "Monday": True,
+                            "Tuesday": True,
+                            "Wednesday": True,
+                            "Thursday": True,
+                            "Friday": True,
+                            "Saturday": True,
+                            "Sunday": True
+                        },
+                        "dateRange": False,
+                        "fromDate": "",
+                        "toDate": ""
+                    }
+                },
+                    {
+                    "regEx": "^testIOC.*STR",
+                    "notifySetup": {
+                        "notify": True,
+                        "email": True,
+                        "sms": False,
+                        "whatsapp": False,
+                        "signal": False,
+                        "allDay": True,
+                        "fromTime": "",
+                        "toTime": "",
+                        "weekly": True,
+                        "days": {
+                            "Monday": True,
+                            "Tuesday": True,
+                            "Wednesday": True,
+                            "Thursday": True,
+                            "Friday": True,
+                            "Saturday": True,
+                            "Sunday": True
+                        },
+                        "dateRange": False,
+                        "fromDate": "",
+                        "toDate": ""
+                    }
+                },
+                    {
+                    "regEx": "SLIT.*Gap",
+                    "notifySetup": {
+                        "notify": True,
+                        "email": True,
+                        "sms": False,
+                        "whatsapp": False,
+                        "signal": False,
+                        "allDay": True,
+                        "fromTime": "",
+                        "toTime": "",
+                        "weekly": True,
+                        "days": {
+                            "Monday": True,
+                            "Tuesday": True,
+                            "Wednesday": True,
+                            "Thursday": True,
+                            "Friday": True,
+                            "Saturday": True,
+                            "Sunday": True
+                        },
+                        "dateRange": False,
+                        "fromDate": "",
+                        "toDate": ""
+                    }
+                },
+                    {
+                    "regEx": "vault",
+                    "notifySetup": {
+                        "notify": True,
+                        "email": True,
+                        "sms": False,
+                        "whatsapp": False,
+                        "signal": False,
+                        "allDay": True,
+                        "fromTime": "",
+                        "toTime": "",
+                        "weekly": True,
+                        "days": {
+                            "Monday": True,
+                            "Tuesday": True,
+                            "Wednesday": True,
+                            "Thursday": True,
+                            "Friday": True,
+                            "Saturday": True,
+                            "Sunday": True
+                        },
+                        "dateRange": False,
+                        "fromDate": "",
+                        "toDate": ""
+                    }
+                }]
+            elif(name == "Demo User Three"):
+                users[name]["notifyPVs"] = [{
+                    "regEx": "SLITXY1.*Gap",
+                    "notifySetup": {
+                        "notify": True,
+                        "email": True,
+                        "sms": False,
+                        "whatsapp": False,
+                        "signal": False,
+                        "allDay": True,
+                        "fromTime": "",
+                        "toTime": "",
+                        "weekly": True,
+                        "days": {
+                            "Monday": True,
+                            "Tuesday": True,
+                            "Wednesday": True,
+                            "Thursday": True,
+                            "Friday": True,
+                            "Saturday": True,
+                            "Sunday": True
+                        },
+                        "dateRange": False,
+                        "fromDate": "",
+                        "toDate": ""
+                    }
+                },
+                    {
+                    "regEx": "building.*air",
+                    "notifySetup": {
+                        "notify": True,
+                        "email": True,
+                        "sms": False,
+                        "whatsapp": False,
+                        "signal": False,
+                        "allDay": True,
+                        "fromTime": "",
+                        "toTime": "",
+                        "weekly": True,
+                        "days": {
+                            "Monday": True,
+                            "Tuesday": True,
+                            "Wednesday": True,
+                            "Thursday": True,
+                            "Friday": True,
+                            "Saturday": True,
+                            "Sunday": True
+                        },
+                        "dateRange": False,
+                        "fromDate": "",
+                        "toDate": ""
+                    }
+                },
+                    {
+                    "regEx": "SLIT",
+                    "notifySetup": {
+                        "notify": True,
+                        "email": True,
+                        "sms": False,
+                        "whatsapp": False,
+                        "signal": False,
+                        "allDay": True,
+                        "fromTime": "",
+                        "toTime": "",
+                        "weekly": True,
+                        "days": {
+                            "Monday": True,
+                            "Tuesday": True,
+                            "Wednesday": True,
+                            "Thursday": True,
+                            "Friday": True,
+                            "Saturday": True,
+                            "Sunday": True
+                        },
+                        "dateRange": False,
+                        "fromDate": "",
+                        "toDate": ""
+                    }
+                },
+                    {
+                    "regEx": "interlocks",
+                    "notifySetup": {
+                        "notify": True,
+                        "email": True,
+                        "sms": False,
+                        "whatsapp": False,
+                        "signal": False,
+                        "allDay": True,
+                        "fromTime": "",
+                        "toTime": "",
+                        "weekly": True,
+                        "days": {
+                            "Monday": True,
+                            "Tuesday": True,
+                            "Wednesday": True,
+                            "Thursday": True,
+                            "Friday": True,
+                            "Saturday": True,
+                            "Sunday": True
+                        },
+                        "dateRange": False,
+                        "fromDate": "",
+                        "toDate": ""
+                    }
+                },
+                    {
+                    "regEx": "water.*flow",
+                    "notifySetup": {
+                        "notify": True,
+                        "email": True,
+                        "sms": False,
+                        "whatsapp": False,
+                        "signal": False,
+                        "allDay": True,
+                        "fromTime": "",
+                        "toTime": "",
+                        "weekly": True,
+                        "days": {
+                            "Monday": True,
+                            "Tuesday": True,
+                            "Wednesday": True,
+                            "Thursday": True,
+                            "Friday": True,
+                            "Saturday": True,
+                            "Sunday": True
+                        },
+                        "dateRange": False,
+                        "fromDate": "",
+                        "toDate": ""
+                    }
+                },
+                    {
+                    "regEx": "building.*temp",
+                    "notifySetup": {
+                        "notify": True,
+                        "email": True,
+                        "sms": False,
+                        "whatsapp": False,
+                        "signal": False,
+                        "allDay": True,
+                        "fromTime": "",
+                        "toTime": "",
+                        "weekly": True,
+                        "days": {
+                            "Monday": True,
+                            "Tuesday": True,
+                            "Wednesday": True,
+                            "Thursday": True,
+                            "Friday": True,
+                            "Saturday": True,
+                            "Sunday": True
+                        },
+                        "dateRange": False,
+                        "fromDate": "",
+                        "toDate": ""
+                    }
+                },
+                    {
+                    "regEx": "SLIT.*1.*Readback",
+                    "notifySetup": {
+                        "notify": True,
+                        "email": True,
+                        "sms": False,
+                        "whatsapp": False,
+                        "signal": False,
+                        "allDay": True,
+                        "fromTime": "",
+                        "toTime": "",
+                        "weekly": True,
+                        "days": {
+                            "Monday": True,
+                            "Tuesday": True,
+                            "Wednesday": True,
+                            "Thursday": True,
+                            "Friday": True,
+                            "Saturday": True,
+                            "Sunday": True
+                        },
+                        "dateRange": False,
+                        "fromDate": "",
+                        "toDate": ""
+                    }
+                },
+                    {
+                    "regEx": "air.*diff",
+                    "notifySetup": {
+                        "notify": True,
+                        "email": True,
+                        "sms": False,
+                        "whatsapp": False,
+                        "signal": False,
+                        "allDay": True,
+                        "fromTime": "",
+                        "toTime": "",
+                        "weekly": True,
+                        "days": {
+                            "Monday": True,
+                            "Tuesday": True,
+                            "Wednesday": True,
+                            "Thursday": True,
+                            "Friday": True,
+                            "Saturday": True,
+                            "Sunday": True
+                        },
+                        "dateRange": False,
+                        "fromDate": "",
+                        "toDate": ""
+                    }
+                },
+                    {
+                    "regEx": "demoAlarms.*\\:.*building",
+                    "notifySetup": {
+                        "notify": True,
+                        "email": True,
+                        "sms": False,
+                        "whatsapp": False,
+                        "signal": False,
+                        "allDay": True,
+                        "fromTime": "",
+                        "toTime": "",
+                        "weekly": True,
+                        "days": {
+                            "Monday": True,
+                            "Tuesday": True,
+                            "Wednesday": True,
+                            "Thursday": True,
+                            "Friday": True,
+                            "Saturday": True,
+                            "Sunday": True
+                        },
+                        "dateRange": False,
+                        "fromDate": "",
+                        "toDate": ""
+                    }
+                }]
+
+        else:
+            users[name][userKey] = userValue
+
+
 for value in pvs.values():
     pvsFile.append(value)
 
@@ -56,6 +599,9 @@ with open('./initDBData/pvs.json', 'w') as json_file:
     json.dump(pvsFile, json_file)
 json_file.close()
 
-# with open('./initDBData/history.json', 'w') as json_file:
-#     json.dump(historyFile, json_file)
-# json_file.close()
+for value in users.values():
+    usersFile.append(value)
+
+with open('./initDBData/users.json', 'w') as json_file:
+    json.dump(usersFile, json_file)
+json_file.close()
