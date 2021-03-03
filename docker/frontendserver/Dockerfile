@@ -11,7 +11,7 @@ RUN npm set registry http://registry.npmjs.org/
 RUN npm install
 ADD ./ReactApp/public /frontendserverApp/public
 ADD ./ReactApp/src /frontendserverApp/src
-ADD  ./.env /frontendserverApp/
+
 
 
 RUN npm run build
