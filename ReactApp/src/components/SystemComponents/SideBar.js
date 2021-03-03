@@ -50,7 +50,9 @@ class SideBar extends React.Component {
   }
   render() {
     const { classes } = this.props;
-
+    const context=this.context;
+    const {appCfg}=context;
+    const {enableLogin}=appCfg;
     const sideList = (
       <div className={classes.list}>
         <List>
@@ -61,7 +63,7 @@ class SideBar extends React.Component {
             </ListItem>
 
         </List>
-          {process.env.REACT_APP_EnableLogin==='true'&&<React.Fragment>
+          {enableLogin===true&&<React.Fragment>
         <Divider />
         <ListItem button key={"Log Out"} onClick={this.logout} component={Link} to="/LogIn" >
           <ListItemIcon><AccountCircle/></ListItemIcon>

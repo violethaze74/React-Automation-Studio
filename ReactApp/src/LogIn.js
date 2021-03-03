@@ -68,6 +68,9 @@ const useStyles = makeStyles((theme) => ({
 const Login = (props) => {
   const classes = useStyles();
   const context = useContext(AutomationStudioContext);
+  const {appCfg}=context;
+  const {disableStandardLogin,enableActiveDirectoryLogin,enableGoogleLogin}=appCfg;
+
   const loggedIn = context.userData.loggedIn;
   const [username, setUsername] = useState("")
   const [password, setPassword] = useState("")
@@ -79,9 +82,7 @@ const Login = (props) => {
   const [loginModes, setLoginModes] = useState([]);
   const [showPassword, setShowPassword] = useState(false);
   const mounted = useRef(true);
-  const enableStandardLogin = !(process.env.REACT_APP_DisableStandardLogin === 'true');
-  const enableActiveDirectoryLogin = process.env.REACT_APP_EnableActiveDirectoryLogin === 'true';
-  const enableGoogleLogin = process.env.REACT_APP_EnableGoogleLogin === 'true';
+  const enableStandardLogin = !(disableStandardLogin===true);
   const history = useHistory();
   const location = useLocation();
 

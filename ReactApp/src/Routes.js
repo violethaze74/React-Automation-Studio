@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useContext} from 'react';
 
 
 import { Route, BrowserRouter, Switch } from 'react-router-dom'
@@ -28,16 +28,24 @@ import Probe from './components/SettingsPages/Probe';
 import Vault from './components/AlarmHandler/Vault';
 import Help from './components/docs/Help';
 import ProtectedRoute from './components/SystemComponents/ProtectedRoute';
+import AutomationStudioContext from './components/SystemComponents/AutomationStudioContext';
+import BusyLoggingIn from './components/SystemComponents/BusyLoggingIn';
 const Routes = (props) => {
+  const context=useContext(AutomationStudioContext);
+  const {appCfg}=context;
+  const {enableLogin}=appCfg;
+  console.log(context.appCfg)
   return (
+   
     <BrowserRouter >
 
       <Switch>
         {/*system start*/}
+        
         <ProtectedRoute exact path="/" component={MainDashboard} />
         <ProtectedRoute exact path="/MainDashboard" component={MainDashboard} />
 
-        {process.env.REACT_APP_EnableLogin === 'true' &&
+        {enableLogin === true &&
           <Route
             exact 
             path="/LogIn"
@@ -87,6 +95,7 @@ const Routes = (props) => {
       </Switch>
 
     </BrowserRouter>
+   
   )
 }
 export default Routes;

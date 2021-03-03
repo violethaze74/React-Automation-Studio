@@ -15,6 +15,9 @@ import PropTypes from 'prop-types';
 // import RedirectToLogIn from './RedirectToLogin';
 
 import axios from 'axios';
+import BusyLoggingIn from './BusyLoggingIn';
+import ServerError from './ServerError';
+
 
 
 
@@ -81,7 +84,7 @@ class RasAppCore extends Component {
       this.setState({ system: system, refreshTimer: timer })
     }
     this.setUserTokens = (accessToken) => {
-     // console.log("set User tokens", accessToken)
+      // console.log("set User tokens", accessToken)
       let system = this.state.system;
       let userTokens = {
         accessToken: accessToken,
@@ -115,9 +118,9 @@ class RasAppCore extends Component {
       this.setState({ system: system })
     }
     this.logout = () => {
-      
+
       // localStorage.clear();
-      
+
       axios.get('/api/logout')
         .then(response => {
           let system = this.state.system;
@@ -163,6 +166,26 @@ class RasAppCore extends Component {
 
 
     }
+
+    this.clearAppConfigurationLoading = () => {
+      // console.log("clear logging in")
+      let system = this.state.system;
+      system.appCfgLoading = false;
+      this.setState({ system: system })
+
+
+    }
+    this.setAppConfiguration = (cfg) => {
+      // console.log("clear logging in")
+      let system = this.state.system;
+      system.appCfgLoading = false;
+      system.appCfg = cfg;
+      system.appCfgLoaded = true;
+      this.setState({ system: system })
+
+
+    }
+
     this.updateLocalVariable = (name, data) => {
       let system = this.state.system;
       let localVariables = system.localVariables;
@@ -198,6 +221,9 @@ class RasAppCore extends Component {
     }
     let localVariables = {};
     let system = {
+      appCfgLoading: true,
+      appCfgLoaded: false,
+      appCfg: {},
       socket: socket,
       changeTheme: this.changeTheme,
       themeStyles: themeKeys,
@@ -291,23 +317,28 @@ class RasAppCore extends Component {
     axios.post('/api/refresh', body, options)
       .then(response => {
         // handle success
-        // console.log(response);
+        //  console.log(response);
         const { data } = response;
-        if (typeof data.accessToken !== 'undefined') {
-          this.setUserTokens(data.accessToken);
+        console.log(data)
+        if (data.appCfg) {
+          this.setAppConfiguration(data.appCfg)
+          if (typeof data.accessToken !== 'undefined') {
+            this.setUserTokens(data.accessToken);
 
+          }
+          else {
+            this.setUserTokens(data.null);
+          }
+          if (typeof data.refreshTokenConfig !== 'undefined') {
+            // console.log("setting")
+            this.setRefreshTokenConfig(data.refreshTokenConfig);
+
+          }
         }
         else {
-          this.setUserTokens(data.null);
+          console.log("error: no app configuration")
         }
-        if (typeof data.refreshTokenConfig !== 'undefined') {
-          // console.log("setting")
-          this.state.system.setRefreshTokenConfig(data.refreshTokenConfig);
 
-        }
-        else {
-          this.state.system.setRefreshTokenTimeout(data.null);
-        }
       })
       .catch((error) => {
         // handle error
@@ -325,19 +356,19 @@ class RasAppCore extends Component {
 
 
   getInitialRefreshToken() {
+    this.getRefreshToken();
+    // let refreshTokenConfig = JSON.parse(localStorage.getItem('refreshTokenConfig'));
 
-    let refreshTokenConfig = JSON.parse(localStorage.getItem('refreshTokenConfig'));
+    // if (refreshTokenConfig !== null) {
+    //   this.getRefreshToken();
+    //   // this.setRefreshTokenConfig(refreshTokenConfig)
 
-    if (refreshTokenConfig !== null) {
-      this.getRefreshToken();
-      // this.setRefreshTokenConfig(refreshTokenConfig)
+    // }
+    // else {
+    //   this.clearLoggingIn();
+    //   this.setState({ 'redirectToLoginPage': true });
 
-    }
-    else {
-      this.clearLoggingIn();
-      this.setState({ 'redirectToLoginPage': true });
-
-    }
+    // }
 
 
 
@@ -362,9 +393,11 @@ class RasAppCore extends Component {
 
     }
   }
+
   componentDidMount() {
     window.addEventListener('storage', this.handleLocalStorageChange)
     setTimeout(this.clearLoggingIn, this.props.loginTimeout)
+    setTimeout(this.clearAppConfigurationLoading, this.props.loginTimeout)
     //  console.log("mounted")
     this.getInitialRefreshToken();
     let socket = this.state.system.socket;
@@ -395,11 +428,15 @@ class RasAppCore extends Component {
   render() {
 
     const { system } = this.state;
+    console.log("appCfg", system.appCfg)
     // console.log("loggingIn", system.userData.loggingIn)
     //  console.log("loggedIn", system.userData.loggedIn)
     // console.log("refresh token config", system.refreshTokenConfig)
     // console.log("redirect to login",this.state.redirectToLoginPage)
+    const { appCfgLoaded } = system;
+    const { appCfgLoading } = system;
 
+    console.log("appCfgLoaded", appCfgLoaded)
     return (
 
       <AutomationStudioContext.Provider value={{ ...system }}>
@@ -408,7 +445,18 @@ class RasAppCore extends Component {
           <CssBaseline />
           <ReactVisCssBaseline />
           <RasCssBaseline />
-          {this.props.children}
+          <React.Fragment>
+            {appCfgLoaded
+              ?
+              this.props.children
+              : appCfgLoading
+                ?
+                <BusyLoggingIn />
+                : <ServerError message={'Error the  pvServer is down'}/>
+                
+            
+            }
+          </React.Fragment>
 
         </MuiThemeProvider>
       </AutomationStudioContext.Provider>
@@ -417,12 +465,12 @@ class RasAppCore extends Component {
 }
 RasAppCore.propTypes = {
 
-  /** login Timeout */
-  loginTimeout: PropTypes.number,
+          /** login Timeout */
+          loginTimeout: PropTypes.number,
 
 }
 
 RasAppCore.defaultProps = {
-  loginTimeout: 10000
+          loginTimeout: 10000
 }
 export default RasAppCore

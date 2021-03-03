@@ -7,7 +7,9 @@ const ProtectedRoute = (props) => {
   const Component = props.component;
   const context = useContext(AutomationStudioContext);
   const loggingIn = context.userData.loggingIn;
-  const loggedIn = context.userData.loggedIn || process.env.REACT_APP_EnableLogin !== 'true';
+  const {appCfg}=context;
+  const {enableLogin}=appCfg;
+  const loggedIn = context.userData.loggedIn || enableLogin!==true;
   return (
 
     //  <Route  path={props.path}  render={()=>( 

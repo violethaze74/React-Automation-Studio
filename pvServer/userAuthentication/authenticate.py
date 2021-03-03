@@ -77,8 +77,12 @@ def loadUsers():
         print("Error Cant load file users.json")
         return None
 
-REACT_APP_DisableLogin=not(os.getenv('REACT_APP_EnableLogin')=='true')
-if (not REACT_APP_DisableLogin) :
+
+try:
+    disableLogin=not (os.getenv('enableLogin')=='true')
+except:
+    disableLogin=True
+if (not disableLogin) :
     users=loadUsers()
     access=loadPvAccess()
     UAGS={}

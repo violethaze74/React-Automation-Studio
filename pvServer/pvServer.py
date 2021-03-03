@@ -54,16 +54,47 @@ print('EPICS_CA_ADDR_LIST: '+ str(os.environ['EPICS_CA_ADDR_LIST']))
 print('REACT_APP_PyEpicsServerBASEURL: '+ str(os.environ['REACT_APP_PyEpicsServerBASEURL']))
 print('REACT_APP_PyEpicsServerPORT: '+ str(os.environ['REACT_APP_PyEpicsServerPORT']))
 print('REACT_APP_PyEpicsServerNamespace: '+ str(os.environ['REACT_APP_PyEpicsServerNamespace']))
-print('REACT_APP_EnableLogin: '+ str(os.environ['REACT_APP_EnableLogin']))
 print('pvServerLogLevel: {}'.format(os.environ.get('pvServerLogLevel', None)))
 print('pvServerLogFile: {}'.format(os.environ.get('pvServerLogFile', None)))
 print('pvServerLogFileSize: {}'.format(os.environ.get('pvServerLogFileSize', None)))
 print('pvServerLogFileBackup: {}'.format(os.environ.get('pvServerLogFileBackup', None)))
-print('REACT_APP_EnableActiveDirectoryLogin: '+ str(os.environ['REACT_APP_EnableActiveDirectoryLogin']))
-print('REACT_APP_EnableGoogleLogin: '+ str(os.environ['REACT_APP_EnableGoogleLogin']))
-REACT_APP_EnableActiveDirectoryLogin=(os.getenv('REACT_APP_EnableActiveDirectoryLogin')=='true')
-REACT_APP_EnableGoogleLogin=(os.getenv('REACT_APP_EnableGoogleLogin')=='true')
-REACT_APP_DisableStandardLogin=(os.getenv('REACT_APP_DisableStandardLogin')=='true')
+
+
+try:
+    enableLogin=(os.environ['enableLogin']=='true')
+except:
+    enableLogin=False
+print('enableLogin: {}'.format(enableLogin))
+try:
+    enableActiveDirectoryLogin=(os.environ('enableActiveDirectoryLogin')=='true')
+except:
+    enableActiveDirectoryLogin=False
+print('enableActiveDirectoryLogin: {}'.format(enableActiveDirectoryLogin))
+try:
+    enableGoogleLogin=(os.environ('enableGoogleLogin')=='true')
+except:
+    enableGoogleLogin=False
+print('enableGoogleLogin: {}'.format(enableGoogleLogin))    
+try:
+    disableStandardLogin=(os.environ('disableStandardLogin')=='true')
+except:
+    disableStandardLogin=False
+print('disableStandardLogin: {}'.format(disableStandardLogin))
+
+if enableLogin:
+    appCfg={
+        'enableLogin':enableLogin,
+        'enableActiveDirectoryLogin':enableActiveDirectoryLogin,
+        'enableGoogleLogin':enableGoogleLogin,
+        'disableStandardLogin':disableStandardLogin,
+    }
+else:
+    appCfg={
+        'enableLogin':False,
+    }
+
+
+
 try:
     REFRESH_COOKIE_MAX_AGE_SECS = int(
         os.environ['REFRESH_COOKIE_MAX_AGE_SECS'])
@@ -110,14 +141,14 @@ def logout():
 
 
 def createLoginReponse(userData):
-    global REFRESH_COOKIE_MAX_AGE_SECS, ACCESS_TOKEN_MAX_AGE_SECS, REFRESH_TIMEOUT, SECURE
+    global appCfg, REFRESH_COOKIE_MAX_AGE_SECS, ACCESS_TOKEN_MAX_AGE_SECS, REFRESH_TIMEOUT, SECURE
     if (userData is None):
         return jsonify({'login': False}), 401
     username=userData['username']
     roles=userData['roles']
     refreshToken=createRefreshToken(username,REFRESH_COOKIE_MAX_AGE_SECS)
     accessToken=createAccessToken(username,ACCESS_TOKEN_MAX_AGE_SECS,roles)
-    d={
+    d={ 'appCfg':appCfg,
         'login': True, 
         'username':username,
         'roles':roles,
@@ -126,6 +157,7 @@ def createLoginReponse(userData):
         
         'refreshTimeout':REFRESH_TIMEOUT,
         'useCookie':SECURE,
+         
         }
     }
     if not SECURE:
@@ -140,7 +172,7 @@ def createLoginReponse(userData):
 
 @app.route('/api/refresh', methods=['POST'])
 def refresh():
-    global SECURE
+    global SECURE,appCfg
     if SECURE:
         refreshToken = request.cookies.get('refreshToken')
     else:
@@ -153,17 +185,27 @@ def refresh():
             resp=createLoginReponse(userData)
             return resp
         else:
-            return jsonify({'login': False}), 401
+            return jsonify(
+            {'login': False,
+            'appCfg':appCfg,
+        
+        }), 200
     else:
-        return jsonify({'login': False}), 401
+        return jsonify(
+            {'login': False,
+            'appCfg':appCfg,
+        
+        }), 200
 
 
 
 @app.route('/api/login/local', methods=['POST'])
 def localLogin():
-    global REACT_APP_DisableStandardLogin
-    if not REACT_APP_DisableStandardLogin:
+    global disableStandardLogin
+    if not disableStandardLogin:
+        
         user = request.json.get('user', None)
+        print("user",user)
         userData=LocalAuthenticateUser(user)
         resp=createLoginReponse(userData)
         return resp
@@ -174,8 +216,8 @@ def localLogin():
 @app.route('/api/login/ldap', methods=['POST'])
 def ldapLogin():
     print("request ip:",request.remote_addr)
-    global REACT_APP_EnableActiveDirectoryLogin
-    if REACT_APP_EnableActiveDirectoryLogin :
+    global enableActiveDirectoryLogin
+    if enableActiveDirectoryLogin :
         user = request.json.get('user', None)
         LDAP_HOST=os.getenv('LDAP_HOST')
         LDAP_PORT=os.getenv('LDAP_PORT')
@@ -209,13 +251,13 @@ def ldapLogin():
 
 @app.route('/api/login/google', methods=['POST'])
 def googleLogin():
-    global REACT_APP_EnableGoogleLogin
-    if REACT_APP_EnableGoogleLogin :
+    global enableGoogleLogin
+    if enableGoogleLogin :
         
         jwt = request.json.get('jwt', None)
-        REACT_APP_EnableGoogleLoginId=(os.getenv('REACT_APP_EnableGoogleLoginId') if os.getenv('REACT_APP_EnableGoogleLoginId') else None)
-        if REACT_APP_EnableGoogleLoginId :
-            decoded=decodeTokenGoogle(jwt,REACT_APP_EnableGoogleLoginId)
+        EnableGoogleLoginId=(os.getenv('EnableGoogleLoginId') if os.getenv('EnableGoogleLoginId') else None)
+        if EnableGoogleLoginId :
+            decoded=decodeTokenGoogle(jwt,EnableGoogleLoginId)
             if decoded:
                 if decoded['email'] and (decoded['email_verified']==True):
                     userData=ExternalAuthenticateUser({'username':decoded['email']})
@@ -252,8 +294,8 @@ def googleLogin():
 
 
 
-REACT_APP_DisableLogin=not(os.getenv('REACT_APP_EnableLogin')=='true')
-if (REACT_APP_DisableLogin) :
+DisableLogin=not(os.getenv('enableLogin')=='true')
+if (DisableLogin) :
     print("Authenitcation and Authorisation is DISABLED")
 else:
     print("Authenitcation and Authorisation is ENABLED")
@@ -510,10 +552,10 @@ def background_thread():
 
 @socketio.on('write_to_pv', namespace='/pvServer')
 def test_write(message):
-    global clientPVlist,thread_lock2,REACT_APP_DisableLogin
+    global clientPVlist,thread_lock2,DisableLogin
     #print("Test")
     authenticated=False
-    if REACT_APP_DisableLogin:
+    if DisableLogin:
 
         accessControl={'userAuthorised':True,'permissions':{'read':True,'write':True}}
     else :
@@ -546,10 +588,10 @@ def test_write(message):
 
 @socketio.on('remove_pv_connection', namespace='/pvServer')
 def test_message(message):
-    global clientPVlist,REACT_APP_DisableLogin, myuid
+    global clientPVlist,DisableLogin, myuid
     pvname1= str(message['pvname'])
     authenticated=False
-    if REACT_APP_DisableLogin:
+    if DisableLogin:
         authenticated=True
         accessControl={'userAuthorised':True,'permissions':{'read':True,'write':True}}
     else :
@@ -625,15 +667,18 @@ def test_message(message):
 
 @socketio.on('request_pv_info', namespace='/pvServer')
 def test_message(message):
-    global clientPVlist,REACT_APP_DisableLogin, myuid
+    global clientPVlist,DisableLogin, myuid
     pvname1= str(message['data'])
     authenticated=False
-    if REACT_APP_DisableLogin:
+    if DisableLogin:
         authenticated=True
         accessControl={'userAuthorised':True,'permissions':{'read':True,'write':True}}
     else :
-        accessControl=AutheriseUserAndPermissions(message['clientAuthorisation'],pvname1)
-        authenticated=accessControl['userAuthorised']
+        if message['clientAuthorisation']:
+            accessControl=AutheriseUserAndPermissions(message['clientAuthorisation'],pvname1)
+            authenticated=accessControl['userAuthorised']
+        else:
+            socketio.emit('redirectToLogIn',room=request.sid,namespace='/pvServer')
 
     if accessControl['userAuthorised'] :
 
@@ -763,13 +808,13 @@ def test_message(message):
 
 @socketio.on('databaseRead', namespace='/pvServer')
 def databaseRead(message):
-    global clientPVlist,REACT_APP_DisableLogin
+    global clientPVlist,DisableLogin
     dbURL= str(message['dbURL'])
 
     #print("databaseRead: SSID: ",request.sid,' dbURL: ', dbURL)
     #print("message:",str(message))
     authenticated=False
-    if REACT_APP_DisableLogin:
+    if DisableLogin:
         authenticated=True
         accessControl={'userAuthorised':True,'permissions':{'read':True,'write':True}}
     else :
@@ -865,13 +910,13 @@ def databaseRead(message):
 
 @socketio.on('databaseBroadcastRead', namespace='/pvServer')
 def databaseBroadcastRead(message):
-    global clientPVlist,REACT_APP_DisableLogin
+    global clientPVlist,DisableLogin
     dbURL= str(message['dbURL'])
 
     #print("databaseRead: SSID: ",request.sid,' dbURL: ', dbURL)
     #print("message:",str(message))
     authenticated=False
-    if REACT_APP_DisableLogin:
+    if DisableLogin:
         authenticated=True
         accessControl={'userAuthorised':True,'permissions':{'read':True,'write':True}}
     else :
@@ -971,10 +1016,10 @@ def databaseBroadcastRead(message):
 
 @socketio.on('remove_dbWatch', namespace='/pvServer')
 def test_message(message):
-    global clientPVlist,REACT_APP_DisableLogin, myuid
+    global clientPVlist,DisableLogin, myuid
     dbURL= str(message['dbURL'])
     authenticated=False
-    if REACT_APP_DisableLogin:
+    if DisableLogin:
         authenticated=True
         accessControl={'userAuthorised':True,'permissions':{'read':True,'write':True}}
     else :
@@ -1018,13 +1063,13 @@ def test_message(message):
 
 @socketio.on('databaseReadWatchAndBroadcast', namespace='/pvServer')
 def databaseBroadcastRead(message):
-    global clientPVlist,REACT_APP_DisableLogin,clientDbWatchList,myDbWatchUid
+    global clientPVlist,DisableLogin,clientDbWatchList,myDbWatchUid
     dbURL= str(message['dbURL'])
 
     #print("databaseRead: SSID: ",request.sid,' dbURL: ', dbURL)
     #print("message:",str(message))
     authenticated=False
-    if REACT_APP_DisableLogin:
+    if DisableLogin:
         authenticated=True
         accessControl={'userAuthorised':True,'permissions':{'read':True,'write':True}}
     else :
@@ -1171,13 +1216,13 @@ def databaseBroadcastRead(message):
 
 @socketio.on('databaseUpdateOne', namespace='/pvServer')
 def databaseUpdateOne(message):
-    global clientPVlist,REACT_APP_DisableLogin
+    global clientPVlist,DisableLogin
     dbURL= str(message['dbURL'])
 
 #    print("databaseUpdate: SSID: ",request.sid,' dbURL: ', dbURL)
 #    print("message:",str(message))
     authenticated=False
-    if REACT_APP_DisableLogin:
+    if DisableLogin:
         authenticated=True
         accessControl={'userAuthorised':True,'permissions':{'read':True,'write':True}}
     else :
@@ -1255,13 +1300,13 @@ def databaseUpdateOne(message):
 
 @socketio.on('databaseDeleteOne', namespace='/pvServer')
 def databaseDeleteOne(message):
-    global clientPVlist,REACT_APP_DisableLogin
+    global clientPVlist,DisableLogin
     dbURL= str(message['dbURL'])
 
 #    print("databaseUpdate: SSID: ",request.sid,' dbURL: ', dbURL)
 #    print("message:",str(message))
     authenticated=False
-    if REACT_APP_DisableLogin:
+    if DisableLogin:
         authenticated=True
         accessControl={'userAuthorised':True,'permissions':{'read':True,'write':True}}
     else :
@@ -1340,14 +1385,14 @@ def databaseDeleteOne(message):
 
 @socketio.on('databaseInsertOne', namespace='/pvServer')
 def databaseInsertOne(message):
-    global clientPVlist,REACT_APP_DisableLogin
+    global clientPVlist,DisableLogin
 #    print("databaseInsertOne")
     dbURL= str(message['dbURL'])
 
 #    print("databaseInsertOne: SSID: ",request.sid,' dbURL: ', dbURL)
 #    print("message:",str(message))
     authenticated=False
-    if REACT_APP_DisableLogin:
+    if DisableLogin:
         authenticated=True
         accessControl={'userAuthorised':True,'permissions':{'read':True,'write':True}}
     else :
@@ -1423,13 +1468,13 @@ def databaseInsertOne(message):
 
 @socketio.on('archiverRead', namespace='/pvServer')
 def archiverRead(message):
-    global clientPVlist,REACT_APP_DisableLogin
+    global clientPVlist,DisableLogin
     archiverURL= str(message['archiverURL'])
 
     #print("databaseRead: SSID: ",request.sid,' dbURL: ', dbURL)
     #print("message:",str(message))
     authenticated=False
-    if REACT_APP_DisableLogin:
+    if DisableLogin:
         authenticated=True
         accessControl={'userAuthorised':True,'permissions':{'read':True,'write':True}}
     else :
@@ -1510,9 +1555,9 @@ def archiverRead(message):
 @socketio.on('AuthenticateClient', namespace='/pvServer')
 def authenticate(message):
     print("Error, old socket io authentication is disabled")
-    # global REACT_APP_DisableLogin
+    # global DisableLogin
 
-    # if (not REACT_APP_DisableLogin ):
+    # if (not DisableLogin ):
     #     userData=LocalAuthenticateUser(message['user'])
     #     if not (userData is None) :
     #         emit('clientAuthenticated', {'successful': True, 'jwt':userData['JWT'],'username':userData['username'],'roles':userData['roles']},room=request.sid,namespace='/pvServer')
@@ -1524,9 +1569,9 @@ def authenticate(message):
 
 @socketio.on('AuthoriseClient', namespace='/pvServer')
 def test_authenticate(message):
-    global REACT_APP_DisableLogin
+    global DisableLogin
 
-    if (not REACT_APP_DisableLogin ):
+    if (not DisableLogin ):
         userData=AuthoriseUser(message)
         #print(str(userData))
         if userData['authorised']:

@@ -26,6 +26,8 @@ const SideDrawer = (props) => {
     const classes = useStyles(props)
 
     const context = useContext(AutomationStudioContext)
+    const {appCfg}=context;
+    const {enableLogin}=appCfg;
     const notInStyleGuide = context.styleGuideRedirect
     const socket = context.socket
 
@@ -57,7 +59,7 @@ const SideDrawer = (props) => {
                 {/* Drawer list items from user */}
                 {props.drawerItems}
                 {/* Drawer list items from user */}
-                {process.env.REACT_APP_EnableLogin === 'true' &&
+                {enableLogin===true &&
                     <React.Fragment>
                         <Divider />
                         <ListItem>
