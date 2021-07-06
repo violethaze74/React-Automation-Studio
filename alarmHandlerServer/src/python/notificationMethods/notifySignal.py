@@ -192,6 +192,10 @@ def worker():
                         timestamp = datetime.now(utc).isoformat()
                         entry = {"timestamp": timestamp, "entry": " ".join(
                             [name, "notified on Signal"])}
+                    else:
+                        timestamp = datetime.now(utc).isoformat()
+                        entry = {"timestamp": timestamp, "entry": " ".join(
+                            ["FAILED to notify", name, "on Signal!"])}
                 except Exception as e:
                     app_log.error("Exception raised: " + str(e))
                     app_log.error("Exception type: " + str(type(e)))
