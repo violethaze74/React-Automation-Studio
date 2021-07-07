@@ -250,6 +250,7 @@ const AlarmSetup = (props) => {
     const [alarmRowSelected, setAlarmRowSelected] = useState({})
     const [alarmContextOpen, setAlarmContextOpen] = useState({})
     const [areaAlarms, setAreaAlarms] = useState([])
+    const [alarmNames, setAlarmNames] = useState([])
     const [filteredAreaAlarms, setFilteredAreaAlarms] = useState([])
     const [preSliceAreaAlarms, setPreSliceAreaAlarms] = useState([])
     const [areaContextOpen, setAreaContextOpen] = useState({})
@@ -341,6 +342,7 @@ const AlarmSetup = (props) => {
                     }
                 }
                 else {
+                    console.log("alarm pv here")
                     return state
                 }
             default:
@@ -368,6 +370,7 @@ const AlarmSetup = (props) => {
                     }
                 }
                 else {
+                    console.log("area pv here")
                     return state
                 }
             default:
@@ -492,6 +495,7 @@ const AlarmSetup = (props) => {
             //
             const localAreaNames = []
             const localAreaAlarms = []
+            const localAlarmNames = []
             const localAreaEnabled = {}
             const localAreaBridged = {}
             const localLastPVKey = {}
@@ -538,6 +542,7 @@ const AlarmSetup = (props) => {
                             })
                             items.map(item => {
                                 localAreaAlarms.push([`${area["area"]}=${item[0]}`, item[1]])
+                                localAlarmNames.push(item[1]["name"])
                                 localLastAlarm = item[1]["name"]
                                 return null
                             })
@@ -587,6 +592,7 @@ const AlarmSetup = (props) => {
                                 })
                                 items.map(item => {
                                     localAreaAlarms.push([`${area["area"]}=${area[areaKey]["name"]}=${item[0]}`, item[1]])
+                                    localAlarmNames.push(item[1]["name"])
                                     localLastAlarm = item[1]["name"]
                                     return null
                                 })
@@ -611,6 +617,7 @@ const AlarmSetup = (props) => {
             setAreaSubAreaMongoId(areaSubAreaMongoId)
             setAreaNames(localAreaNames)
             setAreaAlarms(localAreaAlarms)
+            setAlarmNames(localAlarmNames)
             setAreaEnabled(localAreaEnabled)
             setAreaBridged(localAreaBridged)
             setLastArea(localLastArea)
@@ -2119,13 +2126,13 @@ const AlarmSetup = (props) => {
     useEffect(() => {
         if (alarmIOCPVPrefix !== null && alarmIOCPVSuffix !== null) {
             let localAlarmPVs = []
-            areaAlarms.map(entry => {
-                const key = entry[0]
-                const value = entry[1]
+            alarmNames.map((entry, index) => {
+                const key = `${index}-${entry}`
+                const value = entry
                 const pvObject =
                     <PV
                         key={key}
-                        pv={alarmIOCPVPrefix + value["name"] + alarmIOCPVSuffix}
+                        pv={alarmIOCPVPrefix + value + alarmIOCPVSuffix}
                         pvData={(pvData) => dispatchAlarmPVDict({ type: 'updatePVData', pvData: pvData })}
                     />
                 localAlarmPVs = [...localAlarmPVs, pvObject]
@@ -2133,7 +2140,10 @@ const AlarmSetup = (props) => {
             })
             setAlarmPVs(localAlarmPVs)
         }
-    }, [alarmIOCPVPrefix, alarmIOCPVSuffix, areaAlarms])
+        // disable useEffect dependencies for "alarmNames"
+        // so useEffect only runs once to set alarm desc and host pvs
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [alarmIOCPVPrefix, alarmIOCPVSuffix])
 
     useEffect(() => {
         if (alarmIOCPVPrefix !== null) {
@@ -2504,7 +2514,7 @@ const AlarmSetup = (props) => {
                             <Paper className={classes.paper} elevation={theme.palette.paperElevation}>
                                 <div style={{ fontSize: 16, fontWeight: 'bold' }}>
                                     CONNECTING TO PVs...
-                                    </div>
+                                </div>
                             </Paper>
                         </Grid>}
                     {displayAlarmTable && !backdropOpen ?
@@ -2693,7 +2703,7 @@ const AlarmSetup = (props) => {
                             <Paper className={classes.paper} elevation={theme.palette.paperElevation}>
                                 <div style={{ fontSize: 16, fontWeight: 'bold' }}>
                                     CONNECTING TO PVs...
-                                    </div>
+                                </div>
                             </Paper>
                         </Grid>
                     }
