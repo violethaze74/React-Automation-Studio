@@ -326,15 +326,18 @@ const AlarmSetup = (props) => {
     const alarmPVDictReducer = useCallback((state, action) => {
         switch (action.type) {
             case 'updatePVData':
-                if (action.pvData.initialized && (!loadAlarmTable.alarmPV || backdropOpen)) {
+
+                if (action.pvData.initialized) {
                     let epicsPVName = action.pvData.pvName.replace("pva://", "")
                     epicsPVName = epicsPVName.replace(alarmIOCPVPrefix, "")
                     epicsPVName = epicsPVName.replace(alarmIOCPVSuffix, "")
-                    if (lastAlarm === epicsPVName) {
-                        setLoadAlarmTable({
-                            ...loadAlarmTable,
-                            alarmPV: true
-                        })
+                    if (!loadAlarmTable.alarmPV) {
+                        if (lastAlarm === epicsPVName) {
+                            setLoadAlarmTable({
+                                ...loadAlarmTable,
+                                alarmPV: true
+                            })
+                        }
                     }
                     return {
                         ...state,
@@ -342,13 +345,12 @@ const AlarmSetup = (props) => {
                     }
                 }
                 else {
-                    console.log("alarm pv here")
                     return state
                 }
             default:
                 throw new Error();
         }
-    }, [alarmIOCPVPrefix, alarmIOCPVSuffix, lastAlarm, loadAlarmTable, backdropOpen])
+    }, [alarmIOCPVPrefix, alarmIOCPVSuffix, lastAlarm, loadAlarmTable])
     const [alarmPVDict, dispatchAlarmPVDict] = useReducer(alarmPVDictReducer, {})
     const [alarmPVs, setAlarmPVs] = useState([])
 
@@ -358,11 +360,13 @@ const AlarmSetup = (props) => {
                 if (action.pvData.initialized) {
                     let areaName = action.pvData.pvName.replace("pva://", "")
                     areaName = areaName.replace(alarmIOCPVPrefix, "")
-                    if (lastArea === areaName) {
-                        setLoadAlarmList({
-                            ...loadAlarmList,
-                            areaPV: true
-                        })
+                    if (!loadAlarmList.areaPV) {
+                        if (lastArea === areaName) {
+                            setLoadAlarmList({
+                                ...loadAlarmList,
+                                areaPV: true
+                            })
+                        }
                     }
                     return {
                         ...state,
@@ -370,7 +374,6 @@ const AlarmSetup = (props) => {
                     }
                 }
                 else {
-                    console.log("area pv here")
                     return state
                 }
             default:
@@ -500,6 +503,8 @@ const AlarmSetup = (props) => {
             const localAreaBridged = {}
             const localLastPVKey = {}
             const localAreaRoles = {}
+            const localAreaMongoId = {}
+            const localAreaSubAreaMongoId = {}
             let localLastAlarm = ""
             let localLastArea = ""
             let areaNamesIndex = -1
@@ -520,7 +525,7 @@ const AlarmSetup = (props) => {
                 // console.log(area.area, area?.roles)
                 // console.log('areaMatchesRole', areaMatchesRole)
                 if (areaMatchesRole) {
-                    areaMongoId[area["area"]] = area["_id"]["$oid"]
+                    localAreaMongoId[area["area"]] = area["_id"]["$oid"]
                     localAreaEnabled[area["area"]] = area["enable"]
                     // Backwards compatible
                     localAreaBridged[area["area"]] = {
@@ -564,8 +569,8 @@ const AlarmSetup = (props) => {
                             // console.log(`${area["area"]}=${area[areaKey]["name"]}`, area[areaKey]?.roles)
                             // console.log('subAreaMatchesRole', subAreaMatchesRole)
                             if (subAreaMatchesRole) {
-                                areaSubAreaMongoId[`${area["area"]}=${area[areaKey]["name"]}`] = areaKey
-                                areaMongoId[`${area["area"]}=${area[areaKey]["name"]}`] = area["_id"]["$oid"]
+                                localAreaSubAreaMongoId[`${area["area"]}=${area[areaKey]["name"]}`] = areaKey
+                                localAreaMongoId[`${area["area"]}=${area[areaKey]["name"]}`] = area["_id"]["$oid"]
                                 // Area enabled for subArea includes parent area
                                 localAreaEnabled[`${area["area"]}=${area[areaKey]["name"]}`] = area[areaKey]["enable"] && localAreaEnabled[area["area"]]
                                 // Backwards compatible
@@ -613,8 +618,8 @@ const AlarmSetup = (props) => {
                 setAlarmLogSelectedKey('ALLAREAS')
             }
             setLastAlarm(localLastAlarm)
-            setAreaMongoId(areaMongoId)
-            setAreaSubAreaMongoId(areaSubAreaMongoId)
+            setAreaMongoId(localAreaMongoId)
+            setAreaSubAreaMongoId(localAreaSubAreaMongoId)
             setAreaNames(localAreaNames)
             setAreaAlarms(localAreaAlarms)
             setAlarmNames(localAlarmNames)
@@ -2140,10 +2145,7 @@ const AlarmSetup = (props) => {
             })
             setAlarmPVs(localAlarmPVs)
         }
-        // disable useEffect dependencies for "alarmNames"
-        // so useEffect only runs once to set alarm desc and host pvs
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [alarmIOCPVPrefix, alarmIOCPVSuffix])
+    }, [alarmIOCPVPrefix, alarmIOCPVSuffix, alarmNames])
 
     useEffect(() => {
         if (alarmIOCPVPrefix !== null) {
