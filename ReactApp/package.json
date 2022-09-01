@@ -18,7 +18,7 @@
         "three": "0.124.0",
         "typeface-roboto": "0.0.54",
         "uuid": "8.3.2",
-        "mathjs": "9.0.0",
+        "mathjs": "9.5.2",
         "react-device-detect": "1.15.0",
         "rc-slider": "9.7.1",
         "@material-ui/pickers": "3.2.9",
