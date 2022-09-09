@@ -1,4 +1,4 @@
-FROM python:3.8.7
+FROM python:3.8.14
 
 # Install OS packages and other dependencies 
 RUN apt-get update && \
